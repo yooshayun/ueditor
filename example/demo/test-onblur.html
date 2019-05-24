@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>wangEditor test onblur</title>
+</head>
+<body>
+    <div id="div1">
+        <p>欢迎使用 wangEditor 富文本编辑器</p>
+    </div>
+    <button id="getContent">获取文档内容</button>
+
+    <script type="text/javascript" src="/wangEditor.js"></script>
+    <script>
+        var E = window.wangEditor
+        var editor = new E('#div1')
+        editor.customConfig.menus = [
+            'bold',
+            'head', 
+            'subhead',          
+            'quote',
+            'splitLine',
+            'image',
+            'video',
+            'audio',
+            'undo',
+            'redo'
+        ]
+
+        // editor.customConfig.lang = {
+        //     '添加音乐': 'add music',
+        //     '选择音乐': 'choose music'
+        // }
+
+        // editor.customConfig.onblur = function (html) {
+        //     // html 即编辑器中的内容
+        //     console.log('onblur', html)
+        // }
+
+        // editor.customConfig.customUploadVideo = (files, ins)=>{
+        //     console.log(files, '222222')
+        // }
+
+        editor.customConfig.showLinkImg = true;
+        editor.customConfig.customUploadImg = (files, ins)=>{
+            console.log(files, '222222');
+            ins('http://qimg.hxnews.com/2019/0130/1548847547452.jpg')
+        }
+        editor.customConfig.changeUploadImg = (files, ins)=>{
+            console.log(files, '222222');
+            ins('http://qimg.hxnews.com/2019/0130/1548847547452.jpg')
+        }
+
+        editor.customConfig.customUploadVideo = (files, ins, dialogId)=>{
+            console.log(editor);
+            var dom = document.querySelector('#' + dialogId);
+            dom.parentNode.removeChild(dom);
+            var videoId = 'video' + (new Date().getTime());
+            ins('', true, videoId)
+            setTimeout(()=>{
+                console.log('视频上传完成。。。。')
+                ins('http://video.kolocdn.com/o_1d4rsujqs1oo3qm1go11ur5bjnn.mp4', false, videoId)
+            }, 5000)
+        }
+
+        editor.create();
+
+        document.querySelector('#getContent').addEventListener('click', ()=>{
+            console.log(editor.txt.getJSON(), editor.txt.html());
+            console.log(jsonToHtml(editor.txt.getJSON()));
+            console.log(jsonToHtml(editor.txt.getJSON(), true));
+        })
+
+        let dbCode = ['img', 'audio', 'video', 'br', 'hr', 'input'];
+        //将json字符串转成HTML  isprod:false发布后页面, true开发页面
+        function jsonToHtml(json, isprod=false) {
+            if(!json || !json.length){
+                return '';
+            }
+            let domStr = '';
+            json.forEach(element => {
+                if(typeof element == 'string') {
+                    domStr += element;
+                } else {
+                    let attrs = '';
+                    //过滤掉删除按钮
+                    let bool = false;
+                    element.attrs.forEach(item=>{
+                        //过滤掉可编辑属性
+                        if(item.name !== 'contenteditable' || isprod) {
+                            attrs += ` ${item.name}="${item.value}"`
+                        }
+                        if((item.name == 'class' && item.value == 'w-e-icon-close') && !isprod) {
+                            bool = true;
+                        }
+                    })
+                    if(!bool) {
+                        //单标签和双标签 
+                        if(dbCode.indexOf(element.tag) === -1) {
+                            domStr += `<${element.tag}${attrs}>${jsonToHtml(element.children)}</${element.tag}>`
+                        } else {
+                            domStr += `<${element.tag}${attrs}/>`
+                        }
+                    }
+                }
+            });
+            return domStr;
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.1 (72631) - https://sketchapp.com -->
+    <title>分组 6 copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="专栏" transform="translate(-494.000000, -309.000000)" fill="#8590A6">
+            <g id="分组-6-copy" transform="translate(494.000000, 309.000000)">
+                <rect id="矩形" x="0" y="0" width="2" height="15" rx="1"></rect>
+                <rect id="矩形-copy-2" x="8" y="0" width="2" height="15" rx="1"></rect>
+                <rect id="矩形-copy-4" transform="translate(5.500000, 7.000000) rotate(-270.000000) translate(-5.500000, -7.000000) " x="4.5" y="2.5" width="2" height="9" rx="1"></rect>
+                <path d="M12,9.33567212 C12.3442154,9.18078919 12.6899092,8.98213798 13.037092,8.73971252 C13.3842747,8.49728707 13.5878082,8.31336365 13.962908,8 L15,8 L15,15 L13.6424332,15 L13.6424332,9.63636364 C13.482195,9.77777848 13.2804166,9.91582424 13.037092,10.0505051 C12.7937673,10.1851859 12.5593483,10.2962959 12.3338279,10.3838384 L12,9.33567212 Z" id="1" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

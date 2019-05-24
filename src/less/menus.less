@@ -1,0 +1,35 @@
+.w-e-toolbar {
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    /* flex-wrap: wrap; */
+
+    /* 单个菜单 */
+    .w-e-menu {
+        position: relative;
+        text-align: center;
+        padding: 0 16px;
+        cursor: pointer;
+        
+        i {
+            color: #8590A6;
+            font-size: 16px;
+        }
+
+        &:hover {
+            i {
+                color: #333;
+            }
+        }
+    }
+    .w-e-active {
+        i {
+            color: #1e88e5;
+        }
+        &:hover {
+            i {
+                color: #1e88e5;
+            }
+        }
+    }
+}

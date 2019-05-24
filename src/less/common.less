@@ -1,0 +1,257 @@
+.w-e-toolbar,
+.w-e-text-container,
+.w-e-menu-panel {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+}
+.w-e-text-container {
+    position: relative;
+    padding: 60px 80px;
+    border: 0;
+    border-bottom: 1px solid rgba(238,238,238,1); 
+    &::before {
+        content: ' ';
+        width: 16px;
+        height: 16px;
+        display: block;
+        border-bottom: 1px solid rgba(216,216,216,1);
+        border-right: 1px solid rgba(216,216,216,1);
+        position: absolute;
+        left: 62px;
+        top: 48px;
+    }
+
+    &::after {
+        content: '';
+        width: 16px;
+        height: 16px;
+        display: block;
+        border-bottom: 1px solid rgba(216,216,216,1);
+        border-left: 1px solid rgba(216,216,216,1);
+        position: absolute;
+        right: 62px;
+        top: 48px;
+    }
+
+    .w-e-progress {
+        position: absolute;
+        background-color: #1e88e5;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+    }
+}
+
+.w-e-clear-fix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.kolo-e-dialog, .kolo-e-dialog-up {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 100001;
+    .kolo-upload {
+        width: 600px;
+        height: 250px;
+        box-sizing: border-box;
+        margin: auto;
+        margin-top: 30vh;
+        background: #fff;
+        border-radius: 4px;
+        padding: 40px;
+        h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 0;
+        }
+        .w-e-up-btn {
+            text-align: center;
+            button {
+                width: 140px;
+                height: 42px;
+                line-height: 42px;
+                background: #EB2135;
+                border-radius: 4px;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                color: #fff;
+                outline: none;
+                margin-top: 40px;
+            }
+            button[disabled=true] {
+                opacity: 0.7;
+            }
+        }
+        .upload-container {
+            position: absolute;
+            width: 520px;
+            height: 170px;
+        }
+        .w-e-icon-close {
+            position: absolute;
+            right: -28px;
+            top: -32px;
+        }
+    }
+    .upload-container {
+        position: relative;
+        z-index: 99;
+    }
+    .music {
+        height: 46px;
+        width: 70%;
+        position: relative;
+        margin: auto;
+        .search-box {
+            box-sizing: border-box;
+            border: 1px solid;
+            height: 44px;
+            line-height: 44px;
+            .status-box {
+                width: 42px;
+                text-align: center;
+                float: left;
+                img {
+                    width: 18px;
+                    height: 18px;
+                    vertical-align: -2px;
+                }
+            }
+            p {
+                float: left;
+                width: 320px;
+                padding-top: 5px;
+                margin: 0;
+                input {
+                    min-width: 120px;
+                    border: 0;
+                    padding: 0;
+                    box-shadow: none;
+                    outline: none;
+                    height: 32px;
+                    width: 290px;
+                    line-height: 32px;
+                    float: left;
+                }
+                .w-e-icon-close {
+                    width: 30px;
+                    float: left;
+                    line-height: 32px;
+                    position: static;
+                    text-align: center;
+                    color: #ccc;
+                    display: none;
+                }
+            }
+        }
+        .error-audio {
+            color: #EB2135;
+            font-size: 12px;
+            text-align: left;
+        }
+        .music-list {
+            width: 100%;
+            position: absolute;
+            top: 50px;
+            z-index: 10;
+            background: #fff;
+            ul {
+                height: 240px;
+                overflow-y: scroll;
+                padding: 10px 0;
+                margin: 0;
+                box-shadow: 0 2px 2px 2px rgba(0,0,0,0.3); 
+                &::-webkit-scrollbar {
+                    width: 1px;
+                    background-color: #eee;
+                }    
+            }
+            li {
+                list-style: none;
+                display: flex;
+                padding: 0 16px;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                box-sizing: border-box;
+                cursor: pointer;
+                height: 36px;
+                line-height: 36px;
+                margin-bottom: 5px;
+                &.active-music, &:hover {
+                    background: rgba(0,0,0,0.6);
+                    .name {
+                        color: #fff;
+                    }
+                }
+                .name {
+                    flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    pointer-events: none;
+                }
+                .status-box {
+                    width: 16px;
+                    flex: 0 0 16px;
+                    img {
+                        width: 16px;
+                        height: 16px;
+                        display: block;
+                    }
+                    &.status-pause {
+                        img {
+                            display: none;
+                            &:nth-child(2) {
+                                display: inline-block;
+                            }
+                        }
+                    }
+                    &.status-play {
+                        img {
+                            display: inline-block;
+                            &:nth-child(2) {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.kolo-e-dialog-up {
+    .kolo-upload {
+        width: 439px;
+        height: 235px;
+        .upload-container {
+            width: 360px;
+        }
+        .w-e-up-btn {
+            button {
+                margin-top: 0;
+                margin-bottom: 16px;
+            }
+            p {
+                font-size:12px;
+                font-weight:600;
+                color:rgba(170,170,170,1); 
+                text-align: center;
+            }
+        }
+    }
+}
