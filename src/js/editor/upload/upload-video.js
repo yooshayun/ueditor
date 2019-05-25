@@ -18,7 +18,7 @@ UploadVideo.prototype = {
     constructor: UploadVideo,
 
     //根据链接插入视频
-    insertLinkVideo: function (link, loading=false, id) {
+    insertLinkVideo: function (link, loading=false, id, process) {
         var _this2 = this;
 
         var editor = this.editor;
@@ -43,30 +43,34 @@ UploadVideo.prototype = {
         
         //视频上传时图片的loading的id,如果存在就添加loading
         if(loading) {
-            //插入视频
-            var template = `
-                <div class="kolo-video" id="${videoId}"  contenteditable="false">
-                    <div class="kolo-video-container">
-                        <div class="progress-content">
-                            <p class="subtitle-video">视频正在上传,不影响编辑</p>
+            if(process == 0) {
+                //插入视频
+                var template = `
+                    <div class="kolo-video" id="${videoId}"  contenteditable="false">
+                        <div class="kolo-video-container">
+                            <div class="progress-content">
+                                <p class="subtitle-video">视频正在上传,不影响编辑</p>
+                                <p class="${ videoId + '-' + videoId }"></p>
+                            </div>
                         </div>
+                        <span data-src="${link ? link : ''}" id="${randomChangeId}" class="before-img">更换封面</span>
+                        <i class="w-e-icon-close" id="${randomId}"></i><br/>
                     </div>
-                    <span data-src="${link ? link : ''}" id="${randomChangeId}" class="before-img">更换封面</span>
-                    <i class="w-e-icon-close" id="${randomId}"></i><br/>
-                </div>
-                <p><br/></p>
-            `;
+                    <p><br/></p>
+                `;
 
-            //替换多语言        
-            template = replaceLang(editor, template);
+                //替换多语言        
+                template = replaceLang(editor, template);
 
-            editor.cmd.do('insertHTML', template);
+                editor.cmd.do('insertHTML', template);
 
-            document.querySelector('#'+randomId).addEventListener('click', (e)=>{
-                let target = e.target.parentNode;
-                target.parentNode.removeChild(target);
-            })
-    
+                document.querySelector('#'+randomId).addEventListener('click', (e)=>{
+                    let target = e.target.parentNode;
+                    target.parentNode.removeChild(target);
+                })
+            } else if(process > 0 && process < 100){
+                document.querySelector('.' + videoId + '-' + videoId).innerHTML = process + '%';        
+            }
         } else {
             if(!link) {
                 return 
@@ -79,7 +83,6 @@ UploadVideo.prototype = {
                     <img class="video-bg" src="${ beforeImg || (link + '?vframe/jpg/offset/3/w/640/')}" />
                     <video class="video-dom" style="display: none;" controls="controls" src="${link}"></video>
                     <img class="video-control-btn" src="http://image.kolocdn.com/FnRbYslhonTMq1_9qUI8751Xp3Ej" />
-                    <p class="subtitle-video">视频尚未发布，暂时无法播放</p>
                 </div>
             `;
             //替换多语言        
@@ -88,6 +91,25 @@ UploadVideo.prototype = {
             let loaderDom = document.querySelector('#' + videoId + ' .kolo-video-container');
 
             loaderDom.innerHTML = template2;
+
+
+            //视频播放
+            let videoDom = document.querySelector('#' + videoId + ' .video-dom'),
+                btnDom = document.querySelector('#' + videoId + ' .video-control-btn'),
+                beforeDom = document.querySelector('#' + videoId + ' .before-img');
+            btnDom.addEventListener('click', ()=>{
+                // console.log('视频播放--');
+                document.querySelector('#' + videoId + ' .video-bg').style.display = 'none';
+                btnDom.style.display = 'none';
+                // beforeDom.style.display = 'none';
+                videoDom.style.display = 'block';
+                videoDom.play();    
+            })
+            // //视频暂停
+            // videoDom.addEventListener('click', ()=>{
+            //     console.log('paused');
+
+            // })
         }
 
         //更换封面图片
@@ -97,6 +119,12 @@ UploadVideo.prototype = {
             if(document.querySelector('.kolo-e-dialog-up')) {
                 return;
             }
+            
+            let videoDom = document.querySelector('#' + videoId + ' .video-dom');
+            videoDom.pause();
+            videoDom.style.display = 'none';
+            document.querySelector('#' + videoId + ' .video-bg').style.display = 'block';
+            document.querySelector('#' + videoId + ' .video-control-btn').style.display = 'block';
 
             //更换图片自定义上传
             const changeUploadImg = config.changeUploadImg;

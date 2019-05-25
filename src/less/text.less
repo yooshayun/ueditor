@@ -189,7 +189,7 @@
         .audio-control{
             float: left;
             padding-top: 15px;
-            display: none;
+            // display: none;
             img{
                 width:28px;
                 height:28px;
@@ -265,6 +265,12 @@
                     position: absolute;
                     bottom: 20px;
                     margin: auto;
+                    &:first-child {
+                        bottom: 50px;
+                    }
+                    &:last-child {
+                        bottom: 20px;
+                    }
                 }
                 img {
                     align-items: center;

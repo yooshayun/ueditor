@@ -849,7 +849,6 @@
 .w-e-text .kolo-audio .audio-control {
   float: left;
   padding-top: 15px;
-  display: none;
 }
 .w-e-text .kolo-audio .audio-control img {
   width: 28px;
@@ -933,6 +932,12 @@
   position: absolute;
   bottom: 20px;
   margin: auto;
+}
+.w-e-text .kolo-video .kolo-video-container .progress-content p:first-child {
+  bottom: 50px;
+}
+.w-e-text .kolo-video .kolo-video-container .progress-content p:last-child {
+  bottom: 20px;
 }
 .w-e-text .kolo-video .kolo-video-container .progress-content img {
   -ms-flex-align: center;

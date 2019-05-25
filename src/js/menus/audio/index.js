@@ -12,9 +12,9 @@ function Audio(editor) {
     var _this = this;
 
     this.editor = editor;
-    // var audioMenuId = getRandom('w-e-audio');
-    this.$elem = $('<div class="w-e-menu"><i title="添加音乐" class="w-e-icon-audio"></i></div>');
-    // editor.audioMenuId = audioMenuId;
+    var audioMenuId = getRandom('w-e-audio');
+    this.$elem = $('<div class="w-e-menu"><i title="添加音乐" class="w-e-icon-audio"></i><audio style="display:none;" id="play-' + audioMenuId + '"></audio></div>');
+    editor.audioMenuId = audioMenuId;
     this.type = 'panel';
 
     // //激活状态
@@ -131,7 +131,7 @@ Audio.prototype = {
             e.stopPropagation();
             var value = $('#' + searchlinkId).val().trim();
             //网易云音乐链接
-            this.searchMusic(value).then(res=> {
+            this.searchMusic(value).then(res=>{
                 if(res.code == 200) {
                     this._renderMusicList(res.data.songs, _chooseMusic, audioId);
                 }

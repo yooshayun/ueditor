@@ -56,11 +56,20 @@
             var dom = document.querySelector('#' + dialogId);
             dom.parentNode.removeChild(dom);
             var videoId = 'video' + (new Date().getTime());
-            ins('', true, videoId)
-            setTimeout(()=>{
-                console.log('视频上传完成。。。。')
-                ins('http://video.kolocdn.com/o_1d4rsujqs1oo3qm1go11ur5bjnn.mp4', false, videoId)
-            }, 5000)
+            ins('', true, videoId, 0)
+            let i = 1;
+            let timer = setInterval(()=>{
+                if(i !== 0) {
+                    ins('', true, videoId, i)
+                }
+                if(i == 100) {
+                    console.log('视频上传完成。。。。')
+                    ins('http://video.kolocdn.com/o_1d4rsujqs1oo3qm1go11ur5bjnn.mp4', false, videoId)
+                    clearInterval(timer);
+                } 
+                i++;
+                console.log(i, '进度' + i + '%');
+            }, 10)
         }
 
         editor.create();

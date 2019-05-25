@@ -19,10 +19,10 @@ UploadAudio.prototype = {
         var editor = this.editor,
             config = editor.config;
 
-        var audioId = getRandom('audio');
-        var closeId = getRandom('audio-close');
+        var audioId = getRandom('audio' + obj.id);
+        var closeId = getRandom('audio-close' + obj.id);
 
-        // 格式校验
+        // 格式校验 //<p class="subtitle-audio">音频尚未发布，暂时无法播放</p>
         let names = obj.name.split('/');
         editor.cmd.do('insertHTML', `
             <div class="kolo-audio" contenteditable="false">
@@ -33,7 +33,6 @@ UploadAudio.prototype = {
                     <div class="audio-title">
                         <h3>${names[0]}</h3>
                         <p>${names[1]}</p>
-                        <p class="subtitle-audio">音频尚未发布，暂时无法播放</p>
                     </div>
                     <div class="audio-control status-play">
                         <img class="play play-${audioId}" 
@@ -49,33 +48,39 @@ UploadAudio.prototype = {
             </div>
             <p><br></p>
         `);
-        // var audioDom = document.querySelector('#play-' + editor.audioMenuId);
-        // this.audioEvent.push({
-        //     selector: audioId,
-        //     type: 'control',
-        //     fn: (selector)=>{
-        //         //对添加的audio添加播放/暂停事件
-        //         document.querySelector('.play-' + selector).addEventListener('click', (e)=>{
-        //             e.stopPropagation();
-        //             //关闭播放中的音频
-        //             audioDom.pause();
-        //             //所有音频恢复默认状态
-        //             document.querySelectorAll('.audio-control').forEach(el => {
-        //                 el.className = 'audio-control status-play';
-        //             })
+        this.audioEvent.push({
+            selector: audioId,
+            type: 'control',
+            fn: (selector)=>{
+                // console.log(selector, 'selector');
+                //对添加的audio添加播放/暂停事件
+                document.querySelector('.play-' + selector).addEventListener('click', (e)=>{
+                    e.stopPropagation();
+                    var audioDom = document.querySelector('#play-' + editor.audioMenuId);
+                    //关闭播放中的音频
+                    audioDom.pause();
+                    //所有音频恢复默认状态
+                    document.querySelectorAll('.audio-control').forEach(el => {
+                        el.className = 'audio-control status-play';
+                    })
 
-        //             let domNode = e.target.parentNode.parentNode;
-        //             audioDom.src = domNode.getAttribute('data-src');
-        //             audioDom.play();
-        //             e.target.parentNode.className='audio-control status-pause';
-        //         })
-        //         document.querySelector('.pause-' + selector).addEventListener('click', (e)=>{
-        //             e.stopPropagation();
-        //             audioDom.pause();
-        //             e.target.parentNode.className='audio-control status-play';
-        //         })
-        //     }
-        // })
+                    let domNode = e.target.parentNode.parentNode;
+                    let musicId = domNode.getAttribute('data-id');
+                    this.getMusicUrl(musicId).then((res)=>{
+                        audioDom.src = res.data[0].url;
+                        audioDom.play();
+                        e.target.parentNode.className='audio-control status-pause';
+                    })    
+                })
+                document.querySelector('.pause-' + selector).addEventListener('click', (e)=>{
+                    var audioDom = document.querySelector('#play-' + editor.audioMenuId);
+                    
+                    e.stopPropagation();
+                    audioDom.pause();
+                    e.target.parentNode.className='audio-control status-play';
+                })
+            }
+        })
         this.audioEvent.push({
             selector: '#' + closeId,
             type: 'delete',
@@ -114,6 +119,42 @@ UploadAudio.prototype = {
         audio.onabort = function() {
             audio = null;
         }        
+    },
+
+    //根据音乐ID获取音乐链接
+    getMusicUrl: function(id) {
+        return new Promise((res, rej)=>{
+            this._http('https://music-api.kolo.la/music/url?id=' + id).then(data=>{
+                if(data.code == 200){
+                    res({code:200, data: data.data.data});
+                } else {
+                    res({code:500, data: null});
+                }
+            })
+        })
+    },
+
+    //请求get
+    _http: function(uri) {
+        return new Promise(function(res, rej){
+            var request = new XMLHttpRequest();
+            var timeout = false;
+            var timer = setTimeout( function(){
+                timeout = true;
+                request.abort();
+                res({code:500, data: null})
+            }, 30000 );
+            request.open( "GET", uri);
+            request.onreadystatechange = function(){
+                if( request.readyState !== 4 ) return;
+                if( timeout ) return;
+                clearTimeout( timer );
+                if( request.status === 200 ){
+                    res({code:200, data: JSON.parse(request.responseText)})
+                }
+            }
+            request.send( null );
+        })
     }
 }
 
