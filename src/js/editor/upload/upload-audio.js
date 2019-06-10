@@ -1,8 +1,8 @@
 import { getRandom } from '../../util/util.js';
 /**
- * 
+ *
  * @param {editor} editor
- * 上传音频 
+ * 上传音频
  */
 function UploadAudio(editor) {
     this.editor = editor;
@@ -36,9 +36,9 @@ UploadAudio.prototype = {
                     </div>
                     <div class="audio-control status-play">
                         <img class="play play-${audioId}" 
-                            src="http://image.kolocdn.com/FiRivA6DQMhn8liMvS82Q_DcFij6"/>
+                            src="https://image.kolocdn.com/Fvb6y33-Cy1gomZwCp_v2jyOJsYc"/>
                         <img class="pause pause-${audioId}" 
-                            src="http://image.kolocdn.com/FmzMS6qi1lLCWzwZG_LcrHkryAff"/>
+                            src="https://image.kolocdn.com/Ftvd5iTGO6rf1RPgGM1NxISiflys"/>
                     </div>
                 </div>
                 <p class="input-p">
@@ -70,11 +70,11 @@ UploadAudio.prototype = {
                         audioDom.src = res.data[0].url;
                         audioDom.play();
                         e.target.parentNode.className='audio-control status-pause';
-                    })    
+                    })
                 })
                 document.querySelector('.pause-' + selector).addEventListener('click', (e)=>{
                     var audioDom = document.querySelector('#play-' + editor.audioMenuId);
-                    
+
                     e.stopPropagation();
                     audioDom.pause();
                     e.target.parentNode.className='audio-control status-play';
@@ -103,7 +103,7 @@ UploadAudio.prototype = {
 
         this.audioEvent.forEach(item => {
             item.fn(item.selector);
-        });        
+        });
 
         //验证url是否有效
         var audio = document.createElement('audio');
@@ -118,7 +118,7 @@ UploadAudio.prototype = {
         }
         audio.onabort = function() {
             audio = null;
-        }        
+        }
     },
 
     //根据音乐ID获取音乐链接

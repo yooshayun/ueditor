@@ -4939,9 +4939,9 @@ UploadVideo.prototype = {
 };
 
 /**
- * 
+ *
  * @param {editor} editor
- * 上传音频 
+ * 上传音频
  */
 function UploadAudio(editor) {
     this.editor = editor;
@@ -4965,7 +4965,7 @@ UploadAudio.prototype = {
 
         // 格式校验 //<p class="subtitle-audio">音频尚未发布，暂时无法播放</p>
         var names = obj.name.split('/');
-        editor.cmd.do('insertHTML', '\n            <div class="kolo-audio" contenteditable="false">\n                <div class="audio-content" data-id="' + obj.id + '" data-person="' + obj.person + '">\n                    <div class="music-img">\n                        <img src="' + obj.person + '" />\n                    </div>\n                    <div class="audio-title">\n                        <h3>' + names[0] + '</h3>\n                        <p>' + names[1] + '</p>\n                    </div>\n                    <div class="audio-control status-play">\n                        <img class="play play-' + audioId + '" \n                            src="http://image.kolocdn.com/FiRivA6DQMhn8liMvS82Q_DcFij6"/>\n                        <img class="pause pause-' + audioId + '" \n                            src="http://image.kolocdn.com/FmzMS6qi1lLCWzwZG_LcrHkryAff"/>\n                    </div>\n                </div>\n                <p class="input-p">\n                    <input type="text" value="" placeholder="\u70B9\u51FB\u6DFB\u52A0\u97F3\u4E50\u63CF\u8FF0(\u6700\u591A50\u5B57\u7B26)"/>\n                </p>\n                <i id="' + closeId + '" class="w-e-icon-close"></i>\n            </div>\n            <p><br></p>\n        ');
+        editor.cmd.do('insertHTML', '\n            <div class="kolo-audio" contenteditable="false">\n                <div class="audio-content" data-id="' + obj.id + '" data-person="' + obj.person + '">\n                    <div class="music-img">\n                        <img src="' + obj.person + '" />\n                    </div>\n                    <div class="audio-title">\n                        <h3>' + names[0] + '</h3>\n                        <p>' + names[1] + '</p>\n                    </div>\n                    <div class="audio-control status-play">\n                        <img class="play play-' + audioId + '" \n                            src="https://image.kolocdn.com/Fvb6y33-Cy1gomZwCp_v2jyOJsYc"/>\n                        <img class="pause pause-' + audioId + '" \n                            src="https://image.kolocdn.com/Ftvd5iTGO6rf1RPgGM1NxISiflys"/>\n                    </div>\n                </div>\n                <p class="input-p">\n                    <input type="text" value="" placeholder="\u70B9\u51FB\u6DFB\u52A0\u97F3\u4E50\u63CF\u8FF0(\u6700\u591A50\u5B57\u7B26)"/>\n                </p>\n                <i id="' + closeId + '" class="w-e-icon-close"></i>\n            </div>\n            <p><br></p>\n        ');
         this.audioEvent.push({
             selector: audioId,
             type: 'control',
