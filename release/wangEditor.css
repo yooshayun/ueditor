@@ -362,9 +362,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.w-e-icon-close:before {
-  content: "\f00d";
-}
 .w-e-icon-upload2:before {
   content: "\e9c6";
 }
@@ -452,12 +449,14 @@
 /*自定义样式icon*/
 @font-face {
   font-family: 'kolo-iconfont';
-  src: url(data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAUYAAsAAAAACtAAAATMAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDUgqIFIZQATYCJAMkCxQABCAFhG0HahsuCcgehXGzcxxEpdL4N7AsFsHHfrR9X/zEk4i1w6SJJpImD+0iJJqVZtMplUjy0Pn/x7b6ow3bwWZdpnURYQwuBvgQNxIvsjLnf2Gv36/V0+bxmm4/6UX8vT0xx719kiaGSEiEJGZRvCRIUALTCaECAeaZazs4KMDXfD6Bxoxs6JKubVdQycjNAvGUsRpBlQnIGnqGSigq9s32oQkgVyUjJWeAt8HXxz84CBVI5CnIC914orVAs5/omUoq/hehbyqCd7oY9geRYgvIiAeVifukkXMroE1VQmavefVM8FP1v+cn8sybXYmQSGXywz9eqSIKkLSD/7Kp4icyRIASCFAKAcogQDkEqIAAlRCgCo4EtbfPKLAA4hgg3oB0Hdk0nhEtn9fwUjmFfHz8ZLYX+ah4eGiQbwB9ea1M5ZyXRhBnLl0ebp0+L4yetmzJDIAfj5Sk/2hQnBB+o5DS6+m6ZBdC3t0p3ZaKPazTly+dWb7CjCXLwkzlEBSlBqzgE4Gadg4cQcoM5d9p2524erXb9es9rl3rfuXKwNTDls5/ZULeWcuWhFimzA3FU5cun43Q44ccR7ecvnz00lBm6twZKwjHqFWz5ocPENKSUcuIvS6hJNHaOIjhb/0iegE6IXxGIeQlfUd3295weXgWKSGkU3Ykd98Ji2vW7ElfkT5lBZC6dyUfu3l/Vo/pq2cj7y5i1JYlIVNCWqyuu5scfVU8W3/knZyDPod6dh5+dulpyemzI4d1bnWIfC9XlVWCyN5m2WTWW45JPlIUqQl9E6qJDK9BpH8y5eYWawwbyWByQXrzooIv0O6rOOn2JNhs1Llt0s6ZYhzJcdtJEN9ffUAfR2y24H+6tFmzuZ8GxC9ALXv1aomUwZuCWiZzeXi4dKHQ5dM2WeV3bH4tXRk+s1fF2ri15RXZYwPebgj8QAZu+APjBhx7eSa7SiPRP/D8X2Pv3e6wEoga0F4q0WhB4zESU0NGzNSA5vJdLT8w/FFeXfL2r6v3+rF/f43sg7RvyTM11p+zURnR/u/wmivL90aqL+lyFAqfBF18V4PhneNeQPLamGCiajmmR97u4Mpqq9dDFdB/7pOnSUWAXpTdCQTSBzK5QdqxuTqnJVf/xpfz8eL1FwP8G31VkTKA7+umbMI4nbGbiZJK8m2hP60v/9fAYr/Z5Np1BuTH/2W3gTFnjeD/JJi9nmKI2k1K/hA+jcrQW5lR96Z1TXTuTqhMJJAoTUOqssTO+FuQax1BoXIWGpv0B7fG8KQiUwMbhgoIw9ZDYtA3SA07y874dyE36S0UhkMKjXsRfMzWSjBESx4bBWyhTKUUY+ZYWocFIuzZGVs9DiOftgXy7ph3M2WqIDc/36LHLOan2MFdZK0hCDRF85yT0omLYYeDo1w8Z8NmIbdQEFwN8vLoqnvKNXNOIFzEw4wEmAXFpBSFYcZh0d78AqLw+Z1hVh4ORnzDhFf97jCeG7N0SoFc+R3Yesp2mnAr/d2KWNUgWDUahd535zhRdFYMc6gGh+KqXssGMxPkKhxQc2kgz5qM7kpzl3c5X+tF0JAvUYcESZEMyZECKZEKqREB5SvGyNoYVuEuZFwMq3a7HIzQlmGxopRhSz1+ttDDCNqhME5Xq47IIDEUAAA=) format('woff2');
+  src: url(data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAX8AAsAAAAADDAAAAWvAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDbgqJYIdxATYCJAMsCxgABCAFhG0HgVUbXgpRVG9yZD8kSWYmyHKApKtuaojMBACABAAUAIQK4uFpv2/nzszT/1e07WIaN2IW8YwnSiBCghY8UZomX03gife/c5kjGIGM2vhYDZgLP3CQ9KXpyE/4GTdjWU2z4uG/U99FxaECb1ZSpFdA6eYSKYV9LxrsXK2pzWXmXYAs0Lp3USZOIkERhOpUVegKBcASyOhWVchKlKoG0u1vScPDqi4m0FvWw3dmamEDRRV0q0Dc59RAUYdDiaCH1lwHHFjEE1RtepQeAY+1948t1hElqTK648V7kzYaWQ2tTuYHQxpvhUBZnA/nw8g4DCnEvcDADQGjcFhA/wwErUSvXQSr2DCwSlUUjV2NkGRFdSk0Wl2Wf16NGsbAHhZ7VqkCJ1il4SRWRXAyq6I4hVUxPRjFoQcjDD0YEejBiEIPRgw6SGCkFBYhuyY0ieIDSrpKufQCjTSZqPHluULqYjzuY8waJuamGxoa3FLcdnq65iJUVUzsasvtQKh+Wja4sk4upKpHBRI8SgTS0FXBDwMIJPNAibAEG1DSxLECiJoe4lrZLQ819Mgxq9IIomZKiVLbKe+WCEPhRGgOansYDwCliSMFEJQOo2xmj0mNgglMEidXzup6edX0sLvkImDPw3qtB1nSTYrdl9uPMyguWTCsTG0Y8Gu8FQDqphTCatLlQ6s7FQH3cRz/DsHkus7w7Hg8Vy7XbfqGub+7NyoOREMw5cRl8QE38Tbe0R2BTjv/2CbX3/blEuW6hhTDa2f15buHVaIaFmQVeuaUIuoGdWU755Uj60d8ant1kYLu+vSGHhjt6iMaHk1E2TzaC9K4Z6aM+tbadClkXdQtt3erAQ+4S0Dw+brilMPdHABY2mMuocWG0NtnLGvEcs+q3v4fQ4tUKU9wgIwlgIQDpH4ltu2asHOSicHkCoyJM5kJTLLSw/46L8GKxCxYEegXv665ePb1mztqUDD0/va7JSCig+EAx5/gmLNjs7NcT85inNw4funu5qu+rt3FZ63uXDwBWIwekFSoVph41cDvZ6R9YpK507VxKlfVkVWsKGyfiHxU1Db9KPJEVAgcuWmPuO5NZ+cp1ZwhSP9Fjo8eulpnwO3bT5+vOsBSPEJGGVrH2IonVY+X2Duppe7oC4XeE3DlslgDrHgWzmQ7PsadS1xVixE6fXWUQUdgBmN0lc4YGCo2tKMiBiMMunYjOlAOkg9wxy9Kvr1YERZIGIdIvrnY8SsgLCNH4vSpu4hAoiJb4u0lwy/mjTBeVbL5tfrrZknVeOFK3fnXwg5jmnt8tQ7g2mdM7C28ySYMvZve8xfnu/dmR4/bCpOtqPWzknB1/XnV6QzPhGbMrrVP+rV+ZTuXGbeuO59el/oRAYbvpU/PD5LyFOtlvlV+Gsg/0huE3qf/UeiC7inQsu9VLiQ5OBD8q3+F+9UM/I6O/jhL3uu/fkXiw9MSz5bSSqvf6DcxoiCGP6W/qKmiiGkRiozCkSMiuYSepRnQyKzX4k0LiQ1+fqYFC5LGEmSt3ahgh6EysgK11nHoHTJ9+MgcJSBKh4OuJAjTbiCZ9BqyaU+oYC9QWfQPtekIQO96NJxwZG/w+LgCQ4ONzQvMLSkId+u43r4G1Csbyq7WeFugXJ7G2VTGXZ4GAaqIXdxTmtOaYKJkBU9Jl4NyWWJHySJYOsW0dvrSaRL0QClLVlDcaQowaMCGmS5gnEUSiLK4Fve8/RpAecoMKmLcp/gWoLj48rGslEwCNG0QicZtSq/rFJWjiY/AYqgiVWBTxAfKrCBhTvB6RcCipbAMOUefNJmPJDWkqjdV5rf6TzgBvddRpMhRooo6mmijiz5GMTZ5m8E5N2Tv+TmzHV5LQFAXJqJVLuOK+h2rsQ0zplvziAXac+7Dai6ZFPTSyylXfcHFhUd1RUlXGQ62xkoRw1zmnYEwIXVLssgNy7vaEQI=) format('woff2'), url('fonts/ueditor.woff') format('woff'), url('fonts/ueditor.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+.w-e-icon-bold,
 .w-e-icon-h1,
 .w-e-icon-h2,
+.w-e-icon-quotes-left,
 .w-e-icon-split,
 .w-e-icon-image,
 .w-e-icon-play,
@@ -470,29 +469,35 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.w-e-icon-bold:before {
+  content: '\e60e';
+}
 .w-e-icon-split:before {
-  content: '\e603';
-}
-.w-e-icon-h1:before {
-  content: '\e607';
-}
-.w-e-icon-h2:before {
-  content: '\e608';
-}
-.w-e-icon-image:before {
   content: '\e606';
 }
+.w-e-icon-h1:before {
+  content: '\e608';
+}
+.w-e-icon-h2:before {
+  content: '\e60d';
+}
+.w-e-icon-image:before {
+  content: '\e609';
+}
+.w-e-icon-quotes-left:before {
+  content: '\e60b';
+}
 .w-e-icon-play:before {
-  content: '\e602';
+  content: '\e607';
 }
 .w-e-icon-audio:before {
-  content: '\e604';
+  content: '\e60c';
 }
 .w-e-icon-undo:before {
   content: '\e605';
 }
 .w-e-icon-redo:before {
-  content: '\e601';
+  content: '\e60a';
 }
 
 .w-e-toolbar {
@@ -679,17 +684,18 @@
   line-height: 1.5;
 }
 .w-e-text h1 {
-  font-size: 20px;
-  font-family: Ubuntu-Medium;
-  font-weight: 500;
-  color: #333333;
-  text-align: center;
-}
-.w-e-text h2 {
   font-size: 16px;
   font-family: Ubuntu-Medium;
   font-weight: 500;
-  color: #333333;
+  color: #333;
+  text-align: center;
+}
+.w-e-text h2 {
+  font-size: 12px;
+  font-family: Ubuntu-regular;
+  font-weight: 500;
+  color: #aaa;
+  text-align: center;
 }
 .w-e-text p {
   font-size: 16px;
@@ -707,7 +713,7 @@
   padding: 5px 10px;
   margin: 10px 0;
   line-height: 1.4;
-  font-size: 100%;
+  font-size: 14px;
   color: #AAA;
 }
 .w-e-text code {
@@ -722,12 +728,13 @@
 .w-e-text pre code {
   display: block;
 }
-.w-e-text hr {
+.w-e-text div.split {
   width: 20%;
-  background-color: #E2E2E2;
+  height: 1px;
+  background: #E2E2E2;
   margin: 30px auto;
 }
-.w-e-text hr:before {
+.w-e-text div.split:before {
   content: ' ';
 }
 .w-e-text table {
@@ -775,6 +782,10 @@
   border-radius: 50%;
   display: none;
 }
+.w-e-text .kolo-img i img {
+  width: 100%;
+  height: 100%;
+}
 .w-e-text .kolo-img:hover i {
   display: block;
 }
@@ -808,6 +819,10 @@
   line-height: 20px;
   border-radius: 50%;
   display: none;
+}
+.w-e-text .kolo-audio i img {
+  width: 100%;
+  height: 100%;
 }
 .w-e-text .kolo-audio:hover i {
   display: block;
@@ -886,13 +901,21 @@
   border: 1px solid #e2e2e2;
   padding: 0 15px;
   box-sizing: border-box;
-}
-.w-e-text .kolo-audio .input-p span {
-  text-align: center;
   font-size: 12px;
   font-family: Montserrat-Regular;
   font-weight: 400;
-  color: #aaaaaa;
+  color: #aaa;
+}
+.w-e-text .kolo-audio .input-p input::-webkit-input-placeholder,
+.w-e-text .kolo-audio .input-p input::-moz-placeholder,
+.w-e-text .kolo-audio .input-p input::-ms-input-placeholder {
+  color: red;
+}
+.w-e-text .kolo-audio .input-p span {
+  font-size: 12px;
+  font-family: Montserrat-Regular;
+  font-weight: 400;
+  color: #aaa;
 }
 .w-e-text .kolo-video {
   width: 100%;
@@ -942,14 +965,12 @@
 .w-e-text .kolo-video .kolo-video-container .progress-content img {
   -ms-flex-align: center;
       align-items: center;
-}
-.w-e-text .kolo-video .kolo-video-container .progress-content img {
   width: 100%;
   max-width: 345px;
 }
 .w-e-text .kolo-video .kolo-video-container .progress-content .video-control-btn {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   position: absolute;
   left: 0;
   right: 0;
@@ -1005,7 +1026,6 @@
   right: -10px;
   top: -10px;
   color: #fff;
-  background: #ccc;
   font-size: 14px;
   width: 20px;
   height: 20px;
@@ -1013,12 +1033,17 @@
   line-height: 20px;
   border-radius: 50%;
 }
+.w-e-text .kolo-video i img {
+  width: 100%;
+  height: 100%;
+}
 .w-e-text .kolo-video .before-img {
   position: absolute;
   cursor: pointer;
   left: 10px;
   top: 10px;
   font-size: 12px;
+  color: #333;
   padding: 3px 6px;
   background: #fff;
   border-radius: 10px;

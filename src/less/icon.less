@@ -19,9 +19,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.w-e-icon-close:before {
-  content: "\f00d";
-}
 .w-e-icon-upload2:before {
   content: "\e9c6";
 }
@@ -110,12 +107,16 @@
 /*自定义样式icon*/ 
 @font-face {
   font-family: 'kolo-iconfont';
-  src: url('fonts/iconfont.woff2') format('woff2');
+  src: url('fonts/ueditor.woff2') format('woff2'),
+      url('fonts/ueditor.woff') format('woff'),
+      url('fonts/ueditor.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+.w-e-icon-bold,
 .w-e-icon-h1, 
-.w-e-icon-h2, 
+.w-e-icon-h2,
+.w-e-icon-quotes-left, 
 .w-e-icon-split, 
 .w-e-icon-image, 
 .w-e-icon-play, 
@@ -128,27 +129,33 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; 
 }
+.w-e-icon-bold:before {
+  content: '\e60e';
+}
 .w-e-icon-split:before {
-  content: '\e603'
+  content: '\e606';
 }  
 .w-e-icon-h1:before {
-  content: '\e607'
-} 
-.w-e-icon-h2:before {
   content: '\e608'
 } 
-.w-e-icon-image:before {
-  content: '\e606'
+.w-e-icon-h2:before {
+  content: '\e60d'
 } 
+.w-e-icon-image:before {
+  content: '\e609'
+} 
+.w-e-icon-quotes-left:before {
+  content: '\e60b'
+}
 .w-e-icon-play:before {
-  content: '\e602'
+  content: '\e607'
 } 
 .w-e-icon-audio:before {
-  content: '\e604'
+  content: '\e60c'
 } 
 .w-e-icon-undo:before {
   content: '\e605'
 } 
 .w-e-icon-redo:before {
-  content: '\e601'
+  content: '\e60a'
 } 

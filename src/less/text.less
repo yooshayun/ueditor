@@ -6,17 +6,18 @@
         line-height: 1.5;
     }
     h1 {
-        font-size:20px;
+        font-size: 16px;
         font-family:Ubuntu-Medium;
         font-weight:500;
-        color:rgba(51,51,51,1);
+        color:#333;
         text-align: center;
     }
     h2 {
-        font-size:16px;
-        font-family:Ubuntu-Medium;
+        font-size: 12px;
+        font-family:Ubuntu-regular;
         font-weight:500;
-        color:rgba(51,51,51,1);
+        color:#aaa;
+        text-align: center;
     }
     p{
         font-size:16px;
@@ -35,7 +36,7 @@
         padding: 5px 10px;
         margin: 10px 0;
         line-height: 1.4;
-        font-size: 100%;
+        font-size: 14px;
         color: #AAA;
     }
 
@@ -53,9 +54,10 @@
         }
     }
 
-    hr {
+    div.split {
         width: 20%;
-        background-color: #E2E2E2;
+        height: 1px;
+        background: #E2E2E2;
         margin: 30px auto;
         &::before {
             content: ' ';
@@ -109,6 +111,10 @@
             line-height: 20px;
             border-radius: 50%;
             display: none;
+            img {
+                width: 100%;
+                height: 100%;
+            }
         }
         &:hover {
             i {
@@ -146,6 +152,10 @@
             line-height: 20px;
             border-radius: 50%;
             display: none;
+            img {
+                width: 100%;
+                height: 100%;
+            }
         }
         &:hover {
             i {
@@ -226,13 +236,21 @@
                 border:1px solid rgba(226,226,226,1);
                 padding: 0 15px;
                 box-sizing: border-box;
-            }
-            span {
-                text-align: center;
                 font-size: 12px;
                 font-family: Montserrat-Regular;
                 font-weight: 400;
-                color:rgba(170,170,170,1);
+                color:#aaa;
+            }
+            input::-webkit-input-placeholder, 
+            input::-moz-placeholder, 
+            input::-ms-input-placeholder{
+                color:red;
+            }
+            span {
+                font-size: 12px;
+                font-family: Montserrat-Regular;
+                font-weight: 400;
+                color:#aaa;
             }
         }
     }
@@ -274,15 +292,13 @@
                 }
                 img {
                     align-items: center;
-                }
-                img {
                     width: 100%;
                     max-width: 345px;
                     // display: none;
                 }
                 .video-control-btn{
-                    width: 32px;
-                    height: 32px;
+                    width: 36px;
+                    height: 36px;
                     position: absolute;
                     left: 0;
                     right: 0;
@@ -338,7 +354,6 @@
             right: -10px;
             top: -10px;
             color: #fff;
-            background: #ccc;
             display: block;
             font-size: 14px;
             width: 20px;
@@ -346,6 +361,10 @@
             text-align: center;
             line-height: 20px;
             border-radius: 50%;
+            img {
+                width: 100%;
+                height: 100%;
+            }
         }
         .before-img {
             position: absolute;
@@ -353,6 +372,7 @@
             left: 10px;
             top: 10px;
             font-size: 12px;
+            color: #333;
             display: block;
             padding: 3px 6px;
             background: #fff;

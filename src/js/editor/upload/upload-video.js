@@ -54,7 +54,7 @@ UploadVideo.prototype = {
                             </div>
                         </div>
                         <span data-src="${link ? link : ''}" id="${randomChangeId}" class="before-img">更换封面</span>
-                        <i class="w-e-icon-close" id="${randomId}"></i><br/>
+                        <i class="w-e-icon-close" id="${randomId}"><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
                     </div>
                     <p><br/></p>
                 `;
@@ -82,7 +82,7 @@ UploadVideo.prototype = {
                 <div class="video-content">
                     <img class="video-bg" src="${ beforeImg || (link + '?vframe/jpg/offset/3/w/640/')}" />
                     <video class="video-dom" style="display: none;" controls="controls" src="${link}"></video>
-                    <img class="video-control-btn" src="http://image.kolocdn.com/FnRbYslhonTMq1_9qUI8751Xp3Ej" />
+                    <img class="video-control-btn" src="https://qncdn.file.sinostage.com/Play.svg" />
                 </div>
             `;
             //替换多语言        

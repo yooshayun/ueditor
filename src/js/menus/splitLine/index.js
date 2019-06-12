@@ -30,7 +30,7 @@ SplitLine.prototype = {
     //创建新的分割线
     _createinsertDom: function() {
         const editor = this.editor;
-        let html = '<hr/><p><br></p>';
+        let html = '<div class="split"></div><p><br></p>';
 
         editor.cmd.do('insertHTML', html);
     }

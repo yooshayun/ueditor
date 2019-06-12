@@ -14,17 +14,18 @@
   line-height: 1.5;
 }
 .w-e-text h1 {
-  font-size: 20px;
-  font-family: Ubuntu-Medium;
-  font-weight: 500;
-  color: #333333;
-  text-align: center;
-}
-.w-e-text h2 {
   font-size: 16px;
   font-family: Ubuntu-Medium;
   font-weight: 500;
-  color: #333333;
+  color: #333;
+  text-align: center;
+}
+.w-e-text h2 {
+  font-size: 12px;
+  font-family: Ubuntu-regular;
+  font-weight: 500;
+  color: #aaa;
+  text-align: center;
 }
 .w-e-text p {
   font-size: 16px;
@@ -42,7 +43,7 @@
   padding: 5px 10px;
   margin: 10px 0;
   line-height: 1.4;
-  font-size: 100%;
+  font-size: 14px;
   color: #AAA;
 }
 .w-e-text code {
@@ -57,12 +58,13 @@
 .w-e-text pre code {
   display: block;
 }
-.w-e-text hr {
+.w-e-text div.split {
   width: 20%;
-  background-color: #E2E2E2;
+  height: 1px;
+  background: #E2E2E2;
   margin: 30px auto;
 }
-.w-e-text hr:before {
+.w-e-text div.split:before {
   content: ' ';
 }
 .w-e-text table {
@@ -110,6 +112,10 @@
   border-radius: 50%;
   display: none;
 }
+.w-e-text .kolo-img i img {
+  width: 100%;
+  height: 100%;
+}
 .w-e-text .kolo-img:hover i {
   display: block;
 }
@@ -143,6 +149,10 @@
   line-height: 20px;
   border-radius: 50%;
   display: none;
+}
+.w-e-text .kolo-audio i img {
+  width: 100%;
+  height: 100%;
 }
 .w-e-text .kolo-audio:hover i {
   display: block;
@@ -221,13 +231,21 @@
   border: 1px solid #e2e2e2;
   padding: 0 15px;
   box-sizing: border-box;
-}
-.w-e-text .kolo-audio .input-p span {
-  text-align: center;
   font-size: 12px;
   font-family: Montserrat-Regular;
   font-weight: 400;
-  color: #aaaaaa;
+  color: #aaa;
+}
+.w-e-text .kolo-audio .input-p input::-webkit-input-placeholder,
+.w-e-text .kolo-audio .input-p input::-moz-placeholder,
+.w-e-text .kolo-audio .input-p input::-ms-input-placeholder {
+  color: red;
+}
+.w-e-text .kolo-audio .input-p span {
+  font-size: 12px;
+  font-family: Montserrat-Regular;
+  font-weight: 400;
+  color: #aaa;
 }
 .w-e-text .kolo-video {
   width: 100%;
@@ -277,14 +295,12 @@
 .w-e-text .kolo-video .kolo-video-container .progress-content img {
   -ms-flex-align: center;
       align-items: center;
-}
-.w-e-text .kolo-video .kolo-video-container .progress-content img {
   width: 100%;
   max-width: 345px;
 }
 .w-e-text .kolo-video .kolo-video-container .progress-content .video-control-btn {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   position: absolute;
   left: 0;
   right: 0;
@@ -340,7 +356,6 @@
   right: -10px;
   top: -10px;
   color: #fff;
-  background: #ccc;
   font-size: 14px;
   width: 20px;
   height: 20px;
@@ -348,12 +363,17 @@
   line-height: 20px;
   border-radius: 50%;
 }
+.w-e-text .kolo-video i img {
+  width: 100%;
+  height: 100%;
+}
 .w-e-text .kolo-video .before-img {
   position: absolute;
   cursor: pointer;
   left: 10px;
   top: 10px;
   font-size: 12px;
+  color: #333;
   padding: 3px 6px;
   background: #fff;
   border-radius: 10px;

@@ -46,7 +46,7 @@ gulp.task('css', () => {
             // 返回
             return 'data:application/x-font-' + ext + ';charset=utf-8;base64,' + base64
         }))
-        .pipe(gulpReplace( /'fonts\/iconfont.woff2'/gm, function (fontFile) {
+        .pipe(gulpReplace( /'fonts\/ueditor.woff2'/gm, function (fontFile) {
             // fontFile 例如 'fonts/w-e-icon.eot?paxlku'
             fontFile = fontFile.slice(0, -1).slice(1)
             fontFile = fontFile.split('?')[0]

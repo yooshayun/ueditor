@@ -60,7 +60,7 @@ UploadImg.prototype = {
         editor.cmd.do('insertHTML', 
         `<div class="kolo-img" contenteditable="false">
             <img src="${link}" style="max-width:100%;"/>
-            <i class="w-e-icon-close" id="${randomId}" ></i><br/>
+            <i class="w-e-icon-close" id="${randomId}" ><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
          </div><p><br></p>`)
 
         this.imgEvent.push({
