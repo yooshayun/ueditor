@@ -171,6 +171,13 @@
 .w-e-text .kolo-audio .audio-title {
   width: calc(100% - 100px);
   float: left;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: center;
+      justify-content: center;
+  height: 60px;
 }
 .w-e-text .kolo-audio .audio-title h3 {
   font-size: 14px;
