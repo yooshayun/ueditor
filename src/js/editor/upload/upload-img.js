@@ -59,7 +59,7 @@ UploadImg.prototype = {
 
         editor.cmd.do('insertHTML', 
         `<div class="kolo-img" contenteditable="false">
-            <img src="${link}" style="max-width:100%;"/>
+            <img preview="0" preview-text="描述文字" src="${link}" style="max-width:100%;"/>
             <i class="w-e-icon-close" id="${randomId}" ><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
          </div><p><br></p>`)
 
