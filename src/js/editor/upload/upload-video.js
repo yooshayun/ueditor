@@ -82,7 +82,7 @@ UploadVideo.prototype = {
                 <div class="video-content">
                     <img class="video-bg" src="${ beforeImg || (link + '?vframe/jpg/offset/3/w/640/')}" />
                     <video class="video-dom" style="display: none;" controls="controls" src="${link}"></video>
-                    <img class="video-control-btn" src="https://qncdn.file.sinostage.com/Play.svg" />
+                    <img class="video-control-btn" src="https://qncdn.file.sinostage.com/paly1.svg" />
                 </div>
             `;
             //替换多语言        

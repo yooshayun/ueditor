@@ -88,11 +88,14 @@
 }
 .kolo-e-dialog .kolo-upload .w-e-up-btn button,
 .kolo-e-dialog-up .kolo-upload .w-e-up-btn button {
+  cursor: pointer;
   width: 140px;
   height: 42px;
   line-height: 42px;
   background: #EB2135;
   border-radius: 4px;
+  font-family: Ubuntu-Regular;
+  font-size: 14px;
   border: 0;
   margin: 0;
   padding: 0;
@@ -105,6 +108,12 @@
   opacity: 0.7;
   filter: alpha(opacity=70);
 }
+.kolo-e-dialog .kolo-upload .w-e-up-btn p,
+.kolo-e-dialog-up .kolo-upload .w-e-up-btn p {
+  font-family: Ubuntu-Regular;
+  margin: 0;
+  margin-bottom: 5px;
+}
 .kolo-e-dialog .kolo-upload .upload-container,
 .kolo-e-dialog-up .kolo-upload .upload-container {
   position: absolute;
@@ -116,6 +125,8 @@
   position: absolute;
   right: -28px;
   top: -32px;
+  cursor: pointer;
+  color: #aaa;
 }
 .kolo-e-dialog .upload-container,
 .kolo-e-dialog-up .upload-container {
@@ -132,7 +143,9 @@
 .kolo-e-dialog .music .search-box,
 .kolo-e-dialog-up .music .search-box {
   box-sizing: border-box;
-  border: 1px solid;
+  border: 1px solid #E2E2E2;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
   height: 44px;
   line-height: 44px;
 }
@@ -144,8 +157,8 @@
 }
 .kolo-e-dialog .music .search-box .status-box img,
 .kolo-e-dialog-up .music .search-box .status-box img {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   vertical-align: -2px;
 }
 .kolo-e-dialog .music .search-box p,
@@ -169,12 +182,13 @@
 }
 .kolo-e-dialog .music .search-box p .w-e-icon-close,
 .kolo-e-dialog-up .music .search-box p .w-e-icon-close {
+  cursor: pointer;
   width: 30px;
   float: left;
   line-height: 32px;
   position: static;
   text-align: center;
-  color: #ccc;
+  color: #aaa;
   display: none;
 }
 .kolo-e-dialog .music .error-audio,
@@ -197,7 +211,7 @@
   overflow-y: scroll;
   padding: 10px 0;
   margin: 0;
-  box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.08);
 }
 .kolo-e-dialog .music .music-list ul::-webkit-scrollbar,
 .kolo-e-dialog-up .music .music-list ul::-webkit-scrollbar {
@@ -221,19 +235,14 @@
   height: 36px;
   line-height: 36px;
   margin-bottom: 5px;
+  font-size: 14px;
+  font-family: Ubuntu-Regular;
 }
 .kolo-e-dialog .music .music-list li.active-music,
 .kolo-e-dialog-up .music .music-list li.active-music,
 .kolo-e-dialog .music .music-list li:hover,
 .kolo-e-dialog-up .music .music-list li:hover {
-  background: rgba(0, 0, 0, 0.6);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#99000000', endColorstr='#99000000');
-}
-:root .kolo-e-dialog .music .music-list li.active-music,
-.kolo-e-dialog-up .music .music-list li.active-music,
-.kolo-e-dialog .music .music-list li:hover,
-.kolo-e-dialog-up .music .music-list li:hover {
-  filter: none\9;
+  background: #333;
 }
 .kolo-e-dialog .music .music-list li.active-music .name,
 .kolo-e-dialog-up .music .music-list li.active-music .name,
@@ -258,9 +267,10 @@
 }
 .kolo-e-dialog .music .music-list li .status-box img,
 .kolo-e-dialog-up .music .music-list li .status-box img {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   display: block;
+  vertical-align: -2px;
 }
 .kolo-e-dialog .music .music-list li .status-box.status-pause img,
 .kolo-e-dialog-up .music .music-list li .status-box.status-pause img {
@@ -291,7 +301,8 @@
 }
 .kolo-e-dialog-up .kolo-upload .w-e-up-btn button {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  cursor: pointer;
 }
 .kolo-e-dialog-up .kolo-upload .w-e-up-btn p {
   font-size: 12px;
@@ -969,8 +980,8 @@
   max-width: 345px;
 }
 .w-e-text .kolo-video .kolo-video-container .progress-content .video-control-btn {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   position: absolute;
   left: 0;
   right: 0;

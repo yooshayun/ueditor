@@ -68,16 +68,16 @@ Audio.prototype = {
                                 </div>
                                 <p>
                                     <input type="text" id="${searchlinkId}"/>
-                                    <i class="w-e-icon-close" id="${clearBtn}"></i>
+                                    <i class="w-e-icon-close" id="${clearBtn}">×</i>
                                 </p>
                             </div>
                             <p class="error-audio"></p>
                             <div class="music-list"></div>
                         </div>
                         <div class="w-e-up-btn">
-                            <button id="${localAudio}" disabled="${disabled}">选择音乐</button>
+                            <button id="${localAudio}" disabled="${disabled}">确定</button>
                         </div>
-                        <i id="${linkId}" class="w-e-icon-close"></i>
+                        <i id="${linkId}" class="w-e-icon-close">×</i>
                     </div>
                 </div>`;
         //替换多语言        
@@ -98,18 +98,19 @@ Audio.prototype = {
         })
 
         //监控输入
-        document.querySelector('#' + searchlinkId).addEventListener('keydown', (e)=>{
+        document.querySelector('#' + searchlinkId).addEventListener('keyup', (e)=>{
             e.stopPropagation();
-            if(!document.querySelector('#' + searchlinkId).value) {
+            
+            var value = $('#' + searchlinkId).val().trim();
+            if(!value) {
                 document.querySelector('.music-list').style.display = 'none';
-            }
-            if(e.keyCode !== 13) {
                 return;
             }
-            var value = $('#' + searchlinkId).val().trim();
-            disabled = value.length === 0;
-            // console.log(disabled, document.querySelector('#' +localAudio));
+            disabled = $('#' + searchlinkId).attr('data-id') ? false : true;
+            // console.log(value, 'value', document.querySelector('#' + searchlinkId).value);
+
             document.querySelector('#' + localAudio).disabled = disabled;
+
             //网易云音乐链接
             this.searchMusic(value).then(res=>{
                 if(res.code == 200) {
@@ -168,7 +169,7 @@ Audio.prototype = {
 
             document.querySelector('#' + clearBtn).style.display = 'none';
 
-            document.querySelector('#' + localAudio).disabled = false;
+            document.querySelector('#' + localAudio).setAttribute('disabled', true);
         }) 
 
         //确定选择的音乐，并添加到富文本
@@ -216,6 +217,8 @@ Audio.prototype = {
                         chooseDom.setAttribute('data-id', target.getAttribute('data-id'));
                         //隐藏下拉列表
                         document.querySelector('.music-list').style.display = 'none';
+
+                        document.querySelector('#' + localAudio).removeAttribute('disabled');
                         //
                         document.querySelectorAll('.music-list ul li .status-box').forEach((player)=>{
                             player.className = 'status-box status-pause';
@@ -252,8 +255,8 @@ Audio.prototype = {
                     <li data-id="${item.id}" data-name="${item.name}/${item.artists.length ? item.artists[0].name : '--'}" data-person="${item.artists.length > 0 ? item.artists[0].img1v1Url : ''}">
                         <div class="name">${item.name}/${item.artists.length ? item.artists[0].name : '--'}</div>
                         <div class="status-box status-pause" data-status="pause">
-                            <img class="play" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAEFCu8CAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFFmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDAgNzkuMTYwNDUxLCAyMDE3LzA1LzA2LTAxOjA4OjIxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCkiIHhtcDpDcmVhdGVEYXRlPSIyMDE4LTA1LTAyVDExOjQwOjMwKzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAxOC0wNS0zMVQxMTowNjowMiswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOC0wNS0zMVQxMTowNjowMiswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI1YjI2NC1jNzg5LTQzYWItYjRlZS00ODY1YjU1ZmNhY2EiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODFiNWIyNjQtYzc4OS00M2FiLWI0ZWUtNDg2NWI1NWZjYWNhIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ODFiNWIyNjQtYzc4OS00M2FiLWI0ZWUtNDg2NWI1NWZjYWNhIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI1YjI2NC1jNzg5LTQzYWItYjRlZS00ODY1YjU1ZmNhY2EiIHN0RXZ0OndoZW49IjIwMTgtMDUtMDJUMTE6NDA6MzArMDg6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoTWFjaW50b3NoKSIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6++U+ZAAAAnklEQVRIie1UQQ6AIAzriE/y/y/gT/UgU9C5mBk1GpoYTaG0Y4KQRI1U3hSRhlggW0lDJAAo2pyOdST1YcVlkntLK6CJXbYjpZaXTy1706Cb1h30MBgcAUC0pZi3unyOyrlZPXxIGN7VsDAcddvHUz285NiF/xA+/6+GHaMIJ43CulVrNOXXp7SZtJ5YxWjNA16osBt2w274vuH/79IJe31HmgGNh/4AAAAASUVORK5CYII=" />
-                            <img class="pause" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAEFCu8CAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFFmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDAgNzkuMTYwNDUxLCAyMDE3LzA1LzA2LTAxOjA4OjIxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCkiIHhtcDpDcmVhdGVEYXRlPSIyMDE4LTAxLTMwVDEwOjI0OjAyKzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAxOC0wMS0zMFQxMDoyODowNyswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOC0wMS0zMFQxMDoyODowNyswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5NjJhMWYyOS1hMmExLTRmNjEtYmZlYS1hN2Q1NjAzYjgxOWQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTYyYTFmMjktYTJhMS00ZjYxLWJmZWEtYTdkNTYwM2I4MTlkIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6OTYyYTFmMjktYTJhMS00ZjYxLWJmZWEtYTdkNTYwM2I4MTlkIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NjJhMWYyOS1hMmExLTRmNjEtYmZlYS1hN2Q1NjAzYjgxOWQiIHN0RXZ0OndoZW49IjIwMTgtMDEtMzBUMTA6MjQ6MDIrMDg6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoTWFjaW50b3NoKSIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6ZuaZ/AAADN0lEQVRIib2WT4iVZRTGf8+dO0gjYg4OMgoh/WFyIQkjLmbVZkpQtw3SUGFWUIluQgQZJ90bTVgwIDgihkw4wt0IESFUkFS0DIJoZUFoziKQdHpafOf7fOe933fv4MIDl3vf9z3Pc/6855z3yjarJN2w3ak2bM/YHsM2tju2xwCUQlrAInBMEpQqKeNYzrpoe6k6KH2wvTtBnSzRlXkysd1RVziJtCQhCaADtIE5YCT2Kpptye/1AC3bn8Tem7bX2T4m6R/bH7WAB4mZl4BruWfr69atWA/ZnrPdtj0HDEFkNfXM9gjwKXAX2Az8DlyS9GNuLl+P2P7C9uHcjbjHkQpoe8L2+Uzxlbj9Ldn+nO3xErhkezA5nEl+t2vWSyVwPAIvD98Pa6+RySqLSWydPMVNMXZlNZTGgWlgOw1Z7VlZvaQN5Pd4BngG+A9YAW4C85LuJzoFMJNd8T0NDACTwFXbv0k6Wiq1aoA/A8uSliXdkXRF0gHgb9uXUtewfcD2i8nejO2NOaPtedt7bVfAju2BRGFdgA/VgDu2H7oqaSU5Py7pNHArCEZzgroYK5F0HbgBHMzP6rJauvQE8AFwW9LZNQMDdE7S7SZmIlPzvdwO3SqrLahiGbI92wM0CwyF7qqsTgObIt1TtofjMxUjdFPoFPo1M2cQeBvYE1u1tfrI3fGoUt1G3sulRJftWiPfHeBz4MusEEuuntffJH9KeqvBuQngDeA928vAh5J+7bKajLmW7ScbyJ6NNnm1n0fBMxsF8XHZr/kdtoELwEbgrKSvMxIBh4BtwD3gK+AnSY1FEBGfoEj1YeB+avAIxcN5UdJiDfh5AEm/2N4B7AU2UEzQ74Ebkv6twU1RDMvrwLnU4OUgeEfSrRrgTBg8ne2PAvuArcBfkj7LzoeBhYjy9bRoyn65lxtrEttPAfsp3nqAH/phUoM3KdI0CVzpYWQn8DLFv44V4BvgW0kPGiCTCf/DKrU9aHshKmuixtDTto/aftf2C/0iCcxE8C0Ef1dbDEQZd6Ksez4MPQz1b4tsLj4HnKJokT+AC5K+W0tEFI0/CnQ1fqPBRKF89w8Cw2sIru9oe+zD+39bTbkFDwfMFgAAAABJRU5ErkJggg=="/>
+                            <img class="play" src="http://image.kolocdn.com/FnC8tIrcowABJDb796JyiJWJ6UqR"/>
+                            <img class="pause" src="http://image.kolocdn.com/FltyRrAsUsvYYwg8uTEvoGHd5X-F"/>
                         </div>
                     </li>
                 `

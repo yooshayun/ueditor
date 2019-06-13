@@ -54,6 +54,9 @@ UploadAudio.prototype = {
             fn: (selector)=>{
                 // console.log(selector, 'selector');
                 //对添加的audio添加播放/暂停事件
+                if(!document.querySelector('.play-' + selector)) {
+                    return;
+                }
                 document.querySelector('.play-' + selector).addEventListener('click', (e)=>{
                     e.stopPropagation();
                     var audioDom = document.querySelector('#play-' + editor.audioMenuId);
@@ -72,6 +75,9 @@ UploadAudio.prototype = {
                         e.target.parentNode.className='audio-control status-pause';
                     })
                 })
+                if(!document.querySelector('.pause-' + selector)) {
+                    return;
+                }
                 document.querySelector('.pause-' + selector).addEventListener('click', (e)=>{
                     var audioDom = document.querySelector('#play-' + editor.audioMenuId);
 
@@ -86,8 +92,15 @@ UploadAudio.prototype = {
             type: 'delete',
             fn: (selector)=>{
                 //删除该条音乐
+                if(!document.querySelector(selector)) {
+                    return;
+                }
                 document.querySelector(selector).addEventListener('click', (e)=>{
                     e.stopPropagation();
+                    var audioDom = document.querySelector('#play-' + editor.audioMenuId);
+                    //关闭播放中的音频
+                    audioDom.pause();
+
                     var dom = document.querySelector('.kolo-audio');
                     if(dom) {
                         dom.parentNode.removeChild(dom);

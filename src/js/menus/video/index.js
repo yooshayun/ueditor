@@ -50,7 +50,7 @@ Video.prototype = {
                             <p>为了获得更好的推荐</p>
                             <p>建议上传720p（1280x720）或更高分辨率的视频</p>
                         </div>
-                        <i id="${btnId}" class="w-e-icon-close"></i>
+                        <i id="${btnId}" class="w-e-icon-close">×</i>
                     </div>
                 </div>`;
                 

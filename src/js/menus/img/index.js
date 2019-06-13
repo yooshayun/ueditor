@@ -57,7 +57,7 @@ Image.prototype = {
                         <div style="display:none;">
                             <input id="${upFileId}" type="file" multiple="multiple" accept="image/jpg,image/jpeg,image/png,image/svg,image/gif,image/bmp"/>
                         </div>
-                        <i id="${closeUpload}" class="w-e-icon-close"></i>
+                        <i id="${closeUpload}" class="w-e-icon-close">×</i>
                     </div>
                 </div>`;
         //替换多语言        
@@ -71,18 +71,20 @@ Image.prototype = {
         document.querySelector(containerId).appendChild(dialog); 
 
         //关闭弹窗
-        document.querySelector('#' + closeUpload).addEventListener('click', ()=>{
+        document.querySelector('#' + closeUpload).addEventListener('click', (e)=>{
+            e.stopPropagation();
             var dom = document.querySelector('#' + dialogId);
             dom.parentNode.removeChild(dom);
         })
 
         //点击按钮选择图片
-        document.querySelector('#' + upTriggerId).addEventListener('click', ()=>{
+        document.querySelector('#' + upTriggerId).addEventListener('click', (e)=>{
+            e.stopPropagation();
             document.querySelector('#' + upFileId).click();
         })
 
         //文件选择
-        document.querySelector('#' + upFileId).addEventListener('change', ()=>{
+        document.querySelector('#' + upFileId).addEventListener('change', (e)=>{
             const $file = $('#' + upFileId)
             const fileElem = $file[0];
             if (!fileElem) {
