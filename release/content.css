@@ -339,6 +339,8 @@
 .w-e-text .kolo-video .kolo-video-container .video-content img {
   width: 100%;
   max-width: 345px;
+  min-height: 180px;
+  max-height: 195px;
 }
 .w-e-text .kolo-video .kolo-video-container .video-content .video-control-btn {
   width: 32px;

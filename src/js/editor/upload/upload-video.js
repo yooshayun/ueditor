@@ -150,7 +150,7 @@ UploadVideo.prototype = {
                             <div style="display:none;">
                                 <input id="${upFileId}" type="file" multiple="multiple" accept="image/jpg,image/jpeg,image/png,image/gif,image/bmp"/>
                             </div>
-                            <i id="${closeUpload}" class="w-e-icon-close"></i>
+                            <i id="${closeUpload}" class="w-e-icon-close">×</i>
                         </div>
                     </div>`;
             //替换多语言        
