@@ -19,7 +19,7 @@ Menus.prototype = {
         const editor = this.editor;
         const config = editor.config || {};
         const configMenus = config.menus || [];  // 获取配置中的菜单
-        console.log(configMenus, 'configMenus');
+        // console.log(configMenus, 'configMenus');
 
         // 根据配置信息，创建菜单
         configMenus.forEach(menuKey => {
