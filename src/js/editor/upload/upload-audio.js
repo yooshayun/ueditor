@@ -79,9 +79,8 @@ UploadAudio.prototype = {
                     return;
                 }
                 document.querySelector('.pause-' + selector).addEventListener('click', (e)=>{
-                    var audioDom = document.querySelector('#play-' + editor.audioMenuId);
-
                     e.stopPropagation();
+                    var audioDom = document.querySelector('#play-' + editor.audioMenuId);
                     audioDom.pause();
                     e.target.parentNode.className='audio-control status-play';
                 })

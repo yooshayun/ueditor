@@ -115,6 +115,7 @@
 .w-e-text .kolo-img i img {
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 .w-e-text .kolo-img:hover i {
   display: block;
@@ -153,6 +154,7 @@
 .w-e-text .kolo-audio i img {
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 .w-e-text .kolo-audio:hover i {
   display: block;
@@ -375,6 +377,7 @@
 .w-e-text .kolo-video i img {
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 .w-e-text .kolo-video .before-img {
   position: absolute;

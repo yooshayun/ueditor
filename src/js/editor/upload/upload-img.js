@@ -68,6 +68,7 @@ UploadImg.prototype = {
             type: 'delete',
             fn: (selector)=>{
                 document.querySelector(selector).addEventListener('click', (e)=>{
+                    e.stopPropagation();
                     let target = e.target.parentNode;
                     target.parentNode.removeChild(target);
                     this.imgEvent.forEach((item, index)=>{

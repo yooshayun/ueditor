@@ -46,7 +46,7 @@ UploadVideo.prototype = {
             if(process == 0) {
                 //插入视频
                 var template = `
-                    <div class="kolo-video" id="${videoId}"  contenteditable="false">
+                    <div class="kolo-video" id="${videoId}" contenteditable="false">
                         <div class="kolo-video-container">
                             <div class="progress-content">
                                 <p class="subtitle-video">视频正在上传,不影响编辑</p>
@@ -65,9 +65,11 @@ UploadVideo.prototype = {
                 editor.cmd.do('insertHTML', template);
 
                 document.querySelector('#'+randomId).addEventListener('click', (e)=>{
+                    e.stopPropagation();
                     let target = e.target.parentNode;
                     target.parentNode.removeChild(target);
                 })
+                
             } else if(process > 0 && process < 100){
                 document.querySelector('.' + videoId + '-' + videoId).innerHTML = process + '%';        
             }

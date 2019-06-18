@@ -12,6 +12,8 @@
 
     <script type="text/javascript" src="/wangEditor.js"></script>
     <script>
+    window.onload = () => {
+
         var E = window.wangEditor
         var editor = new E('#div1')
         editor.customConfig.menus = [
@@ -115,7 +117,7 @@
             });
             return domStr;
         }
-
+    }
     </script>
 </body>
 </html>
