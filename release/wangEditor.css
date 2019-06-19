@@ -1028,6 +1028,7 @@
 .w-e-text .kolo-video .kolo-video-container .video-content .video-control-btn {
   width: 40px;
   height: 40px;
+  min-height: 40px;
   position: absolute;
   left: 0;
   right: 0;
