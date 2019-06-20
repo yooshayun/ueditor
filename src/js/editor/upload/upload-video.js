@@ -64,11 +64,11 @@ UploadVideo.prototype = {
 
                 editor.cmd.do('insertHTML', template);
 
-                document.querySelector('#'+randomId).addEventListener('click', (e)=>{
-                    e.stopPropagation();
-                    let target = e.target.parentNode;
-                    target.parentNode.removeChild(target);
-                })
+                // document.querySelector('#'+randomId).addEventListener('click', (e)=>{
+                //     e.stopPropagation();
+                //     let target = e.target.parentNode;
+                //     target.parentNode.removeChild(target);
+                // })
                 
             } else if(process > 0 && process < 100){
                 document.querySelector('.' + videoId + '-' + videoId).innerHTML = process + '%';        

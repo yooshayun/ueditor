@@ -63,22 +63,22 @@ UploadImg.prototype = {
             <i class="w-e-icon-close" id="${randomId}" ><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
          </div><p><br></p>`)
 
-        this.imgEvent.push({
-            selector: '#' + randomId,
-            type: 'delete',
-            fn: (selector)=>{
-                document.querySelector(selector).addEventListener('click', (e)=>{
-                    e.stopPropagation();
-                    let target = e.target.parentNode;
-                    target.parentNode.removeChild(target);
-                    this.imgEvent.forEach((item, index)=>{
-                        if(item.selector == selector) {
-                            this.imgEvent.splice(index, 1);
-                        }
-                    })
-                })
-            }
-        })
+        // this.imgEvent.push({
+        //     selector: '#' + randomId,
+        //     type: 'delete',
+        //     fn: (selector)=>{
+        //         document.querySelector(selector).addEventListener('click', (e)=>{
+        //             e.stopPropagation();
+        //             let target = e.target.parentNode;
+        //             target.parentNode.removeChild(target);
+        //             this.imgEvent.forEach((item, index)=>{
+        //                 if(item.selector == selector) {
+        //                     this.imgEvent.splice(index, 1);
+        //                 }
+        //             })
+        //         })
+        //     }
+        // })
         this.imgEvent.forEach(item=>{
             item.fn(item.selector);
         })

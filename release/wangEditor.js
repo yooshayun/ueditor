@@ -4443,22 +4443,22 @@ UploadImg.prototype = {
 
         editor.cmd.do('insertHTML', '<div class="kolo-img" contenteditable="false">\n            <img preview="0" preview-text="\u63CF\u8FF0\u6587\u5B57" src="' + link + '" style="max-width:100%;"/>\n            <i class="w-e-icon-close" id="' + randomId + '" ><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>\n         </div><p><br></p>');
 
-        this.imgEvent.push({
-            selector: '#' + randomId,
-            type: 'delete',
-            fn: function fn(selector) {
-                document.querySelector(selector).addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    var target = e.target.parentNode;
-                    target.parentNode.removeChild(target);
-                    _this2.imgEvent.forEach(function (item, index) {
-                        if (item.selector == selector) {
-                            _this2.imgEvent.splice(index, 1);
-                        }
-                    });
-                });
-            }
-        });
+        // this.imgEvent.push({
+        //     selector: '#' + randomId,
+        //     type: 'delete',
+        //     fn: (selector)=>{
+        //         document.querySelector(selector).addEventListener('click', (e)=>{
+        //             e.stopPropagation();
+        //             let target = e.target.parentNode;
+        //             target.parentNode.removeChild(target);
+        //             this.imgEvent.forEach((item, index)=>{
+        //                 if(item.selector == selector) {
+        //                     this.imgEvent.splice(index, 1);
+        //                 }
+        //             })
+        //         })
+        //     }
+        // })
         this.imgEvent.forEach(function (item) {
             item.fn(item.selector);
         });
@@ -4780,11 +4780,11 @@ UploadVideo.prototype = {
 
                 editor.cmd.do('insertHTML', template);
 
-                document.querySelector('#' + randomId).addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    var target = e.target.parentNode;
-                    target.parentNode.removeChild(target);
-                });
+                // document.querySelector('#'+randomId).addEventListener('click', (e)=>{
+                //     e.stopPropagation();
+                //     let target = e.target.parentNode;
+                //     target.parentNode.removeChild(target);
+                // })
             } else if (process > 0 && process < 100) {
                 document.querySelector('.' + videoId + '-' + videoId).innerHTML = process + '%';
             }
@@ -5035,32 +5035,32 @@ UploadAudio.prototype = {
                 });
             }
         });
-        this.audioEvent.push({
-            selector: '#' + closeId,
-            type: 'delete',
-            fn: function fn(selector) {
-                //删除该条音乐
-                if (!document.querySelector(selector)) {
-                    return;
-                }
-                document.querySelector(selector).addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    var audioDom = document.querySelector('#play-' + editor.audioMenuId);
-                    //关闭播放中的音频
-                    audioDom.pause();
+        // this.audioEvent.push({
+        //     selector: '#' + closeId,
+        //     type: 'delete',
+        //     fn: (selector)=>{
+        //         //删除该条音乐
+        //         if(!document.querySelector(selector)) {
+        //             return;
+        //         }
+        //         document.querySelector(selector).addEventListener('click', (e)=>{
+        //             e.stopPropagation();
+        //             var audioDom = document.querySelector('#play-' + editor.audioMenuId);
+        //             //关闭播放中的音频
+        //             audioDom.pause();
 
-                    var dom = document.querySelector('.kolo-audio');
-                    if (dom) {
-                        dom.parentNode.removeChild(dom);
-                    }
-                    that.audioEvent.forEach(function (item, index) {
-                        if (item.selector == selector) {
-                            that.audioEvent.splice(index, 1);
-                        }
-                    });
-                });
-            }
-        });
+        //             var dom = document.querySelector('.kolo-audio');
+        //             if(dom) {
+        //                 dom.parentNode.removeChild(dom);
+        //             }
+        //             that.audioEvent.forEach((item, index)=>{
+        //                 if(item.selector == selector) {
+        //                     that.audioEvent.splice(index, 1);
+        //                 }
+        //             })
+        //         });
+        //     }
+        // })
 
         this.audioEvent.forEach(function (item) {
             item.fn(item.selector);

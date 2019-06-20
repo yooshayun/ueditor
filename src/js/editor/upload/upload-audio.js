@@ -86,32 +86,32 @@ UploadAudio.prototype = {
                 })
             }
         })
-        this.audioEvent.push({
-            selector: '#' + closeId,
-            type: 'delete',
-            fn: (selector)=>{
-                //删除该条音乐
-                if(!document.querySelector(selector)) {
-                    return;
-                }
-                document.querySelector(selector).addEventListener('click', (e)=>{
-                    e.stopPropagation();
-                    var audioDom = document.querySelector('#play-' + editor.audioMenuId);
-                    //关闭播放中的音频
-                    audioDom.pause();
+        // this.audioEvent.push({
+        //     selector: '#' + closeId,
+        //     type: 'delete',
+        //     fn: (selector)=>{
+        //         //删除该条音乐
+        //         if(!document.querySelector(selector)) {
+        //             return;
+        //         }
+        //         document.querySelector(selector).addEventListener('click', (e)=>{
+        //             e.stopPropagation();
+        //             var audioDom = document.querySelector('#play-' + editor.audioMenuId);
+        //             //关闭播放中的音频
+        //             audioDom.pause();
 
-                    var dom = document.querySelector('.kolo-audio');
-                    if(dom) {
-                        dom.parentNode.removeChild(dom);
-                    }
-                    that.audioEvent.forEach((item, index)=>{
-                        if(item.selector == selector) {
-                            that.audioEvent.splice(index, 1);
-                        }
-                    })
-                });
-            }
-        })
+        //             var dom = document.querySelector('.kolo-audio');
+        //             if(dom) {
+        //                 dom.parentNode.removeChild(dom);
+        //             }
+        //             that.audioEvent.forEach((item, index)=>{
+        //                 if(item.selector == selector) {
+        //                     that.audioEvent.splice(index, 1);
+        //                 }
+        //             })
+        //         });
+        //     }
+        // })
 
         this.audioEvent.forEach(item => {
             item.fn(item.selector);
