@@ -3137,7 +3137,25 @@ Audio.prototype = {
         return new Promise(function (res, rej) {
             _this3._http('https://music-api.kolo.la/search?keywords=' + value).then(function (back) {
                 if (back.code == 200) {
-                    res({ code: 200, data: back.data.result });
+                    //过滤掉没有版权的音乐    
+                    var list = {
+                        songCount: back.data.result.songCount,
+                        songs: []
+                    };
+                    var arr = [];
+                    back.data.result.songs.forEach(function (item, index) {
+                        arr.push(_this3.checkMusic(item.id));
+                    });
+                    Promise.all(arr).then(function (result) {
+                        result.forEach(function (item, index) {
+                            if (item) {
+                                list.songs.push(back.data.result.songs[index]);
+                            }
+                        });
+                        res({ code: 200, data: list });
+                    }).catch(function (error) {
+                        console.log(error); // 失败了，打出 '失败'
+                    });
                 } else {
                     res({ code: 500, data: null });
                 }
@@ -3145,12 +3163,27 @@ Audio.prototype = {
         });
     },
 
-    //根据音乐ID获取音乐链接
-    getMusicUrl: function getMusicUrl(id) {
+    //检测音乐是否有权限
+    checkMusic: function checkMusic(id) {
         var _this4 = this;
 
         return new Promise(function (res, rej) {
-            _this4._http('https://music-api.kolo.la/music/url?id=' + id).then(function (data) {
+            _this4._http('https://music-api.kolo.la/check/music?id=' + id).then(function (back) {
+                if (back.code == 200 && back.data.success == true) {
+                    res(true);
+                } else {
+                    res(false);
+                }
+            });
+        });
+    },
+
+    //根据音乐ID获取音乐链接
+    getMusicUrl: function getMusicUrl(id) {
+        var _this5 = this;
+
+        return new Promise(function (res, rej) {
+            _this5._http('https://music-api.kolo.la/music/url?id=' + id).then(function (data) {
                 if (data.code == 200) {
                     res({ code: 200, data: data.data.data });
                 } else {

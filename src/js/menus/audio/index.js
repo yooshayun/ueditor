@@ -7,6 +7,7 @@ import Panel from '../panel.js'
 import replaceLang from '../../util/replace-lang.js'
 
 
+
 //上传音频
 function Audio(editor) {
     var _this = this;
@@ -259,7 +260,7 @@ Audio.prototype = {
                             <img class="pause" src="http://image.kolocdn.com/FltyRrAsUsvYYwg8uTEvoGHd5X-F"/>
                         </div>
                     </li>
-                `
+                `                    
             })
             musiclist += '</ul>'
             container.innerHTML = musiclist;
@@ -307,13 +308,45 @@ Audio.prototype = {
         return new Promise((res, rej)=>{
             this._http('https://music-api.kolo.la/search?keywords=' + value).then(back=>{
                 if(back.code == 200) {
-                    res({code:200, data: back.data.result});
+                    //过滤掉没有版权的音乐    
+                    let list = {
+                        songCount: back.data.result.songCount,
+                        songs: []
+                    };
+                    let arr = [];
+                    back.data.result.songs.forEach((item, index) => {
+                        arr.push(this.checkMusic(item.id));
+                    })
+                    Promise.all(arr).then((result) => {
+                        result.forEach((item, index) => {
+                            if(item) {
+                                list.songs.push(back.data.result.songs[index]);
+                            }
+                        })
+                        res({code:200, data: list});
+                    }).catch((error) => {
+                        console.log(error)      // 失败了，打出 '失败'
+                    })
                 } else {
                     res({code:500, data: null});
                 }
             })
         })
     },
+
+    //检测音乐是否有权限
+    checkMusic: function(id){
+        return new Promise((res, rej)=>{
+            this._http('https://music-api.kolo.la/check/music?id=' + id).then(back => {
+                if(back.code == 200 && back.data.success == true) {
+                    res(true)
+                } else {
+                    res(false)
+                }
+            })
+        })
+    },
+    
 
     //根据音乐ID获取音乐链接
     getMusicUrl: function(id) {
