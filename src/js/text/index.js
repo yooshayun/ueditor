@@ -376,7 +376,7 @@ Text.prototype = {
             // 获取粘贴的文字
             let pasteHtml = getPasteHtml(e, pasteFilterStyle, ignoreImg)
             let pasteText = getPasteText(e)
-            pasteText = pasteText.replace(/\n/gm, '<br>')
+            pasteText = pasteText.replace(/\n/gm, '<br>');
 
             const $selectionElem = editor.selection.getSelectionContainerElem()
             if (!$selectionElem) {
@@ -394,7 +394,26 @@ Text.prototype = {
                     }
                 })
                 if(bool) {
-                    activeElement.value += pasteTextHandle(pasteText) || '';
+                    pasteText = pasteText.replace(/<br>/gm, '；').replace(/&lt;/gm, '<').replace(/&gt;/gm, '>').replace(/&quot;/gm, '"');
+                    let start = activeElement.selectionStart, 
+                    end = activeElement.selectionEnd;
+                    let str = activeElement.value.substring(0, start) + pasteText + activeElement.value.substring(end, );                  
+                    activeElement.value = pasteTextHandle(str) || '';
+                    //设置光标到指定位置
+                    setCaretPosition(activeElement, start + pasteText.length);
+                    function setCaretPosition(ctrl, pos){
+                        if(ctrl.setSelectionRange)
+                        {
+                            ctrl.focus();
+                            ctrl.setSelectionRange(pos,pos);
+                        } else if (ctrl.createTextRange) {
+                            var range = ctrl.createTextRange();
+                            range.collapse(true);
+                            range.moveEnd('character', pos);
+                            range.moveStart('character', pos);
+                            range.select();
+                        }
+                    }    
                     return;
                 }
             }
@@ -407,6 +426,11 @@ Text.prototype = {
                 }
                 editor.cmd.do('insertHTML', `<p>${pasteText}</p>`)
                 return
+            }
+
+            if(nodeName == 'BLOCKQUOTE') {
+                editor.cmd.do('insertHTML', `<span>${pasteText}</span>`)
+                return;
             }
 
             // 先放开注释，有问题再追查 ————
@@ -456,6 +480,7 @@ Text.prototype = {
             if (!pasteFiles || !pasteFiles.length) {
                 return
             }
+            
 
             // 获取当前的元素
             const $selectionElem = editor.selection.getSelectionContainerElem()
@@ -467,6 +492,10 @@ Text.prototype = {
             // code 中粘贴忽略
             if (nodeName === 'CODE' || nodeName === 'PRE') {
                 return
+            }
+
+            if(nodeName == 'BLOCKQUOTE') {
+                editor.cmd.do('insertText', `${pasteText}`)
             }
 
             // 上传图片
