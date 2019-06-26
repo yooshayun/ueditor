@@ -1922,10 +1922,10 @@ Justify.prototype = {
         var $selectionElem = editor.selection.getSelectionContainerElem();
         var nodeName = $selectionElem.getNodeName();
         var $elem = this.$elem;
-        var start = editor.selection.getSelectionStartElem();
-        var end = editor.selection.getSelectionEndElem();
+        var start = editor.selection.getSelectionStartElem()[0];
+        var end = editor.selection.getSelectionEndElem()[0];
         var range = editor.selection.getRange();
-        console.log(nodeName, $selectionElem, range, range.startOffset, range.endOffset);
+        console.log(nodeName, $selectionElem, start, end);
 
         //对引用内容不生效
         if (nodeName === 'BLOCKQUOTE') {
@@ -1934,23 +1934,49 @@ Justify.prototype = {
 
         //选择多行区域
         if (nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
-            console.log('多区域选中！！', start, end);
+            console.log('多区域选中！！', $selectionElem[0].children, start, end);
+            var arr = $selectionElem[0].children,
+                length = arr.length;
+            var startIndex = 0,
+                endIndex = length,
+                selectionDom = [];
+            for (var i = 0; i < length; i++) {
+                if (arr[i] == start) {
+                    startIndex = i;
+                }
+                if (arr[i] == end) {
+                    endIndex = i;
+                }
+            }
+            var isCenter = true; //判断当前区域的状态  只要有一个不居中，则不是居中状态。 false布局中，true居中 
+            for (var _i = startIndex; _i <= endIndex; _i++) {
+                var dom = $(arr[_i]);
+                // console.log(dom, dom.getNodeName())
+                selectionDom.push(dom);
+                var cmdValue = dom.attr('style') || '';
+                var reg = /text-align: center;/i;
+                if (!reg.test(cmdValue) && dom.getNodeName() == 'P') {
+                    isCenter = false;
+                }
+            }
+
+            console.log(startIndex, endIndex, selectionDom, 'selectionDom');
         } else {
             //选中单行区域
-            var cmdValue = $selectionElem.attr('style') || '';
-            var reg = /text-align: center;/i;
-            console.log(cmdValue, reg.test(cmdValue), 'cmdValue');
+            var _cmdValue = $selectionElem.attr('style') || '';
+            var _reg = /text-align: center;/i;
+            console.log(_cmdValue, _reg.test(_cmdValue), 'cmdValue');
 
             //
-            if (reg.test(cmdValue)) {
-                if (!cmdValue) {
+            if (_reg.test(_cmdValue)) {
+                if (!_cmdValue) {
                     $selectionElem.removeAttr('style');
                 } else {
-                    $selectionElem.attr('style', cmdValue.replace(reg, ''));
+                    $selectionElem.attr('style', _cmdValue.replace(_reg, ''));
                 }
                 $elem.removeClass('w-e-active');
             } else {
-                $selectionElem.attr('style', cmdValue + 'text-align: center;');
+                $selectionElem.attr('style', _cmdValue + 'text-align: center;');
                 // editor.cmd.do('justifyCenter');
                 $elem.addClass('w-e-active');
             }

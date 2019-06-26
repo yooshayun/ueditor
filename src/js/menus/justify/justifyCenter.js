@@ -24,10 +24,10 @@ Justify.prototype = {
         const $selectionElem = editor.selection.getSelectionContainerElem();
         const nodeName = $selectionElem.getNodeName();
         const $elem = this.$elem;
-        let start = editor.selection.getSelectionStartElem();
-        let end = editor.selection.getSelectionEndElem();
+        let start = editor.selection.getSelectionStartElem()[0];
+        let end = editor.selection.getSelectionEndElem()[0];
         const range = editor.selection.getRange();
-        console.log(nodeName, $selectionElem, range, range.startOffset, range.endOffset);
+        console.log(nodeName, $selectionElem, start, end);
 
         //对引用内容不生效
         if (nodeName === 'BLOCKQUOTE') {
@@ -36,10 +36,31 @@ Justify.prototype = {
 
         //选择多行区域
         if(nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
-            console.log('多区域选中！！', start, end);
+            console.log('多区域选中！！', $selectionElem[0].children, start, end);
+            let arr = $selectionElem[0].children, length = arr.length;
+            let startIndex = 0, endIndex = length, selectionDom = [];
+            for(let i = 0; i < length; i++) {
+                if(arr[i] == start) {
+                    startIndex = i;
+                }
+                if(arr[i] == end) {
+                    endIndex = i;
+                }
+            }
+            let isCenter = true; //判断当前区域的状态  只要有一个不居中，则不是居中状态。 false布局中，true居中 
+            for(let i = startIndex; i <= endIndex; i++) {
+                let dom = $(arr[i]);
+                // console.log(dom, dom.getNodeName())
+                selectionDom.push(dom);
+                let cmdValue = dom.attr('style') || '';
+                let reg = /text-align: center;/i;
+                if(!reg.test(cmdValue) && dom.getNodeName() == 'P') {
+                    isCenter = false;
+                }
+            }
             
 
-
+            console.log(startIndex, endIndex, selectionDom, 'selectionDom');
         } else {
             //选中单行区域
             const cmdValue = $selectionElem.attr('style') || '';
