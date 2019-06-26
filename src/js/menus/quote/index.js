@@ -26,6 +26,7 @@ Quote.prototype = {
         const editor = this.editor
         const $selectionElem = editor.selection.getSelectionContainerElem()
         const nodeName = $selectionElem.getNodeName()
+        console.log(nodeName, $selectionElem);
 
         if (!UA.isIE()) {
             if (nodeName === 'BLOCKQUOTE') {

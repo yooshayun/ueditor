@@ -29,14 +29,16 @@ export function getPasteHtml(e, filterStyle, ignoreImg) {
         pasteText = clipboardData.getData('text/plain')
     }
     
+    // console.log(pasteText, 'pasteText')
     pasteHtml = '';
     if (pasteText) {
         pasteText.split('\n').forEach(item => {
-            if(item) {
+            if(item && item !== '\n') {
                 pasteHtml += '<p>' + replaceHtmlSymbol(item) + '</p>';
             }
         })
     }
+    
     if (!pasteHtml) {
         return
     }
@@ -51,6 +53,8 @@ export function getPasteHtml(e, filterStyle, ignoreImg) {
     pasteHtml = pasteHtml.replace(/<(meta|script|link).+?>/igm, '')
     // 去掉注释
     pasteHtml = pasteHtml.replace(/<!--.*?-->/mg, '')
+    // 去掉空的p标签
+    pasteHtml = pasteHtml.replace(/<p>[\s\t\n]{1}<\/p>/mg, '')
     // 过滤 data-xxx 属性
     pasteHtml = pasteHtml.replace(/\s?data-.+?=('|").+?('|")/igm, '')
 

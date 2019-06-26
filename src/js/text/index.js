@@ -377,6 +377,7 @@ Text.prototype = {
             let pasteHtml = getPasteHtml(e, pasteFilterStyle, ignoreImg)
             let pasteText = getPasteText(e)
             pasteText = pasteText.replace(/\n/gm, '<br>');
+            // console.log(e, '文字粘贴', pasteHtml);
 
             const $selectionElem = editor.selection.getSelectionContainerElem()
             if (!$selectionElem) {
@@ -474,6 +475,8 @@ Text.prototype = {
             if (!canDo()) {
                 return
             }
+
+            console.log(e, '粘贴图片');
 
             // 获取粘贴的图片
             const pasteFiles = getPasteImgs(e)

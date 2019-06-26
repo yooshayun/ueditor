@@ -193,6 +193,13 @@ DomElement.prototype = {
         }
     },
 
+    //移除 属性
+    removeAttr: function(key) {
+        this.forEach(elem => {
+            elem.removeAttribute(key)
+        })
+    },
+
     // 添加 class
     addClass: function(className) {
         if (!className) {

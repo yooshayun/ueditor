@@ -8,8 +8,8 @@ const MenuConstructors = {}
 import Bold from './bold/index.js'
 MenuConstructors.bold = Bold
 
-import Placeholders from './placeholders/index.js'
-MenuConstructors.placeholders = Placeholders
+// import Placeholders from './placeholders/index.js'
+// MenuConstructors.placeholders = Placeholders
 
 import Head from './head/index.js'
 MenuConstructors.head = Head
@@ -20,26 +20,26 @@ MenuConstructors.subhead = Subhead
 import SplitLine from './splitLine/index.js'
 MenuConstructors.splitLine = SplitLine
 
-import FontSize from './fontSize/index.js'
-MenuConstructors.fontSize = FontSize
+// import FontSize from './fontSize/index.js'
+// MenuConstructors.fontSize = FontSize
 
-import FontName from './fontName/index.js'
-MenuConstructors.fontName = FontName
+// import FontName from './fontName/index.js'
+// MenuConstructors.fontName = FontName
 
-import Link from './link/index.js'
-MenuConstructors.link = Link
+// import Link from './link/index.js'
+// MenuConstructors.link = Link
 
-import Italic from './italic/index.js'
-MenuConstructors.italic = Italic
+// import Italic from './italic/index.js'
+// MenuConstructors.italic = Italic
 
 import Redo from './redo/index.js'
 MenuConstructors.redo = Redo
 
-import StrikeThrough from './strikethrough/index.js'
-MenuConstructors.strikeThrough = StrikeThrough
+// import StrikeThrough from './strikethrough/index.js'
+// MenuConstructors.strikeThrough = StrikeThrough
 
-import Underline from './underline/index.js'
-MenuConstructors.underline = Underline
+// import Underline from './underline/index.js'
+// MenuConstructors.underline = Underline
 
 import Undo from './undo/index.js'
 MenuConstructors.undo = Undo
@@ -47,26 +47,26 @@ MenuConstructors.undo = Undo
 import List from './list/index.js'
 MenuConstructors.list = List
 
-import Justify from './justify/index.js'
-MenuConstructors.justify = Justify
+// import Justify from './justify/index.js'
+// MenuConstructors.justify = Justify
 
-import ForeColor from './foreColor/index.js'
-MenuConstructors.foreColor = ForeColor
+// import ForeColor from './foreColor/index.js'
+// MenuConstructors.foreColor = ForeColor
 
-import BackColor from './backColor/index.js'
-MenuConstructors.backColor = BackColor
+// import BackColor from './backColor/index.js'
+// MenuConstructors.backColor = BackColor
 
 import Quote from './quote/index.js'
 MenuConstructors.quote = Quote
 
-import Code from './code/index.js'
-MenuConstructors.code = Code
+// import Code from './code/index.js'
+// MenuConstructors.code = Code
 
-import Emoticon from './emoticon/index.js'
-MenuConstructors.emoticon = Emoticon
+// import Emoticon from './emoticon/index.js'
+// MenuConstructors.emoticon = Emoticon
 
-import Table from './table/index.js'
-MenuConstructors.table = Table
+// import Table from './table/index.js'
+// MenuConstructors.table = Table
 
 import Video from './video/index.js'
 MenuConstructors.video = Video
@@ -77,5 +77,8 @@ MenuConstructors.image = Image
 import Audio from './audio/index.js'
 MenuConstructors.audio = Audio
 
-// 吐出所有菜单集合
+import justifyCenter from './justify/justifyCenter'
+MenuConstructors.justifyCenter = justifyCenter
+
+// 所有菜单集合
 export default MenuConstructors

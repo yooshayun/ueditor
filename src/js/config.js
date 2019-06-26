@@ -8,14 +8,17 @@ const config = {
     menus: [
         'bold',
         'head', 
-        'subhead',          
+        'subhead',      
+        'justify',    
         'quote',
         'splitLine',
         'image',
         'video',
         'audio',
+        'justifyCenter',
         'undo',
-        'redo'
+        'redo',
+        
         // 'head',
         // 'subhead',
         // 'bold',

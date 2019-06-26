@@ -244,6 +244,13 @@ DomElement.prototype = {
         }
     },
 
+    //移除 属性
+    removeAttr: function removeAttr(key) {
+        this.forEach(function (elem) {
+            elem.removeAttribute(key);
+        });
+    },
+
     // 添加 class
     addClass: function addClass(className) {
         if (!className) {
@@ -545,30 +552,7 @@ $.offAll = function () {
 var config = {
 
     // 默认菜单配置
-    menus: ['bold', 'head', 'subhead', 'quote', 'splitLine', 'image', 'video', 'audio', 'undo', 'redo'
-    // 'head',
-    // 'subhead',
-    // 'bold',
-    // 'fontSize',
-    // 'fontName',
-    // 'splitLine',
-    // 'italic',
-    // 'underline',
-    // 'strikeThrough',
-    // 'foreColor',
-    // 'backColor',
-    // 'link',
-    // 'list',
-    // 'justify',
-    // 'quote',
-    // 'emoticon',
-    // 'image',
-    // 'table',
-    // 'video',
-    // 'code',
-    // 'undo',
-    // 'redo'
-    ],
+    menus: ['bold', 'head', 'subhead', 'justify', 'quote', 'splitLine', 'image', 'video', 'audio', 'justifyCenter', 'undo', 'redo'],
 
     fontNames: ['宋体', '微软雅黑', 'Arial', 'Tahoma', 'Verdana'],
 
@@ -877,19 +861,6 @@ Bold.prototype = {
 };
 
 /*
-    placeholders-menu
-*/
-// 构造函数
-function Placeholders(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            \n        </div>');
-    this.type = 'click';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-/*
     menu - header
 */
 // 构造函数
@@ -1030,6 +1001,62 @@ SplitLine.prototype = {
         var html = '<div class="split" contenteditable="false"></div><p><br></p>';
 
         editor.cmd.do('insertHTML', html);
+    }
+};
+
+/*
+    redo-menu
+*/
+// 构造函数
+function Redo(editor) {
+    this.editor = editor;
+    this.$elem = $('<div class="w-e-menu">\n            <i title="\u524D\u8FDB" class="w-e-icon-redo"></i>\n        </div>');
+    this.type = 'click';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+// 原型
+Redo.prototype = {
+    constructor: Redo,
+
+    // 点击事件
+    onClick: function onClick(e) {
+        // 点击菜单将触发这里
+
+        var editor = this.editor;
+
+        // 执行 redo 命令
+        editor.cmd.do('redo');
+    }
+};
+
+/*
+    undo-menu
+*/
+// 构造函数
+function Undo(editor) {
+    this.editor = editor;
+    this.$elem = $('<div class="w-e-menu">\n            <i title="\u540E\u9000" class="w-e-icon-undo"></i>\n        </div>');
+    this.type = 'click';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+// 原型
+Undo.prototype = {
+    constructor: Undo,
+
+    // 点击事件
+    onClick: function onClick(e) {
+        // 点击菜单将触发这里
+
+        var editor = this.editor;
+
+        // 执行 undo 命令
+        editor.cmd.do('undo');
     }
 };
 
@@ -1183,652 +1210,6 @@ DropList.prototype = {
 };
 
 /*
-    menu - fontSize
-*/
-
-// 构造函数
-function FontSize(editor) {
-    var _this = this;
-
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-text-heigh"></i></div>');
-    this.type = 'droplist';
-
-    // 当前是否 active 状态
-    this._active = false;
-
-    // 初始化 droplist
-    this.droplist = new DropList(this, {
-        width: 160,
-        $title: $('<p>字号</p>'),
-        type: 'list', // droplist 以列表形式展示
-        list: [{ $elem: $('<span style="font-size: x-small;">x-small</span>'), value: '1' }, { $elem: $('<span style="font-size: small;">small</span>'), value: '2' }, { $elem: $('<span>normal</span>'), value: '3' }, { $elem: $('<span style="font-size: large;">large</span>'), value: '4' }, { $elem: $('<span style="font-size: x-large;">x-large</span>'), value: '5' }, { $elem: $('<span style="font-size: xx-large;">xx-large</span>'), value: '6' }],
-        onClick: function onClick(value) {
-            // 注意 this 是指向当前的 FontSize 对象
-            _this._command(value);
-        }
-    });
-}
-
-// 原型
-FontSize.prototype = {
-    constructor: FontSize,
-
-    // 执行命令
-    _command: function _command(value) {
-        var editor = this.editor;
-        editor.cmd.do('fontSize', value);
-    }
-};
-
-/*
-    menu - fontName
-*/
-
-// 构造函数
-function FontName(editor) {
-    var _this = this;
-
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-font"></i></div>');
-    this.type = 'droplist';
-
-    // 当前是否 active 状态
-    this._active = false;
-
-    // 获取配置的字体
-    var config = editor.config;
-    var fontNames = config.fontNames || [];
-
-    // 初始化 droplist
-    this.droplist = new DropList(this, {
-        width: 100,
-        $title: $('<p>字体</p>'),
-        type: 'list', // droplist 以列表形式展示
-        list: fontNames.map(function (fontName) {
-            return { $elem: $('<span style="font-family: ' + fontName + ';">' + fontName + '</span>'), value: fontName };
-        }),
-        onClick: function onClick(value) {
-            // 注意 this 是指向当前的 FontName 对象
-            _this._command(value);
-        }
-    });
-}
-
-// 原型
-FontName.prototype = {
-    constructor: FontName,
-
-    _command: function _command(value) {
-        var editor = this.editor;
-        editor.cmd.do('fontName', value);
-    }
-};
-
-/*
-    panel
-*/
-
-var emptyFn = function emptyFn() {};
-
-// 记录已经显示 panel 的菜单
-var _isCreatedPanelMenus = [];
-
-// 构造函数
-function Panel(menu, opt) {
-    this.menu = menu;
-    this.opt = opt;
-}
-
-// 原型
-Panel.prototype = {
-    constructor: Panel,
-
-    // 显示（插入DOM）
-    show: function show() {
-        var _this = this;
-
-        var menu = this.menu;
-        if (_isCreatedPanelMenus.indexOf(menu) >= 0) {
-            // 该菜单已经创建了 panel 不能再创建
-            return;
-        }
-
-        var editor = menu.editor;
-        var $body = $('body');
-        var $textContainerElem = editor.$textContainerElem;
-        var opt = this.opt;
-
-        // panel 的容器
-        var $container = $('<div class="w-e-panel-container"></div>');
-        var width = opt.width || 300; // 默认 300px
-        $container.css('width', width + 'px').css('margin-left', (0 - width) / 2 + 'px');
-
-        // 添加关闭按钮
-        var $closeBtn = $('<i class="w-e-icon-close w-e-panel-close"></i>');
-        $container.append($closeBtn);
-        $closeBtn.on('click', function () {
-            _this.hide();
-        });
-
-        // 准备 tabs 容器
-        var $tabTitleContainer = $('<ul class="w-e-panel-tab-title"></ul>');
-        var $tabContentContainer = $('<div class="w-e-panel-tab-content"></div>');
-        $container.append($tabTitleContainer).append($tabContentContainer);
-
-        // 设置高度
-        var height = opt.height;
-        if (height) {
-            $tabContentContainer.css('height', height + 'px').css('overflow-y', 'auto');
-        }
-
-        // tabs
-        var tabs = opt.tabs || [];
-        var tabTitleArr = [];
-        var tabContentArr = [];
-        tabs.forEach(function (tab, tabIndex) {
-            if (!tab) {
-                return;
-            }
-            var title = tab.title || '';
-            var tpl = tab.tpl || '';
-
-            // 替换多语言
-            title = replaceLang(editor, title);
-            tpl = replaceLang(editor, tpl);
-
-            // 添加到 DOM
-            var $title = $('<li class="w-e-item">' + title + '</li>');
-            $tabTitleContainer.append($title);
-            var $content = $(tpl);
-            $tabContentContainer.append($content);
-
-            // 记录到内存
-            $title._index = tabIndex;
-            tabTitleArr.push($title);
-            tabContentArr.push($content);
-
-            // 设置 active 项
-            if (tabIndex === 0) {
-                $title._active = true;
-                $title.addClass('w-e-active');
-            } else {
-                $content.hide();
-            }
-
-            // 绑定 tab 的事件
-            $title.on('click', function (e) {
-                if ($title._active) {
-                    return;
-                }
-                // 隐藏所有的 tab
-                tabTitleArr.forEach(function ($title) {
-                    $title._active = false;
-                    $title.removeClass('w-e-active');
-                });
-                tabContentArr.forEach(function ($content) {
-                    $content.hide();
-                });
-
-                // 显示当前的 tab
-                $title._active = true;
-                $title.addClass('w-e-active');
-                $content.show();
-            });
-        });
-
-        // 绑定关闭事件
-        $container.on('click', function (e) {
-            // 点击时阻止冒泡
-            e.stopPropagation();
-        });
-        $body.on('click', function (e) {
-            _this.hide();
-        });
-
-        // 添加到 DOM
-        $textContainerElem.append($container);
-
-        // 绑定 opt 的事件，只有添加到 DOM 之后才能绑定成功
-        tabs.forEach(function (tab, index) {
-            if (!tab) {
-                return;
-            }
-            var events = tab.events || [];
-            events.forEach(function (event) {
-                var selector = event.selector;
-                var type = event.type;
-                var fn = event.fn || emptyFn;
-                var $content = tabContentArr[index];
-                $content.find(selector).on(type, function (e) {
-                    e.stopPropagation();
-                    var needToHide = fn(e);
-                    // 执行完事件之后，是否要关闭 panel
-                    if (needToHide) {
-                        _this.hide();
-                    }
-                });
-            });
-        });
-
-        // focus 第一个 elem
-        var $inputs = $container.find('input[type=text],textarea');
-        if ($inputs.length) {
-            $inputs.get(0).focus();
-        }
-
-        // 添加到属性
-        this.$container = $container;
-
-        // 隐藏其他 panel
-        this._hideOtherPanels();
-        // 记录该 menu 已经创建了 panel
-        _isCreatedPanelMenus.push(menu);
-    },
-
-    // 隐藏（移除DOM）
-    hide: function hide() {
-        var menu = this.menu;
-        var $container = this.$container;
-        if ($container) {
-            $container.remove();
-        }
-
-        // 将该 menu 记录中移除
-        _isCreatedPanelMenus = _isCreatedPanelMenus.filter(function (item) {
-            if (item === menu) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-    },
-
-    // 一个 panel 展示时，隐藏其他 panel
-    _hideOtherPanels: function _hideOtherPanels() {
-        if (!_isCreatedPanelMenus.length) {
-            return;
-        }
-        _isCreatedPanelMenus.forEach(function (menu) {
-            var panel = menu.panel || {};
-            if (panel.hide) {
-                panel.hide();
-            }
-        });
-    }
-};
-
-/*
-    menu - link
-*/
-// 构造函数
-function Link(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-link"></i></div>');
-    this.type = 'panel';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Link.prototype = {
-    constructor: Link,
-
-    // 点击事件
-    onClick: function onClick(e) {
-        var editor = this.editor;
-        var $linkelem = void 0;
-
-        if (this._active) {
-            // 当前选区在链接里面
-            $linkelem = editor.selection.getSelectionContainerElem();
-            if (!$linkelem) {
-                return;
-            }
-            // 将该元素都包含在选取之内，以便后面整体替换
-            editor.selection.createRangeByElem($linkelem);
-            editor.selection.restoreSelection();
-            // 显示 panel
-            this._createPanel($linkelem.text(), $linkelem.attr('href'));
-        } else {
-            // 当前选区不在链接里面
-            if (editor.selection.isSelectionEmpty()) {
-                // 选区是空的，未选中内容
-                this._createPanel('', '');
-            } else {
-                // 选中内容了
-                this._createPanel(editor.selection.getSelectionText(), '');
-            }
-        }
-    },
-
-    // 创建 panel
-    _createPanel: function _createPanel(text, link) {
-        var _this = this;
-
-        // panel 中需要用到的id
-        var inputLinkId = getRandom('input-link');
-        var inputTextId = getRandom('input-text');
-        var btnOkId = getRandom('btn-ok');
-        var btnDelId = getRandom('btn-del');
-
-        // 是否显示“删除链接”
-        var delBtnDisplay = this._active ? 'inline-block' : 'none';
-
-        // 初始化并显示 panel
-        var panel = new Panel(this, {
-            width: 300,
-            // panel 中可包含多个 tab
-            tabs: [{
-                // tab 的标题
-                title: '链接',
-                // 模板
-                tpl: '<div>\n                            <input id="' + inputTextId + '" type="text" class="block" value="' + text + '" placeholder="\u94FE\u63A5\u6587\u5B57"/></td>\n                            <input id="' + inputLinkId + '" type="text" class="block" value="' + link + '" placeholder="http://..."/></td>\n                            <div class="w-e-button-container">\n                                <button id="' + btnOkId + '" class="right">\u63D2\u5165</button>\n                                <button id="' + btnDelId + '" class="gray right" style="display:' + delBtnDisplay + '">\u5220\u9664\u94FE\u63A5</button>\n                            </div>\n                        </div>',
-                // 事件绑定
-                events: [
-                // 插入链接
-                {
-                    selector: '#' + btnOkId,
-                    type: 'click',
-                    fn: function fn() {
-                        // 执行插入链接
-                        var $link = $('#' + inputLinkId);
-                        var $text = $('#' + inputTextId);
-                        var link = $link.val();
-                        var text = $text.val();
-                        _this._insertLink(text, link);
-
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                },
-                // 删除链接
-                {
-                    selector: '#' + btnDelId,
-                    type: 'click',
-                    fn: function fn() {
-                        // 执行删除链接
-                        _this._delLink();
-
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }] // tab end
-            }] // tabs end
-        });
-
-        // 显示 panel
-        panel.show();
-
-        // 记录属性
-        this.panel = panel;
-    },
-
-    // 删除当前链接
-    _delLink: function _delLink() {
-        if (!this._active) {
-            return;
-        }
-        var editor = this.editor;
-        var $selectionELem = editor.selection.getSelectionContainerElem();
-        if (!$selectionELem) {
-            return;
-        }
-        var selectionText = editor.selection.getSelectionText();
-        editor.cmd.do('insertHTML', '<span>' + selectionText + '</span>');
-    },
-
-    // 插入链接
-    _insertLink: function _insertLink(text, link) {
-        var editor = this.editor;
-        var config = editor.config;
-        var linkCheck = config.linkCheck;
-        var checkResult = true; // 默认为 true
-        if (linkCheck && typeof linkCheck === 'function') {
-            checkResult = linkCheck(text, link);
-        }
-        if (checkResult === true) {
-            editor.cmd.do('insertHTML', '<a href="' + link + '" target="_blank">' + text + '</a>');
-        } else {
-            alert(checkResult);
-        }
-    },
-
-    // 试图改变 active 状态
-    tryChangeActive: function tryChangeActive(e) {
-        var editor = this.editor;
-        var $elem = this.$elem;
-        var $selectionELem = editor.selection.getSelectionContainerElem();
-        if (!$selectionELem) {
-            return;
-        }
-        if ($selectionELem.getNodeName() === 'A') {
-            this._active = true;
-            $elem.addClass('w-e-active');
-        } else {
-            this._active = false;
-            $elem.removeClass('w-e-active');
-        }
-    }
-};
-
-/*
-    italic-menu
-*/
-// 构造函数
-function Italic(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-italic"></i>\n        </div>');
-    this.type = 'click';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Italic.prototype = {
-    constructor: Italic,
-
-    // 点击事件
-    onClick: function onClick(e) {
-        // 点击菜单将触发这里
-
-        var editor = this.editor;
-        var isSeleEmpty = editor.selection.isSelectionEmpty();
-
-        if (isSeleEmpty) {
-            // 选区是空的，插入并选中一个“空白”
-            editor.selection.createEmptyRange();
-        }
-
-        // 执行 italic 命令
-        editor.cmd.do('italic');
-
-        if (isSeleEmpty) {
-            // 需要将选取折叠起来
-            editor.selection.collapseRange();
-            editor.selection.restoreSelection();
-        }
-    },
-
-    // 试图改变 active 状态
-    tryChangeActive: function tryChangeActive(e) {
-        var editor = this.editor;
-        var $elem = this.$elem;
-        if (editor.cmd.queryCommandState('italic')) {
-            this._active = true;
-            $elem.addClass('w-e-active');
-        } else {
-            this._active = false;
-            $elem.removeClass('w-e-active');
-        }
-    }
-};
-
-/*
-    redo-menu
-*/
-// 构造函数
-function Redo(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i title="\u524D\u8FDB" class="w-e-icon-redo"></i>\n        </div>');
-    this.type = 'click';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Redo.prototype = {
-    constructor: Redo,
-
-    // 点击事件
-    onClick: function onClick(e) {
-        // 点击菜单将触发这里
-
-        var editor = this.editor;
-
-        // 执行 redo 命令
-        editor.cmd.do('redo');
-    }
-};
-
-/*
-    strikeThrough-menu
-*/
-// 构造函数
-function StrikeThrough(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-strikethrough"></i>\n        </div>');
-    this.type = 'click';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-StrikeThrough.prototype = {
-    constructor: StrikeThrough,
-
-    // 点击事件
-    onClick: function onClick(e) {
-        // 点击菜单将触发这里
-
-        var editor = this.editor;
-        var isSeleEmpty = editor.selection.isSelectionEmpty();
-
-        if (isSeleEmpty) {
-            // 选区是空的，插入并选中一个“空白”
-            editor.selection.createEmptyRange();
-        }
-
-        // 执行 strikeThrough 命令
-        editor.cmd.do('strikeThrough');
-
-        if (isSeleEmpty) {
-            // 需要将选取折叠起来
-            editor.selection.collapseRange();
-            editor.selection.restoreSelection();
-        }
-    },
-
-    // 试图改变 active 状态
-    tryChangeActive: function tryChangeActive(e) {
-        var editor = this.editor;
-        var $elem = this.$elem;
-        if (editor.cmd.queryCommandState('strikeThrough')) {
-            this._active = true;
-            $elem.addClass('w-e-active');
-        } else {
-            this._active = false;
-            $elem.removeClass('w-e-active');
-        }
-    }
-};
-
-/*
-    underline-menu
-*/
-// 构造函数
-function Underline(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-underline"></i>\n        </div>');
-    this.type = 'click';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Underline.prototype = {
-    constructor: Underline,
-
-    // 点击事件
-    onClick: function onClick(e) {
-        // 点击菜单将触发这里
-
-        var editor = this.editor;
-        var isSeleEmpty = editor.selection.isSelectionEmpty();
-
-        if (isSeleEmpty) {
-            // 选区是空的，插入并选中一个“空白”
-            editor.selection.createEmptyRange();
-        }
-
-        // 执行 underline 命令
-        editor.cmd.do('underline');
-
-        if (isSeleEmpty) {
-            // 需要将选取折叠起来
-            editor.selection.collapseRange();
-            editor.selection.restoreSelection();
-        }
-    },
-
-    // 试图改变 active 状态
-    tryChangeActive: function tryChangeActive(e) {
-        var editor = this.editor;
-        var $elem = this.$elem;
-        if (editor.cmd.queryCommandState('underline')) {
-            this._active = true;
-            $elem.addClass('w-e-active');
-        } else {
-            this._active = false;
-            $elem.removeClass('w-e-active');
-        }
-    }
-};
-
-/*
-    undo-menu
-*/
-// 构造函数
-function Undo(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i title="\u540E\u9000" class="w-e-icon-undo"></i>\n        </div>');
-    this.type = 'click';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Undo.prototype = {
-    constructor: Undo,
-
-    // 点击事件
-    onClick: function onClick(e) {
-        // 点击菜单将触发这里
-
-        var editor = this.editor;
-
-        // 执行 undo 命令
-        editor.cmd.do('undo');
-    }
-};
-
-/*
     menu - list
 */
 // 构造函数
@@ -1906,132 +1287,6 @@ List.prototype = {
 };
 
 /*
-    menu - justify
-*/
-// 构造函数
-function Justify(editor) {
-    var _this = this;
-
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-left"></i></div>');
-    this.type = 'droplist';
-
-    // 当前是否 active 状态
-    this._active = false;
-
-    // 初始化 droplist
-    this.droplist = new DropList(this, {
-        width: 100,
-        $title: $('<p>对齐方式</p>'),
-        type: 'list', // droplist 以列表形式展示
-        list: [{ $elem: $('<span><i class="w-e-icon-paragraph-left"></i> 靠左</span>'), value: 'justifyLeft' }, { $elem: $('<span><i class="w-e-icon-paragraph-center"></i> 居中</span>'), value: 'justifyCenter' }, { $elem: $('<span><i class="w-e-icon-paragraph-right"></i> 靠右</span>'), value: 'justifyRight' }],
-        onClick: function onClick(value) {
-            // 注意 this 是指向当前的 List 对象
-            _this._command(value);
-        }
-    });
-}
-
-// 原型
-Justify.prototype = {
-    constructor: Justify,
-
-    // 执行命令
-    _command: function _command(value) {
-        var editor = this.editor;
-        editor.cmd.do(value);
-    }
-};
-
-/*
-    menu - Forecolor
-*/
-// 构造函数
-function ForeColor(editor) {
-    var _this = this;
-
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-pencil2"></i></div>');
-    this.type = 'droplist';
-
-    // 获取配置的颜色
-    var config = editor.config;
-    var colors = config.colors || [];
-
-    // 当前是否 active 状态
-    this._active = false;
-
-    // 初始化 droplist
-    this.droplist = new DropList(this, {
-        width: 120,
-        $title: $('<p>文字颜色</p>'),
-        type: 'inline-block', // droplist 内容以 block 形式展示
-        list: colors.map(function (color) {
-            return { $elem: $('<i style="color:' + color + ';" class="w-e-icon-pencil2"></i>'), value: color };
-        }),
-        onClick: function onClick(value) {
-            // 注意 this 是指向当前的 ForeColor 对象
-            _this._command(value);
-        }
-    });
-}
-
-// 原型
-ForeColor.prototype = {
-    constructor: ForeColor,
-
-    // 执行命令
-    _command: function _command(value) {
-        var editor = this.editor;
-        editor.cmd.do('foreColor', value);
-    }
-};
-
-/*
-    menu - BackColor
-*/
-// 构造函数
-function BackColor(editor) {
-    var _this = this;
-
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paint-brush"></i></div>');
-    this.type = 'droplist';
-
-    // 获取配置的颜色
-    var config = editor.config;
-    var colors = config.colors || [];
-
-    // 当前是否 active 状态
-    this._active = false;
-
-    // 初始化 droplist
-    this.droplist = new DropList(this, {
-        width: 120,
-        $title: $('<p>背景色</p>'),
-        type: 'inline-block', // droplist 内容以 block 形式展示
-        list: colors.map(function (color) {
-            return { $elem: $('<i style="color:' + color + ';" class="w-e-icon-paint-brush"></i>'), value: color };
-        }),
-        onClick: function onClick(value) {
-            // 注意 this 是指向当前的 BackColor 对象
-            _this._command(value);
-        }
-    });
-}
-
-// 原型
-BackColor.prototype = {
-    constructor: BackColor,
-
-    // 执行命令
-    _command: function _command(value) {
-        var editor = this.editor;
-        editor.cmd.do('backColor', value);
-    }
-};
-
-/*
     menu - quote
 */
 // 构造函数
@@ -2052,6 +1307,7 @@ Quote.prototype = {
         var editor = this.editor;
         var $selectionElem = editor.selection.getSelectionContainerElem();
         var nodeName = $selectionElem.getNodeName();
+        console.log(nodeName, $selectionElem);
 
         if (!UA.isIE()) {
             if (nodeName === 'BLOCKQUOTE') {
@@ -2100,589 +1356,8 @@ Quote.prototype = {
 };
 
 /*
-    menu - code
+    panel
 */
-// 构造函数
-function Code(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-terminal"></i>\n        </div>');
-    this.type = 'panel';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Code.prototype = {
-    constructor: Code,
-
-    onClick: function onClick(e) {
-        var editor = this.editor;
-        var $startElem = editor.selection.getSelectionStartElem();
-        var $endElem = editor.selection.getSelectionEndElem();
-        var isSeleEmpty = editor.selection.isSelectionEmpty();
-        var selectionText = editor.selection.getSelectionText();
-        var $code = void 0;
-
-        if (!$startElem.equal($endElem)) {
-            // 跨元素选择，不做处理
-            editor.selection.restoreSelection();
-            return;
-        }
-        if (!isSeleEmpty) {
-            // 选取不是空，用 <code> 包裹即可
-            $code = $('<code>' + selectionText + '</code>');
-            editor.cmd.do('insertElem', $code);
-            editor.selection.createRangeByElem($code, false);
-            editor.selection.restoreSelection();
-            return;
-        }
-
-        // 选取是空，且没有夸元素选择，则插入 <pre><code></code></prev>
-        if (this._active) {
-            // 选中状态，将编辑内容
-            this._createPanel($startElem.html());
-        } else {
-            // 未选中状态，将创建内容
-            this._createPanel();
-        }
-    },
-
-    _createPanel: function _createPanel(value) {
-        var _this = this;
-
-        // value - 要编辑的内容
-        value = value || '';
-        var type = !value ? 'new' : 'edit';
-        var textId = getRandom('texxt');
-        var btnId = getRandom('btn');
-
-        var panel = new Panel(this, {
-            width: 500,
-            // 一个 Panel 包含多个 tab
-            tabs: [{
-                // 标题
-                title: '插入代码',
-                // 模板
-                tpl: '<div>\n                        <textarea id="' + textId + '" style="height:145px;;">' + value + '</textarea>\n                        <div class="w-e-button-container">\n                            <button id="' + btnId + '" class="right">\u63D2\u5165</button>\n                        </div>\n                    <div>',
-                // 事件绑定
-                events: [
-                // 插入代码
-                {
-                    selector: '#' + btnId,
-                    type: 'click',
-                    fn: function fn() {
-                        var $text = $('#' + textId);
-                        var text = $text.val() || $text.html();
-                        text = replaceHtmlSymbol(text);
-                        if (type === 'new') {
-                            // 新插入
-                            _this._insertCode(text);
-                        } else {
-                            // 编辑更新
-                            _this._updateCode(text);
-                        }
-
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }] // first tab end
-            }] // tabs end
-        }); // new Panel end
-
-        // 显示 panel
-        panel.show();
-
-        // 记录属性
-        this.panel = panel;
-    },
-
-    // 插入代码
-    _insertCode: function _insertCode(value) {
-        var editor = this.editor;
-        editor.cmd.do('insertHTML', '<pre><code>' + value + '</code></pre><p><br></p>');
-    },
-
-    // 更新代码
-    _updateCode: function _updateCode(value) {
-        var editor = this.editor;
-        var $selectionELem = editor.selection.getSelectionContainerElem();
-        if (!$selectionELem) {
-            return;
-        }
-        $selectionELem.html(value);
-        editor.selection.restoreSelection();
-    },
-
-    // 试图改变 active 状态
-    tryChangeActive: function tryChangeActive(e) {
-        var editor = this.editor;
-        var $elem = this.$elem;
-        var $selectionELem = editor.selection.getSelectionContainerElem();
-        if (!$selectionELem) {
-            return;
-        }
-        var $parentElem = $selectionELem.parent();
-        if ($selectionELem.getNodeName() === 'CODE' && $parentElem.getNodeName() === 'PRE') {
-            this._active = true;
-            $elem.addClass('w-e-active');
-        } else {
-            this._active = false;
-            $elem.removeClass('w-e-active');
-        }
-    }
-};
-
-/*
-    menu - emoticon
-*/
-// 构造函数
-function Emoticon(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-happy"></i>\n        </div>');
-    this.type = 'panel';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Emoticon.prototype = {
-    constructor: Emoticon,
-
-    onClick: function onClick() {
-        this._createPanel();
-    },
-
-    _createPanel: function _createPanel() {
-        var _this = this;
-
-        var editor = this.editor;
-        var config = editor.config;
-        // 获取表情配置
-        var emotions = config.emotions || [];
-
-        // 创建表情 dropPanel 的配置
-        var tabConfig = [];
-        emotions.forEach(function (emotData) {
-            var emotType = emotData.type;
-            var content = emotData.content || [];
-
-            // 这一组表情最终拼接出来的 html
-            var faceHtml = '';
-
-            // emoji 表情
-            if (emotType === 'emoji') {
-                content.forEach(function (item) {
-                    if (item) {
-                        faceHtml += '<span class="w-e-item">' + item + '</span>';
-                    }
-                });
-            }
-            // 图片表情
-            if (emotType === 'image') {
-                content.forEach(function (item) {
-                    var src = item.src;
-                    var alt = item.alt;
-                    if (src) {
-                        // 加一个 data-w-e 属性，点击图片的时候不再提示编辑图片
-                        faceHtml += '<span class="w-e-item"><img src="' + src + '" alt="' + alt + '" data-w-e="1"/></span>';
-                    }
-                });
-            }
-
-            tabConfig.push({
-                title: emotData.title,
-                tpl: '<div class="w-e-emoticon-container">' + faceHtml + '</div>',
-                events: [{
-                    selector: 'span.w-e-item',
-                    type: 'click',
-                    fn: function fn(e) {
-                        var target = e.target;
-                        var $target = $(target);
-                        var nodeName = $target.getNodeName();
-
-                        var insertHtml = void 0;
-                        if (nodeName === 'IMG') {
-                            // 插入图片
-                            insertHtml = $target.parent().html();
-                        } else {
-                            // 插入 emoji
-                            insertHtml = '<span>' + $target.html() + '</span>';
-                        }
-
-                        _this._insert(insertHtml);
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }]
-            });
-        });
-
-        var panel = new Panel(this, {
-            width: 300,
-            height: 200,
-            // 一个 Panel 包含多个 tab
-            tabs: tabConfig
-        });
-
-        // 显示 panel
-        panel.show();
-
-        // 记录属性
-        this.panel = panel;
-    },
-
-    // 插入表情
-    _insert: function _insert(emotHtml) {
-        var editor = this.editor;
-        editor.cmd.do('insertHTML', emotHtml);
-    }
-};
-
-/*
-    menu - table
-*/
-// 构造函数
-function Table(editor) {
-    this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-table2"></i></div>');
-    this.type = 'panel';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Table.prototype = {
-    constructor: Table,
-
-    onClick: function onClick() {
-        if (this._active) {
-            // 编辑现有表格
-            this._createEditPanel();
-        } else {
-            // 插入新表格
-            this._createInsertPanel();
-        }
-    },
-
-    // 创建插入新表格的 panel
-    _createInsertPanel: function _createInsertPanel() {
-        var _this = this;
-
-        // 用到的 id
-        var btnInsertId = getRandom('btn');
-        var textRowNum = getRandom('row');
-        var textColNum = getRandom('col');
-
-        var panel = new Panel(this, {
-            width: 250,
-            // panel 包含多个 tab
-            tabs: [{
-                // 标题
-                title: '插入表格',
-                // 模板
-                tpl: '<div>\n                        <p style="text-align:left; padding:5px 0;">\n                            \u521B\u5EFA\n                            <input id="' + textRowNum + '" type="text" value="5" style="width:40px;text-align:center;"/>\n                            \u884C\n                            <input id="' + textColNum + '" type="text" value="5" style="width:40px;text-align:center;"/>\n                            \u5217\u7684\u8868\u683C\n                        </p>\n                        <div class="w-e-button-container">\n                            <button id="' + btnInsertId + '" class="right">\u63D2\u5165</button>\n                        </div>\n                    </div>',
-                // 事件绑定
-                events: [{
-                    // 点击按钮，插入表格
-                    selector: '#' + btnInsertId,
-                    type: 'click',
-                    fn: function fn() {
-                        var rowNum = parseInt($('#' + textRowNum).val());
-                        var colNum = parseInt($('#' + textColNum).val());
-
-                        if (rowNum && colNum && rowNum > 0 && colNum > 0) {
-                            // form 数据有效
-                            _this._insert(rowNum, colNum);
-                        }
-
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }] // first tab end
-            }] // tabs end
-        }); // panel end
-
-        // 展示 panel
-        panel.show();
-
-        // 记录属性
-        this.panel = panel;
-    },
-
-    // 插入表格
-    _insert: function _insert(rowNum, colNum) {
-        // 拼接 table 模板
-        var r = void 0,
-            c = void 0;
-        var html = '<table border="0" width="100%" cellpadding="0" cellspacing="0">';
-        for (r = 0; r < rowNum; r++) {
-            html += '<tr>';
-            if (r === 0) {
-                for (c = 0; c < colNum; c++) {
-                    html += '<th>&nbsp;</th>';
-                }
-            } else {
-                for (c = 0; c < colNum; c++) {
-                    html += '<td>&nbsp;</td>';
-                }
-            }
-            html += '</tr>';
-        }
-        html += '</table><p><br></p>';
-
-        // 执行命令
-        var editor = this.editor;
-        editor.cmd.do('insertHTML', html);
-
-        // 防止 firefox 下出现 resize 的控制点
-        editor.cmd.do('enableObjectResizing', false);
-        editor.cmd.do('enableInlineTableEditing', false);
-    },
-
-    // 创建编辑表格的 panel
-    _createEditPanel: function _createEditPanel() {
-        var _this2 = this;
-
-        // 可用的 id
-        var addRowBtnId = getRandom('add-row');
-        var addColBtnId = getRandom('add-col');
-        var delRowBtnId = getRandom('del-row');
-        var delColBtnId = getRandom('del-col');
-        var delTableBtnId = getRandom('del-table');
-
-        // 创建 panel 对象
-        var panel = new Panel(this, {
-            width: 320,
-            // panel 包含多个 tab
-            tabs: [{
-                // 标题
-                title: '编辑表格',
-                // 模板
-                tpl: '<div>\n                        <div class="w-e-button-container" style="border-bottom:1px solid #f1f1f1;padding-bottom:5px;margin-bottom:5px;">\n                            <button id="' + addRowBtnId + '" class="left">\u589E\u52A0\u884C</button>\n                            <button id="' + delRowBtnId + '" class="red left">\u5220\u9664\u884C</button>\n                            <button id="' + addColBtnId + '" class="left">\u589E\u52A0\u5217</button>\n                            <button id="' + delColBtnId + '" class="red left">\u5220\u9664\u5217</button>\n                        </div>\n                        <div class="w-e-button-container">\n                            <button id="' + delTableBtnId + '" class="gray left">\u5220\u9664\u8868\u683C</button>\n                        </dv>\n                    </div>',
-                // 事件绑定
-                events: [{
-                    // 增加行
-                    selector: '#' + addRowBtnId,
-                    type: 'click',
-                    fn: function fn() {
-                        _this2._addRow();
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }, {
-                    // 增加列
-                    selector: '#' + addColBtnId,
-                    type: 'click',
-                    fn: function fn() {
-                        _this2._addCol();
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }, {
-                    // 删除行
-                    selector: '#' + delRowBtnId,
-                    type: 'click',
-                    fn: function fn() {
-                        _this2._delRow();
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }, {
-                    // 删除列
-                    selector: '#' + delColBtnId,
-                    type: 'click',
-                    fn: function fn() {
-                        _this2._delCol();
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }, {
-                    // 删除表格
-                    selector: '#' + delTableBtnId,
-                    type: 'click',
-                    fn: function fn() {
-                        _this2._delTable();
-                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                        return true;
-                    }
-                }]
-            }]
-        });
-        // 显示 panel
-        panel.show();
-    },
-
-    // 获取选中的单元格的位置信息
-    _getLocationData: function _getLocationData() {
-        var result = {};
-        var editor = this.editor;
-        var $selectionELem = editor.selection.getSelectionContainerElem();
-        if (!$selectionELem) {
-            return;
-        }
-        var nodeName = $selectionELem.getNodeName();
-        if (nodeName !== 'TD' && nodeName !== 'TH') {
-            return;
-        }
-
-        // 获取 td index
-        var $tr = $selectionELem.parent();
-        var $tds = $tr.children();
-        var tdLength = $tds.length;
-        $tds.forEach(function (td, index) {
-            if (td === $selectionELem[0]) {
-                // 记录并跳出循环
-                result.td = {
-                    index: index,
-                    elem: td,
-                    length: tdLength
-                };
-                return false;
-            }
-        });
-
-        // 获取 tr index
-        var $tbody = $tr.parent();
-        var $trs = $tbody.children();
-        var trLength = $trs.length;
-        $trs.forEach(function (tr, index) {
-            if (tr === $tr[0]) {
-                // 记录并跳出循环
-                result.tr = {
-                    index: index,
-                    elem: tr,
-                    length: trLength
-                };
-                return false;
-            }
-        });
-
-        // 返回结果
-        return result;
-    },
-
-    // 增加行
-    _addRow: function _addRow() {
-        // 获取当前单元格的位置信息
-        var locationData = this._getLocationData();
-        if (!locationData) {
-            return;
-        }
-        var trData = locationData.tr;
-        var $currentTr = $(trData.elem);
-        var tdData = locationData.td;
-        var tdLength = tdData.length;
-
-        // 拼接即将插入的字符串
-        var newTr = document.createElement('tr');
-        var tpl = '',
-            i = void 0;
-        for (i = 0; i < tdLength; i++) {
-            tpl += '<td>&nbsp;</td>';
-        }
-        newTr.innerHTML = tpl;
-        // 插入
-        $(newTr).insertAfter($currentTr);
-    },
-
-    // 增加列
-    _addCol: function _addCol() {
-        // 获取当前单元格的位置信息
-        var locationData = this._getLocationData();
-        if (!locationData) {
-            return;
-        }
-        var trData = locationData.tr;
-        var tdData = locationData.td;
-        var tdIndex = tdData.index;
-        var $currentTr = $(trData.elem);
-        var $trParent = $currentTr.parent();
-        var $trs = $trParent.children();
-
-        // 遍历所有行
-        $trs.forEach(function (tr) {
-            var $tr = $(tr);
-            var $tds = $tr.children();
-            var $currentTd = $tds.get(tdIndex);
-            var name = $currentTd.getNodeName().toLowerCase();
-
-            // new 一个 td，并插入
-            var newTd = document.createElement(name);
-            $(newTd).insertAfter($currentTd);
-        });
-    },
-
-    // 删除行
-    _delRow: function _delRow() {
-        // 获取当前单元格的位置信息
-        var locationData = this._getLocationData();
-        if (!locationData) {
-            return;
-        }
-        var trData = locationData.tr;
-        var $currentTr = $(trData.elem);
-        $currentTr.remove();
-    },
-
-    // 删除列
-    _delCol: function _delCol() {
-        // 获取当前单元格的位置信息
-        var locationData = this._getLocationData();
-        if (!locationData) {
-            return;
-        }
-        var trData = locationData.tr;
-        var tdData = locationData.td;
-        var tdIndex = tdData.index;
-        var $currentTr = $(trData.elem);
-        var $trParent = $currentTr.parent();
-        var $trs = $trParent.children();
-
-        // 遍历所有行
-        $trs.forEach(function (tr) {
-            var $tr = $(tr);
-            var $tds = $tr.children();
-            var $currentTd = $tds.get(tdIndex);
-            // 删除
-            $currentTd.remove();
-        });
-    },
-
-    // 删除表格
-    _delTable: function _delTable() {
-        var editor = this.editor;
-        var $selectionELem = editor.selection.getSelectionContainerElem();
-        if (!$selectionELem) {
-            return;
-        }
-        var $table = $selectionELem.parentUntil('table');
-        if (!$table) {
-            return;
-        }
-        $table.remove();
-    },
-
-    // 试图改变 active 状态
-    tryChangeActive: function tryChangeActive(e) {
-        var editor = this.editor;
-        var $elem = this.$elem;
-        var $selectionELem = editor.selection.getSelectionContainerElem();
-        if (!$selectionELem) {
-            return;
-        }
-        var nodeName = $selectionELem.getNodeName();
-        if (nodeName === 'TD' || nodeName === 'TH') {
-            this._active = true;
-            $elem.addClass('w-e-active');
-        } else {
-            this._active = false;
-            $elem.removeClass('w-e-active');
-        }
-    }
-};
 
 /*
     menu - video
@@ -3226,6 +1901,80 @@ Audio.prototype = {
 };
 
 /*
+    menu - justify
+*/
+// 构造函数
+function Justify(editor) {
+    this.editor = editor;
+    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-center"></i></div>');
+    this.type = 'click';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+// 原型
+Justify.prototype = {
+    constructor: Justify,
+
+    onClick: function onClick(e) {
+        var editor = this.editor;
+        var $selectionElem = editor.selection.getSelectionContainerElem();
+        var nodeName = $selectionElem.getNodeName();
+        var $elem = this.$elem;
+        var start = editor.selection.getSelectionStartElem();
+        var end = editor.selection.getSelectionEndElem();
+        var range = editor.selection.getRange();
+        console.log(nodeName, $selectionElem, range, range.startOffset, range.endOffset);
+
+        //对引用内容不生效
+        if (nodeName === 'BLOCKQUOTE') {
+            return;
+        }
+
+        //选择多行区域
+        if (nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
+            console.log('多区域选中！！', start, end);
+        } else {
+            //选中单行区域
+            var cmdValue = $selectionElem.attr('style') || '';
+            var reg = /text-align: center;/i;
+            console.log(cmdValue, reg.test(cmdValue), 'cmdValue');
+
+            //
+            if (reg.test(cmdValue)) {
+                if (!cmdValue) {
+                    $selectionElem.removeAttr('style');
+                } else {
+                    $selectionElem.attr('style', cmdValue.replace(reg, ''));
+                }
+                $elem.removeClass('w-e-active');
+            } else {
+                $selectionElem.attr('style', cmdValue + 'text-align: center;');
+                // editor.cmd.do('justifyCenter');
+                $elem.addClass('w-e-active');
+            }
+        }
+    },
+
+    tryChangeActive: function tryChangeActive(e) {
+        var editor = this.editor;
+        var $elem = this.$elem;
+        // const $selectionELem = editor.selection.getSelectionContainerElem()
+        var cmdValue = editor.cmd.queryCommandState('justifyCenter');
+
+        // console.log($elem, 'cmdValue:' + cmdValue, $selectionELem, editor.cmd.queryCommandState('justifyCenter'));
+        if (cmdValue) {
+            this._active = true;
+            $elem.addClass('w-e-active');
+        } else {
+            this._active = false;
+            $elem.removeClass('w-e-active');
+        }
+    }
+};
+
+/*
     所有菜单的汇总
 */
 
@@ -3234,7 +1983,8 @@ var MenuConstructors = {};
 
 MenuConstructors.bold = Bold;
 
-MenuConstructors.placeholders = Placeholders;
+// import Placeholders from './placeholders/index.js'
+// MenuConstructors.placeholders = Placeholders
 
 MenuConstructors.head = Head;
 
@@ -3242,43 +1992,57 @@ MenuConstructors.subhead = Subhead;
 
 MenuConstructors.splitLine = SplitLine;
 
-MenuConstructors.fontSize = FontSize;
+// import FontSize from './fontSize/index.js'
+// MenuConstructors.fontSize = FontSize
 
-MenuConstructors.fontName = FontName;
+// import FontName from './fontName/index.js'
+// MenuConstructors.fontName = FontName
 
-MenuConstructors.link = Link;
+// import Link from './link/index.js'
+// MenuConstructors.link = Link
 
-MenuConstructors.italic = Italic;
+// import Italic from './italic/index.js'
+// MenuConstructors.italic = Italic
 
 MenuConstructors.redo = Redo;
 
-MenuConstructors.strikeThrough = StrikeThrough;
+// import StrikeThrough from './strikethrough/index.js'
+// MenuConstructors.strikeThrough = StrikeThrough
 
-MenuConstructors.underline = Underline;
+// import Underline from './underline/index.js'
+// MenuConstructors.underline = Underline
 
 MenuConstructors.undo = Undo;
 
 MenuConstructors.list = List;
 
-MenuConstructors.justify = Justify;
+// import Justify from './justify/index.js'
+// MenuConstructors.justify = Justify
 
-MenuConstructors.foreColor = ForeColor;
+// import ForeColor from './foreColor/index.js'
+// MenuConstructors.foreColor = ForeColor
 
-MenuConstructors.backColor = BackColor;
+// import BackColor from './backColor/index.js'
+// MenuConstructors.backColor = BackColor
 
 MenuConstructors.quote = Quote;
 
-MenuConstructors.code = Code;
+// import Code from './code/index.js'
+// MenuConstructors.code = Code
 
-MenuConstructors.emoticon = Emoticon;
+// import Emoticon from './emoticon/index.js'
+// MenuConstructors.emoticon = Emoticon
 
-MenuConstructors.table = Table;
+// import Table from './table/index.js'
+// MenuConstructors.table = Table
 
 MenuConstructors.video = Video;
 
 MenuConstructors.image = Image;
 
 MenuConstructors.audio = Audio;
+
+MenuConstructors.justifyCenter = Justify;
 
 /*
     菜单集合
@@ -3432,14 +2196,16 @@ function getPasteHtml(e, filterStyle, ignoreImg) {
         pasteText = clipboardData.getData('text/plain');
     }
 
+    // console.log(pasteText, 'pasteText')
     pasteHtml = '';
     if (pasteText) {
         pasteText.split('\n').forEach(function (item) {
-            if (item) {
+            if (item && item !== '\n') {
                 pasteHtml += '<p>' + replaceHtmlSymbol(item) + '</p>';
             }
         });
     }
+
     if (!pasteHtml) {
         return;
     }
@@ -3454,6 +2220,8 @@ function getPasteHtml(e, filterStyle, ignoreImg) {
     pasteHtml = pasteHtml.replace(/<(meta|script|link).+?>/igm, '');
     // 去掉注释
     pasteHtml = pasteHtml.replace(/<!--.*?-->/mg, '');
+    // 去掉空的p标签
+    pasteHtml = pasteHtml.replace(/<p>[\s\t\n]{1}<\/p>/mg, '');
     // 过滤 data-xxx 属性
     pasteHtml = pasteHtml.replace(/\s?data-.+?=('|").+?('|")/igm, '');
 
@@ -3872,6 +2640,7 @@ Text.prototype = {
             var pasteHtml = getPasteHtml(e, pasteFilterStyle, ignoreImg);
             var pasteText = getPasteText(e);
             pasteText = pasteText.replace(/\n/gm, '<br>');
+            // console.log(e, '文字粘贴', pasteHtml);
 
             var $selectionElem = editor.selection.getSelectionContainerElem();
             if (!$selectionElem) {
@@ -3971,6 +2740,8 @@ Text.prototype = {
             if (!canDo()) {
                 return;
             }
+
+            console.log(e, '粘贴图片');
 
             // 获取粘贴的图片
             var pasteFiles = getPasteImgs(e);
