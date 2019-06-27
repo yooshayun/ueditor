@@ -251,6 +251,11 @@ DomElement.prototype = {
         });
     },
 
+    getClass: function getClass() {
+        if (this[0].className) {
+            return this[0].className || '';
+        }
+    },
     // 添加 class
     addClass: function addClass(className) {
         if (!className) {
@@ -318,7 +323,10 @@ DomElement.prototype = {
             return attrValue;
         }
         //添加修改属性
-        var currentStyle = key + ':' + val + ';';
+        var currentStyle = '';
+        if (val) {
+            currentStyle = key + ':' + val + ';';
+        }
         return this.forEach(function (elem) {
             var style = (elem.getAttribute('style') || '').trim();
             var styleArr = void 0,
@@ -2011,7 +2019,7 @@ Justify.prototype = {
         //只判断选区中的 文本区域 H1，H2, P
         arr = list.filter(function (elem) {
             var name = elem.getNodeName();
-            return name == 'H1' || name == 'P' || name == 'H2';
+            return name === 'H1' || name === 'P' || name === 'H2';
         });
         bool = arr.every(function (elem) {
             return elem.css('text-align') === 'center';
@@ -2023,7 +2031,6 @@ Justify.prototype = {
         var editor = this.editor;
         var $elem = this.$elem;
         var $selectionELem = editor.selection.getSelectionListElem();
-        // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
 
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
@@ -2355,6 +2362,7 @@ Menus.prototype = {
                         return;
                     }
                     menu.onClick(e);
+                    // this.changeActive();
                 });
             }
 
@@ -3307,9 +3315,25 @@ API.prototype = {
     getSelectionListElem: function getSelectionListElem(range) {
         range = range || this._currentRange;
         var elems = [],
-            start = this.getSelectionStartElem()[0],
-            end = this.getSelectionEndElem()[0],
+            start = null,
+            end = null,
+            content = null;
+        var $content = this.getSelectionContainerElem();
+        //判断当前选区是否是在编辑区的一级dom中
+        if ($content.parent().getNodeName() == 'DIV' && $content.parent().getClass().indexOf('w-e-text') >= 0) {
+            start = this.getSelectionStartElem()[0];
+            end = this.getSelectionEndElem()[0];
             content = this.getSelectionContainerElem()[0];
+        } else {
+            var dom = $content;
+            while (dom.getNodeName() !== 'DIV' || dom.getClass().indexOf('w-e-text') == -1) {
+                dom = dom.parent();
+            }
+            content = $content.parent()[0];
+            start = content;
+            end = content;
+        }
+        // console.log(content, start, end);
         if (start === end) {
             //选择单个dom，返回光标所在dom
             if (content.nodeType === 1) {
@@ -3330,10 +3354,10 @@ API.prototype = {
                 }
             }
             for (var j = startIndex; j <= endIndex; j++) {
-                var dom = $(arr[j]);
-                var name = dom.getNodeName();
+                var _dom = $(arr[j]);
+                var name = _dom.getNodeName();
                 if (name == 'P' || name == 'H1' || name == 'H2') {
-                    elems.push(dom);
+                    elems.push(_dom);
                 }
             }
         }

@@ -200,6 +200,11 @@ DomElement.prototype = {
         })
     },
 
+    getClass: function() {
+        if (this[0].className) {
+            return this[0].className || ''
+        }
+    },
     // 添加 class
     addClass: function(className) {
         if (!className) {
@@ -267,7 +272,10 @@ DomElement.prototype = {
             return attrValue
         }
         //添加修改属性
-        const currentStyle = `${key}:${val};`
+        let currentStyle = '';
+        if(val) {
+            currentStyle = `${key}:${val};`        
+        }
         return this.forEach(elem => {
             const style = (elem.getAttribute('style') || '').trim()
             let styleArr, resultArr = []

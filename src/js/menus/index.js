@@ -75,7 +75,9 @@ Menus.prototype = {
                         return
                     }
                     menu.onClick(e)
+                    // this.changeActive();
                 })
+                
             }
 
             // 下拉框，例如 head

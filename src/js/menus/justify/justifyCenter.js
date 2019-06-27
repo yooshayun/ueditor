@@ -64,7 +64,7 @@ Justify.prototype = {
         //只判断选区中的 文本区域 H1，H2, P
         arr = list.filter(elem => {
             let name = elem.getNodeName();
-            return name == 'H1' || name == 'P' || name == 'H2'
+            return name === 'H1' || name === 'P' || name === 'H2'
         })
         bool = arr.every(elem => {
             return elem.css('text-align') === 'center'
@@ -76,7 +76,6 @@ Justify.prototype = {
         const editor = this.editor
         const $elem = this.$elem;
         const $selectionELem = editor.selection.getSelectionListElem()
-        // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
         
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true

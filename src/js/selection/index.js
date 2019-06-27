@@ -111,9 +111,25 @@ API.prototype = {
     getSelectionListElem: function(range) {
         range = range || this._currentRange
         let elems = [],
-        start = this.getSelectionStartElem()[0],
-        end = this.getSelectionEndElem()[0],
-        content = this.getSelectionContainerElem()[0];
+        start = null,
+        end = null,
+        content = null;
+        let $content = this.getSelectionContainerElem();
+        //判断当前选区是否是在编辑区的一级dom中
+        if($content.parent().getNodeName() == 'DIV' && $content.parent().getClass().indexOf('w-e-text') >= 0) {
+            start = this.getSelectionStartElem()[0];
+            end = this.getSelectionEndElem()[0];
+            content = this.getSelectionContainerElem()[0];
+        } else {
+            let dom = $content;
+            while(dom.getNodeName() !== 'DIV' || dom.getClass().indexOf('w-e-text') == -1) {
+                dom = dom.parent();
+            }
+            content = $content.parent()[0];
+            start = content;
+            end = content;
+        }
+        // console.log(content, start, end);
         if(start === end) {
             //选择单个dom，返回光标所在dom
             if(content.nodeType === 1) {
