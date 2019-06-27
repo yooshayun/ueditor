@@ -21,76 +21,64 @@ Justify.prototype = {
 
     onClick: function (e) {
         const editor = this.editor
-        const $selectionElem = editor.selection.getSelectionContainerElem();
-        const nodeName = $selectionElem.getNodeName();
+        const $selectionElem = editor.selection.getSelectionListElem();
         const $elem = this.$elem;
-        let start = editor.selection.getSelectionStartElem()[0];
-        let end = editor.selection.getSelectionEndElem()[0];
-        const range = editor.selection.getRange();
-        console.log(nodeName, $selectionElem, start, end);
-
-        //对引用内容不生效
-        if (nodeName === 'BLOCKQUOTE') {
-            return;
-        }
-
-        //选择多行区域
-        if(nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
-            console.log('多区域选中！！', $selectionElem[0].children, start, end);
-            let arr = $selectionElem[0].children, length = arr.length;
-            let startIndex = 0, endIndex = length, selectionDom = [];
-            for(let i = 0; i < length; i++) {
-                if(arr[i] == start) {
-                    startIndex = i;
-                }
-                if(arr[i] == end) {
-                    endIndex = i;
-                }
-            }
-            let isCenter = true; //判断当前区域的状态  只要有一个不居中，则不是居中状态。 false布局中，true居中 
-            for(let i = startIndex; i <= endIndex; i++) {
-                let dom = $(arr[i]);
-                // console.log(dom, dom.getNodeName())
-                selectionDom.push(dom);
-                let cmdValue = dom.attr('style') || '';
-                let reg = /text-align: center;/i;
-                if(!reg.test(cmdValue) && dom.getNodeName() == 'P') {
-                    isCenter = false;
-                }
-            }
-            
-
-            console.log(startIndex, endIndex, selectionDom, 'selectionDom');
-        } else {
+        const lengthElem = $selectionElem.length;
+              
+        if(lengthElem == 1) {
             //选中单行区域
-            const cmdValue = $selectionElem.attr('style') || '';
-            const reg = /text-align: center;/i;
-            console.log(cmdValue, reg.test(cmdValue), 'cmdValue');
 
-            //
-            if(reg.test(cmdValue)) {
-                if(!cmdValue) {
-                    $selectionElem.removeAttr('style');
-                } else {
-                    $selectionElem.attr('style', cmdValue.replace(reg, ''));
-                }
+            if(this.isJustifyCenter($selectionElem)) {
+                $selectionElem[0].css('text-align', '');
                 $elem.removeClass('w-e-active');
             } else {
-                $selectionElem.attr('style', cmdValue + 'text-align: center;');
+                $selectionElem[0].css('text-align', 'center');
+                // editor.cmd.do('justifyCenter');
+                $elem.addClass('w-e-active');
+            }
+
+        } else {
+            //选择多行区域
+
+            if(this.isJustifyCenter($selectionElem)) {
+                $selectionElem.forEach(element => {
+                    element.css('text-align', '');
+                });
+                $elem.removeClass('w-e-active');
+            } else {
+                $selectionElem.forEach(element => {
+                    element.css('text-align', 'center');
+                });
                 // editor.cmd.do('justifyCenter');
                 $elem.addClass('w-e-active');
             }
         }
+
+        editor.selection.restoreSelection();
+    },
+
+    //判断选中区域是否处于居中状态
+    isJustifyCenter: function(list) {
+        let bool = false;
+        let arr = [];
+        //只判断选区中的 文本区域 H1，H2, P
+        arr = list.filter(elem => {
+            let name = elem.getNodeName();
+            return name == 'H1' || name == 'P' || name == 'H2'
+        })
+        bool = arr.every(elem => {
+            return elem.css('text-align') === 'center'
+        })
+        return bool
     },
 
     tryChangeActive: function (e) {
         const editor = this.editor
         const $elem = this.$elem;
-        // const $selectionELem = editor.selection.getSelectionContainerElem()
-        const cmdValue = editor.cmd.queryCommandState('justifyCenter');
+        const $selectionELem = editor.selection.getSelectionListElem()
+        // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
         
-        // console.log($elem, 'cmdValue:' + cmdValue, $selectionELem, editor.cmd.queryCommandState('justifyCenter'));
-        if (cmdValue) {
+        if (this.isJustifyCenter($selectionELem)) {
             this._active = true
             $elem.addClass('w-e-active')
         } else {

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>wangEditor test onblur</title>
+    <link rel="stylesheet" href="/content.css">
 </head>
 <body>
     <div id="div1">
@@ -11,6 +12,7 @@
     <button id="getContent">获取文档内容</button>
 
     <script type="text/javascript" src="/wangEditor.js"></script>
+    <script type="text/javascript" src="/ueditorDom.js"></script>
     <script>
     window.onload = () => {
 
@@ -25,7 +27,9 @@
             'image',
             'video',
             'audio',
+            'justifyLeft',
             'justifyCenter',
+            'justifyRight',
             'undo',
             'redo'
         ]

@@ -476,7 +476,7 @@ Text.prototype = {
                 return
             }
 
-            console.log(e, '粘贴图片');
+            // console.log(e, '粘贴图片');
 
             // 获取粘贴的图片
             const pasteFiles = getPasteImgs(e)

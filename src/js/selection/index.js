@@ -107,6 +107,43 @@ API.prototype = {
             )
         }
     },
+    //获取选中区域的所有一级dom
+    getSelectionListElem: function(range) {
+        range = range || this._currentRange
+        let elems = [],
+        start = this.getSelectionStartElem()[0],
+        end = this.getSelectionEndElem()[0],
+        content = this.getSelectionContainerElem()[0];
+        if(start === end) {
+            //选择单个dom，返回光标所在dom
+            if(content.nodeType === 1) {
+                elems.push($(content))
+            }
+        } else {
+            //选择多个dom 包含起始位置的所有dom
+            let arr = content.children, 
+            length = arr.length;
+            let startIndex = 0, 
+            endIndex = length;
+            for(let i = 0; i < length; i++) {
+                if(arr[i] == start) {
+                    startIndex = i;
+                }
+                if(arr[i] == end) {
+                    endIndex = i;
+                }
+            }
+            for(let j = startIndex; j <= endIndex; j++) {
+                let dom = $(arr[j]);
+                let name = dom.getNodeName();
+                if(name == 'P' || name == 'H1' || name == 'H2') {
+                    elems.push(dom);
+                }
+            }
+        }
+
+        return elems
+    },
 
     // 选区是否为空
     isSelectionEmpty: function () {

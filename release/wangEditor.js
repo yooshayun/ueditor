@@ -300,8 +300,24 @@ DomElement.prototype = {
         });
     },
 
-    // 修改 css
+    // 读取/修改 css
     css: function css(key, val) {
+        //val为undefined时 读取属性
+        if (val === undefined) {
+            var styleString = (this[0].getAttribute('style') || '').trim();
+            var attrValue = '',
+                attrArr = styleString.split(';');
+            attrArr.forEach(function (item) {
+                var arr = item.split(':').map(function (i) {
+                    return i.trim();
+                });
+                if (arr.length == 2 && arr[0] && arr[1] && arr[0].trim() == key) {
+                    attrValue = arr[1].trim();
+                }
+            });
+            return attrValue;
+        }
+        //添加修改属性
         var currentStyle = key + ':' + val + ';';
         return this.forEach(function (elem) {
             var style = (elem.getAttribute('style') || '').trim();
@@ -315,7 +331,7 @@ DomElement.prototype = {
                     var arr = item.split(':').map(function (i) {
                         return i.trim();
                     });
-                    if (arr.length === 2) {
+                    if (arr.length === 2 && arr[0] && arr[1]) {
                         resultArr.push(arr[0] + ':' + arr[1]);
                     }
                 });
@@ -552,7 +568,7 @@ $.offAll = function () {
 var config = {
 
     // 默认菜单配置
-    menus: ['bold', 'head', 'subhead', 'justify', 'quote', 'splitLine', 'image', 'video', 'audio', 'justifyCenter', 'undo', 'redo'],
+    menus: ['bold', 'head', 'subhead', 'justify', 'quote', 'splitLine', 'image', 'video', 'audio', 'justifyLeft', 'justifyCenter', 'justifyRight', 'undo', 'redo'],
 
     fontNames: ['宋体', '微软雅黑', 'Arial', 'Tahoma', 'Verdana'],
 
@@ -889,14 +905,48 @@ Head.prototype = {
     // 执行命令
     _command: function _command(value) {
         var editor = this.editor;
+        var $selectionElem = editor.selection.getSelectionContainerElem();
+        var nodeName = $selectionElem.getNodeName();
+        var $elem = this.$elem;
+        //选区
+        var start = editor.selection.getSelectionStartElem()[0];
+        var end = editor.selection.getSelectionEndElem()[0];
 
-        // const $selectionElem = editor.selection.getSelectionContainerElem()
-        // console.log($selectionElem, editor.$textElem.equal($selectionElem));
-        // if (editor.$textElem.equal($selectionElem)) {
-        //     // 不能选中多行来设置标题，否则会出现问题
-        //     // 例如选中的是 <p>xxx</p><p>yyy</p> 来设置标题，设置之后会成为 <h1>xxx<br>yyy</h1> 不符合预期
-        //     return
-        // }
+        //对引用内容不生效
+        if (nodeName === 'BLOCKQUOTE') {
+            return;
+        }
+
+        //选择多行区域
+        if (nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
+            // console.log('多区域选中！！', $selectionElem[0].children, start, end);
+            var arr = $selectionElem[0].children,
+                length = arr.length;
+            var startIndex = 0,
+                endIndex = length,
+                selectionDom = [];
+            for (var i = 0; i < length; i++) {
+                if (arr[i] == start) {
+                    startIndex = i;
+                }
+                if (arr[i] == end) {
+                    endIndex = i;
+                }
+            }
+            var isCenter = true; //判断当前区域的状态  只要有一个不居中，则不是居中状态。 false布局中，true居中 
+
+            for (var _i = startIndex; _i <= endIndex; _i++) {
+                var dom = $(arr[_i]);
+                // console.log(dom, dom.getNodeName())
+                var name = dom.getNodeName();
+                if (name == 'P' || name == 'H1' || name == 'H2') {}
+            }
+            if (isCenter) {} else {}
+            // console.log(startIndex, endIndex, selectionDom, 'selectionDom');
+        } else {
+                //选中单行区域
+
+            }
 
         editor.cmd.do('formatBlock', value);
     },
@@ -1919,78 +1969,233 @@ Justify.prototype = {
 
     onClick: function onClick(e) {
         var editor = this.editor;
-        var $selectionElem = editor.selection.getSelectionContainerElem();
-        var nodeName = $selectionElem.getNodeName();
+        var $selectionElem = editor.selection.getSelectionListElem();
         var $elem = this.$elem;
-        var start = editor.selection.getSelectionStartElem()[0];
-        var end = editor.selection.getSelectionEndElem()[0];
-        var range = editor.selection.getRange();
-        console.log(nodeName, $selectionElem, start, end);
+        var lengthElem = $selectionElem.length;
 
-        //对引用内容不生效
-        if (nodeName === 'BLOCKQUOTE') {
-            return;
-        }
-
-        //选择多行区域
-        if (nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
-            console.log('多区域选中！！', $selectionElem[0].children, start, end);
-            var arr = $selectionElem[0].children,
-                length = arr.length;
-            var startIndex = 0,
-                endIndex = length,
-                selectionDom = [];
-            for (var i = 0; i < length; i++) {
-                if (arr[i] == start) {
-                    startIndex = i;
-                }
-                if (arr[i] == end) {
-                    endIndex = i;
-                }
-            }
-            var isCenter = true; //判断当前区域的状态  只要有一个不居中，则不是居中状态。 false布局中，true居中 
-            for (var _i = startIndex; _i <= endIndex; _i++) {
-                var dom = $(arr[_i]);
-                // console.log(dom, dom.getNodeName())
-                selectionDom.push(dom);
-                var cmdValue = dom.attr('style') || '';
-                var reg = /text-align: center;/i;
-                if (!reg.test(cmdValue) && dom.getNodeName() == 'P') {
-                    isCenter = false;
-                }
-            }
-
-            console.log(startIndex, endIndex, selectionDom, 'selectionDom');
-        } else {
+        if (lengthElem == 1) {
             //选中单行区域
-            var _cmdValue = $selectionElem.attr('style') || '';
-            var _reg = /text-align: center;/i;
-            console.log(_cmdValue, _reg.test(_cmdValue), 'cmdValue');
 
-            //
-            if (_reg.test(_cmdValue)) {
-                if (!_cmdValue) {
-                    $selectionElem.removeAttr('style');
-                } else {
-                    $selectionElem.attr('style', _cmdValue.replace(_reg, ''));
-                }
+            if (this.isJustifyCenter($selectionElem)) {
+                $selectionElem[0].css('text-align', '');
                 $elem.removeClass('w-e-active');
             } else {
-                $selectionElem.attr('style', _cmdValue + 'text-align: center;');
+                $selectionElem[0].css('text-align', 'center');
+                // editor.cmd.do('justifyCenter');
+                $elem.addClass('w-e-active');
+            }
+        } else {
+            //选择多行区域
+
+            if (this.isJustifyCenter($selectionElem)) {
+                $selectionElem.forEach(function (element) {
+                    element.css('text-align', '');
+                });
+                $elem.removeClass('w-e-active');
+            } else {
+                $selectionElem.forEach(function (element) {
+                    element.css('text-align', 'center');
+                });
                 // editor.cmd.do('justifyCenter');
                 $elem.addClass('w-e-active');
             }
         }
+
+        editor.selection.restoreSelection();
+    },
+
+    //判断选中区域是否处于居中状态
+    isJustifyCenter: function isJustifyCenter(list) {
+        var bool = false;
+        var arr = [];
+        //只判断选区中的 文本区域 H1，H2, P
+        arr = list.filter(function (elem) {
+            var name = elem.getNodeName();
+            return name == 'H1' || name == 'P' || name == 'H2';
+        });
+        bool = arr.every(function (elem) {
+            return elem.css('text-align') === 'center';
+        });
+        return bool;
     },
 
     tryChangeActive: function tryChangeActive(e) {
         var editor = this.editor;
         var $elem = this.$elem;
-        // const $selectionELem = editor.selection.getSelectionContainerElem()
-        var cmdValue = editor.cmd.queryCommandState('justifyCenter');
+        var $selectionELem = editor.selection.getSelectionListElem();
+        // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
 
-        // console.log($elem, 'cmdValue:' + cmdValue, $selectionELem, editor.cmd.queryCommandState('justifyCenter'));
-        if (cmdValue) {
+        if (this.isJustifyCenter($selectionELem)) {
+            this._active = true;
+            $elem.addClass('w-e-active');
+        } else {
+            this._active = false;
+            $elem.removeClass('w-e-active');
+        }
+    }
+};
+
+/*
+    menu - justify
+*/
+// 构造函数
+function Justify$1(editor) {
+    this.editor = editor;
+    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-left"></i></div>');
+    this.type = 'click';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+// 原型
+Justify$1.prototype = {
+    constructor: Justify$1,
+
+    onClick: function onClick(e) {
+        var editor = this.editor;
+        var $selectionElem = editor.selection.getSelectionListElem();
+        var $elem = this.$elem;
+        var lengthElem = $selectionElem.length;
+
+        if (lengthElem == 1) {
+            //选中单行区域
+
+            if (this.isJustifyCenter($selectionElem)) {
+                $selectionElem[0].css('text-align', '');
+                $elem.removeClass('w-e-active');
+            } else {
+                $selectionElem[0].css('text-align', 'left');
+                // editor.cmd.do('justifyCenter');
+                $elem.addClass('w-e-active');
+            }
+        } else {
+            //选择多行区域
+
+            if (this.isJustifyCenter($selectionElem)) {
+                $selectionElem.forEach(function (element) {
+                    element.css('text-align', '');
+                });
+                $elem.removeClass('w-e-active');
+            } else {
+                $selectionElem.forEach(function (element) {
+                    element.css('text-align', 'left');
+                });
+                // editor.cmd.do('justifyCenter');
+                $elem.addClass('w-e-active');
+            }
+        }
+
+        editor.selection.restoreSelection();
+    },
+
+    //判断选中区域是否处于居中状态
+    isJustifyCenter: function isJustifyCenter(list) {
+        var bool = false;
+        var arr = [];
+        //只判断选区中的 文本区域 H1，H2, P
+        arr = list.filter(function (elem) {
+            var name = elem.getNodeName();
+            return name == 'H1' || name == 'P' || name == 'H2';
+        });
+        bool = arr.every(function (elem) {
+            return elem.css('text-align') === 'left';
+        });
+        return bool;
+    },
+
+    tryChangeActive: function tryChangeActive(e) {
+        var editor = this.editor;
+        var $elem = this.$elem;
+        var $selectionELem = editor.selection.getSelectionListElem();
+        // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
+
+        if (this.isJustifyCenter($selectionELem)) {
+            this._active = true;
+            $elem.addClass('w-e-active');
+        } else {
+            this._active = false;
+            $elem.removeClass('w-e-active');
+        }
+    }
+};
+
+/*
+    menu - justify
+*/
+// 构造函数
+function Justify$2(editor) {
+    this.editor = editor;
+    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-right"></i></div>');
+    this.type = 'click';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+// 原型
+Justify$2.prototype = {
+    constructor: Justify$2,
+
+    onClick: function onClick(e) {
+        var editor = this.editor;
+        var $selectionElem = editor.selection.getSelectionListElem();
+        var $elem = this.$elem;
+        var lengthElem = $selectionElem.length;
+
+        if (lengthElem == 1) {
+            //选中单行区域
+
+            if (this.isJustifyCenter($selectionElem)) {
+                $selectionElem[0].css('text-align', '');
+                $elem.removeClass('w-e-active');
+            } else {
+                $selectionElem[0].css('text-align', 'right');
+                // editor.cmd.do('justifyCenter');
+                $elem.addClass('w-e-active');
+            }
+        } else {
+            //选择多行区域
+
+            if (this.isJustifyCenter($selectionElem)) {
+                $selectionElem.forEach(function (element) {
+                    element.css('text-align', '');
+                });
+                $elem.removeClass('w-e-active');
+            } else {
+                $selectionElem.forEach(function (element) {
+                    element.css('text-align', 'right');
+                });
+                // editor.cmd.do('justifyCenter');
+                $elem.addClass('w-e-active');
+            }
+        }
+
+        editor.selection.restoreSelection();
+    },
+
+    //判断选中区域是否处于居中状态
+    isJustifyCenter: function isJustifyCenter(list) {
+        var bool = false;
+        var arr = [];
+        //只判断选区中的 文本区域 H1，H2, P
+        arr = list.filter(function (elem) {
+            var name = elem.getNodeName();
+            return name == 'H1' || name == 'P' || name == 'H2';
+        });
+        bool = arr.every(function (elem) {
+            return elem.css('text-align') === 'right';
+        });
+        return bool;
+    },
+
+    tryChangeActive: function tryChangeActive(e) {
+        var editor = this.editor;
+        var $elem = this.$elem;
+        var $selectionELem = editor.selection.getSelectionListElem();
+        // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
+
+        if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
             $elem.addClass('w-e-active');
         } else {
@@ -2069,6 +2274,10 @@ MenuConstructors.image = Image;
 MenuConstructors.audio = Audio;
 
 MenuConstructors.justifyCenter = Justify;
+
+MenuConstructors.justifyLeft = Justify$1;
+
+MenuConstructors.justifyRight = Justify$2;
 
 /*
     菜单集合
@@ -2248,6 +2457,8 @@ function getPasteHtml(e, filterStyle, ignoreImg) {
     pasteHtml = pasteHtml.replace(/<!--.*?-->/mg, '');
     // 去掉空的p标签
     pasteHtml = pasteHtml.replace(/<p>[\s\t\n]{1}<\/p>/mg, '');
+    //去掉非法字符
+    pasteHtml = pasteHtml.replace(/\u200B/g, '');
     // 过滤 data-xxx 属性
     pasteHtml = pasteHtml.replace(/\s?data-.+?=('|").+?('|")/igm, '');
 
@@ -2767,7 +2978,7 @@ Text.prototype = {
                 return;
             }
 
-            console.log(e, '粘贴图片');
+            // console.log(e, '粘贴图片');
 
             // 获取粘贴的图片
             var pasteFiles = getPasteImgs(e);
@@ -3091,6 +3302,43 @@ API.prototype = {
             elem = range.endContainer;
             return $(elem.nodeType === 1 ? elem : elem.parentNode);
         }
+    },
+    //获取选中区域的所有一级dom
+    getSelectionListElem: function getSelectionListElem(range) {
+        range = range || this._currentRange;
+        var elems = [],
+            start = this.getSelectionStartElem()[0],
+            end = this.getSelectionEndElem()[0],
+            content = this.getSelectionContainerElem()[0];
+        if (start === end) {
+            //选择单个dom，返回光标所在dom
+            if (content.nodeType === 1) {
+                elems.push($(content));
+            }
+        } else {
+            //选择多个dom 包含起始位置的所有dom
+            var arr = content.children,
+                length = arr.length;
+            var startIndex = 0,
+                endIndex = length;
+            for (var i = 0; i < length; i++) {
+                if (arr[i] == start) {
+                    startIndex = i;
+                }
+                if (arr[i] == end) {
+                    endIndex = i;
+                }
+            }
+            for (var j = startIndex; j <= endIndex; j++) {
+                var dom = $(arr[j]);
+                var name = dom.getNodeName();
+                if (name == 'P' || name == 'H1' || name == 'H2') {
+                    elems.push(dom);
+                }
+            }
+        }
+
+        return elems;
     },
 
     // 选区是否为空

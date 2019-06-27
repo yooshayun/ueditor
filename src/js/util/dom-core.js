@@ -249,8 +249,24 @@ DomElement.prototype = {
         })
     },
 
-    // 修改 css
+    // 读取/修改 css
     css: function (key, val) {
+        //val为undefined时 读取属性
+        if(val === undefined) {
+            let styleString = (this[0].getAttribute('style') || '').trim();
+            let attrValue = '',
+            attrArr = styleString.split(';');
+            attrArr.forEach(item => {
+                let arr = item.split(':').map(i => {
+                    return i.trim()
+                })
+                if(arr.length == 2 && arr[0] && arr[1] && arr[0].trim() == key) {
+                    attrValue = arr[1].trim();
+                }
+            })
+            return attrValue
+        }
+        //添加修改属性
         const currentStyle = `${key}:${val};`
         return this.forEach(elem => {
             const style = (elem.getAttribute('style') || '').trim()
@@ -263,7 +279,7 @@ DomElement.prototype = {
                     let arr = item.split(':').map(i => {
                         return i.trim()
                     })
-                    if (arr.length === 2) {
+                    if (arr.length === 2 && arr[0] && arr[1]) {
                         resultArr.push(arr[0] + ':' + arr[1])
                     }
                 })

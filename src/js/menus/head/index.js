@@ -29,14 +29,51 @@ Head.prototype = {
     // 执行命令
     _command: function (value) {
         const editor = this.editor
+        const $selectionElem = editor.selection.getSelectionContainerElem();
+        const nodeName = $selectionElem.getNodeName();
+        const $elem = this.$elem;
+        //选区
+        let start = editor.selection.getSelectionStartElem()[0];
+        let end = editor.selection.getSelectionEndElem()[0];
+        
+        //对引用内容不生效
+        if (nodeName === 'BLOCKQUOTE') {
+            return;
+        }
 
-        // const $selectionElem = editor.selection.getSelectionContainerElem()
-        // console.log($selectionElem, editor.$textElem.equal($selectionElem));
-        // if (editor.$textElem.equal($selectionElem)) {
-        //     // 不能选中多行来设置标题，否则会出现问题
-        //     // 例如选中的是 <p>xxx</p><p>yyy</p> 来设置标题，设置之后会成为 <h1>xxx<br>yyy</h1> 不符合预期
-        //     return
-        // }
+        //选择多行区域
+        if(nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
+            // console.log('多区域选中！！', $selectionElem[0].children, start, end);
+            let arr = $selectionElem[0].children, length = arr.length;
+            let startIndex = 0, endIndex = length, selectionDom = [];
+            for(let i = 0; i < length; i++) {
+                if(arr[i] == start) {
+                    startIndex = i;
+                }
+                if(arr[i] == end) {
+                    endIndex = i;
+                }
+            }
+            let isCenter = true; //判断当前区域的状态  只要有一个不居中，则不是居中状态。 false布局中，true居中 
+            
+            for(let i = startIndex; i <= endIndex; i++) {
+                let dom = $(arr[i]);
+                // console.log(dom, dom.getNodeName())
+                let name = dom.getNodeName();
+                if(name == 'P' || name == 'H1' || name == 'H2') {
+                    
+                }
+            }
+            if(isCenter) {
+                
+            } else {
+                
+            }
+            // console.log(startIndex, endIndex, selectionDom, 'selectionDom');
+        } else {
+            //选中单行区域
+            
+        }
 
         editor.cmd.do('formatBlock', value)
     },

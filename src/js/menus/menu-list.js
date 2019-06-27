@@ -80,5 +80,11 @@ MenuConstructors.audio = Audio
 import justifyCenter from './justify/justifyCenter'
 MenuConstructors.justifyCenter = justifyCenter
 
+import justifyLeft from './justify/justifyLeft'
+MenuConstructors.justifyLeft = justifyLeft
+
+import justifyRight from './justify/justifyRight'
+MenuConstructors.justifyRight = justifyRight
+
 // 所有菜单集合
 export default MenuConstructors

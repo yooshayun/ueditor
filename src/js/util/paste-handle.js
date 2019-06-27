@@ -55,6 +55,8 @@ export function getPasteHtml(e, filterStyle, ignoreImg) {
     pasteHtml = pasteHtml.replace(/<!--.*?-->/mg, '')
     // 去掉空的p标签
     pasteHtml = pasteHtml.replace(/<p>[\s\t\n]{1}<\/p>/mg, '')
+    //去掉非法字符
+    pasteHtml = pasteHtml.replace(/\u200B/g,'')
     // 过滤 data-xxx 属性
     pasteHtml = pasteHtml.replace(/\s?data-.+?=('|").+?('|")/igm, '')
 

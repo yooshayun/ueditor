@@ -15,7 +15,9 @@ const config = {
         'image',
         'video',
         'audio',
+        'justifyLeft',
         'justifyCenter',
+        'justifyRight',
         'undo',
         'redo',
         
