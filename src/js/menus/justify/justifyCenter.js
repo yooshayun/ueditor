@@ -76,7 +76,6 @@ Justify.prototype = {
         const editor = this.editor
         const $elem = this.$elem;
         const $selectionELem = editor.selection.getSelectionListElem()
-        console.log($selectionELem)
         
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true

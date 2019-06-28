@@ -77,7 +77,6 @@ Justify.prototype = {
         const $elem = this.$elem;
         const $selectionELem = editor.selection.getSelectionListElem()
         // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
-        console.log($selectionELem)
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true
             $elem.addClass('w-e-active')

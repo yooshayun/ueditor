@@ -2036,7 +2036,6 @@ Justify.prototype = {
         var editor = this.editor;
         var $elem = this.$elem;
         var $selectionELem = editor.selection.getSelectionListElem();
-        console.log($selectionELem);
 
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
@@ -2122,7 +2121,6 @@ Justify$1.prototype = {
         var $elem = this.$elem;
         var $selectionELem = editor.selection.getSelectionListElem();
         // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
-        console.log($selectionELem);
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
             $elem.addClass('w-e-active');
@@ -2207,7 +2205,6 @@ Justify$2.prototype = {
         var $elem = this.$elem;
         var $selectionELem = editor.selection.getSelectionListElem();
         // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
-        console.log($selectionELem);
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
             $elem.addClass('w-e-active');
