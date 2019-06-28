@@ -21,8 +21,12 @@ Justify.prototype = {
 
     onClick: function (e) {
         const editor = this.editor
-        const $selectionElem = editor.selection.getSelectionListElem();
+        let $selectionElem = editor.selection.getSelectionListElem();
         const $elem = this.$elem;
+        $selectionElem = $selectionElem.filter(elem => {
+            let name = elem.getNodeName();
+            return name === 'H1' || name === 'P' || name === 'H2'
+        })
         const lengthElem = $selectionElem.length;
               
         if(lengthElem == 1) {
@@ -66,6 +70,9 @@ Justify.prototype = {
             let name = elem.getNodeName();
             return name == 'H1' || name == 'P' || name == 'H2'
         })
+        if(arr.length == 0) {
+            return false
+        }
         bool = arr.every(elem => {
             return elem.css('text-align') === 'left'
         })

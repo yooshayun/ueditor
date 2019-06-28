@@ -355,7 +355,11 @@ DomElement.prototype = {
                     resultArr.push(currentStyle);
                 }
                 // 结果
-                elem.setAttribute('style', resultArr.join('; '));
+                if (resultArr.length == 1 && resultArr[0] == '') {
+                    elem.removeAttribute('style');
+                } else {
+                    elem.setAttribute('style', resultArr.join('; '));
+                }
             } else {
                 // style 无值
                 elem.setAttribute('style', currentStyle);
@@ -918,48 +922,6 @@ Head.prototype = {
     // 执行命令
     _command: function _command(value) {
         var editor = this.editor;
-        var $selectionElem = editor.selection.getSelectionContainerElem();
-        var nodeName = $selectionElem.getNodeName();
-        var $elem = this.$elem;
-        //选区
-        var start = editor.selection.getSelectionStartElem()[0];
-        var end = editor.selection.getSelectionEndElem()[0];
-
-        //对引用内容不生效
-        if (nodeName === 'BLOCKQUOTE') {
-            return;
-        }
-
-        //选择多行区域
-        if (nodeName == 'DIV' && $selectionElem[0].className.indexOf('w-e-text') >= 0) {
-            // console.log('多区域选中！！', $selectionElem[0].children, start, end);
-            var arr = $selectionElem[0].children,
-                length = arr.length;
-            var startIndex = 0,
-                endIndex = length,
-                selectionDom = [];
-            for (var i = 0; i < length; i++) {
-                if (arr[i] == start) {
-                    startIndex = i;
-                }
-                if (arr[i] == end) {
-                    endIndex = i;
-                }
-            }
-            var isCenter = true; //判断当前区域的状态  只要有一个不居中，则不是居中状态。 false布局中，true居中 
-
-            for (var _i = startIndex; _i <= endIndex; _i++) {
-                var dom = $(arr[_i]);
-                // console.log(dom, dom.getNodeName())
-                var name = dom.getNodeName();
-                if (name == 'P' || name == 'H1' || name == 'H2') {}
-            }
-            if (isCenter) {} else {}
-            // console.log(startIndex, endIndex, selectionDom, 'selectionDom');
-        } else {
-                //选中单行区域
-
-            }
 
         editor.cmd.do('formatBlock', value);
     },
@@ -1370,23 +1332,23 @@ Quote.prototype = {
         var editor = this.editor;
         var $selectionElem = editor.selection.getSelectionContainerElem();
         var nodeName = $selectionElem.getNodeName();
-        console.log(nodeName, $selectionElem);
+        console.log(nodeName, editor.selection.getRange());
 
-        if (!UA.isIE()) {
-            if (nodeName === 'BLOCKQUOTE') {
-                // 撤销 quote
-                editor.cmd.do('formatBlock', '<P>');
-            } else {
-                // 转换为 quote
-                editor.cmd.do('formatBlock', '<BLOCKQUOTE>');
-            }
-            return;
-        }
+        // if (!UA.isIE()) {
+        //     if (nodeName === 'BLOCKQUOTE') {
+        //         // 撤销 quote
+        //         editor.cmd.do('formatBlock', '<P>')
+        //     } else {
+        //         // 转换为 quote
+        //         editor.cmd.do('formatBlock', '<BLOCKQUOTE>')
+        //     }
+        //     return
+        // }
 
         // IE 中不支持 formatBlock <BLOCKQUOTE> ，要用其他方式兼容
         var content = void 0,
             $targetELem = void 0;
-        if (nodeName === 'P') {
+        if (nodeName === 'P' || nodeName === 'H1' || nodeName === 'H2') {
             // 将 P 转换为 quote
             content = $selectionElem.text();
             $targetELem = $('<blockquote>' + content + '</blockquote>');
@@ -1984,6 +1946,11 @@ Justify.prototype = {
         var editor = this.editor;
         var $selectionElem = editor.selection.getSelectionListElem();
         var $elem = this.$elem;
+
+        $selectionElem = $selectionElem.filter(function (elem) {
+            var name = elem.getNodeName();
+            return name === 'H1' || name === 'P' || name === 'H2';
+        });
         var lengthElem = $selectionElem.length;
 
         if (lengthElem == 1) {
@@ -2026,6 +1993,9 @@ Justify.prototype = {
             var name = elem.getNodeName();
             return name === 'H1' || name === 'P' || name === 'H2';
         });
+        if (arr.length == 0) {
+            return false;
+        }
         bool = arr.every(function (elem) {
             return elem.css('text-align') === 'center';
         });
@@ -2068,6 +2038,10 @@ Justify$1.prototype = {
         var editor = this.editor;
         var $selectionElem = editor.selection.getSelectionListElem();
         var $elem = this.$elem;
+        $selectionElem = $selectionElem.filter(function (elem) {
+            var name = elem.getNodeName();
+            return name === 'H1' || name === 'P' || name === 'H2';
+        });
         var lengthElem = $selectionElem.length;
 
         if (lengthElem == 1) {
@@ -2110,6 +2084,9 @@ Justify$1.prototype = {
             var name = elem.getNodeName();
             return name == 'H1' || name == 'P' || name == 'H2';
         });
+        if (arr.length == 0) {
+            return false;
+        }
         bool = arr.every(function (elem) {
             return elem.css('text-align') === 'left';
         });
@@ -2152,6 +2129,10 @@ Justify$2.prototype = {
         var editor = this.editor;
         var $selectionElem = editor.selection.getSelectionListElem();
         var $elem = this.$elem;
+        $selectionElem = $selectionElem.filter(function (elem) {
+            var name = elem.getNodeName();
+            return name === 'H1' || name === 'P' || name === 'H2';
+        });
         var lengthElem = $selectionElem.length;
 
         if (lengthElem == 1) {
@@ -2194,6 +2175,9 @@ Justify$2.prototype = {
             var name = elem.getNodeName();
             return name == 'H1' || name == 'P' || name == 'H2';
         });
+        if (arr.length == 0) {
+            return false;
+        }
         bool = arr.every(function (elem) {
             return elem.css('text-align') === 'right';
         });
@@ -2347,6 +2331,8 @@ Menus.prototype = {
 
     // 绑定菜单 click mouseenter 事件
     _bindEvent: function _bindEvent() {
+        var _this2 = this;
+
         var menus = this.menus;
         var editor = this.editor;
         objForEach(menus, function (key, menu) {
@@ -2356,7 +2342,7 @@ Menus.prototype = {
             }
             var $elem = menu.$elem;
             var droplist = menu.droplist;
-            var panel = menu.panel;
+            // const panel = menu.panel
 
             // 点击类型，例如 bold
             if (type === 'click' && menu.onClick) {
@@ -2365,27 +2351,29 @@ Menus.prototype = {
                         return;
                     }
                     menu.onClick(e);
-                    // this.changeActive();
+                    setTimeout(function () {
+                        _this2.changeActive();
+                    }, 20);
                 });
             }
 
-            // 下拉框，例如 head
-            if (type === 'droplist' && droplist) {
-                $elem.on('mouseenter', function (e) {
-                    if (editor.selection.getRange() == null) {
-                        return;
-                    }
-                    // 显示
-                    droplist.showTimeoutId = setTimeout(function () {
-                        droplist.show();
-                    }, 200);
-                }).on('mouseleave', function (e) {
-                    // 隐藏
-                    droplist.hideTimeoutId = setTimeout(function () {
-                        droplist.hide();
-                    }, 0);
-                });
-            }
+            // // 下拉框，例如 head
+            // if (type === 'droplist' && droplist) {
+            //     $elem.on('mouseenter', e => {
+            //         if (editor.selection.getRange() == null) {
+            //             return
+            //         }
+            //         // 显示
+            //         droplist.showTimeoutId = setTimeout(() => {
+            //             droplist.show()
+            //         }, 200)
+            //     }).on('mouseleave', e => {
+            //         // 隐藏
+            //         droplist.hideTimeoutId = setTimeout(() => {
+            //             droplist.hide()
+            //         }, 0)
+            //     })
+            // }
 
             // 弹框类型，例如 link
             if (type === 'panel' && menu.onClick) {
@@ -3327,6 +3315,19 @@ API.prototype = {
             content = $('.w-e-text').children();
 
         var dom = $(range.startContainer);
+        //判断当前选区是否为全部区域
+        if (dom.getNodeType() === 1 && dom.getNodeName() === 'DIV' && dom.getClass() === 'w-e-text') {
+            var length = content.length;
+            for (var j = 0; j < length; j++) {
+                var _dom = $(content[j]);
+                var name = _dom.getNodeName();
+                if (name == 'P' || name == 'H1' || name == 'H2') {
+                    elems.push(_dom);
+                }
+            }
+            return elems;
+        }
+
         // console.log(range, dom, dom.getNodeType())
         while (dom.getNodeType() !== 1 || dom.getNodeName() !== 'DIV' || dom.getClass() !== 'w-e-text') {
             start = dom;
@@ -3339,7 +3340,6 @@ API.prototype = {
             dom1 = dom1.parent();
             // console.log('查询：', end, dom1)
         }
-
         // console.log('当前dom:', content, range, start, end);
 
         if (start[0] === end[0]) {
@@ -3349,10 +3349,10 @@ API.prototype = {
         } else {
             //选择多个dom 包含起始位置的所有dom
 
-            var length = content.length,
+            var _length = content.length,
                 startIndex = 0,
-                endIndex = length - 1;
-            for (var i = 0; i < length; i++) {
+                endIndex = _length - 1;
+            for (var i = 0; i < _length; i++) {
                 if (content[i] == start[0]) {
                     startIndex = i;
                 }
@@ -3361,11 +3361,11 @@ API.prototype = {
                 }
             }
             // console.log(content, startIndex, endIndex);
-            for (var j = startIndex; j <= endIndex; j++) {
-                var _dom = $(content[j]);
-                var name = _dom.getNodeName();
-                if (name == 'P' || name == 'H1' || name == 'H2') {
-                    elems.push(_dom);
+            for (var _j = startIndex; _j <= endIndex; _j++) {
+                var _dom2 = $(content[_j]);
+                var _name = _dom2.getNodeName();
+                if (_name == 'P' || _name == 'H1' || _name == 'H2') {
+                    elems.push(_dom2);
                 }
             }
         }

@@ -120,6 +120,19 @@ API.prototype = {
         content = $('.w-e-text').children();
 
         let dom = $(range.startContainer);
+        //判断当前选区是否为全部区域
+        if(dom.getNodeType() === 1 && dom.getNodeName() === 'DIV' && dom.getClass() === 'w-e-text') {
+            let length = content.length;
+            for(let j = 0; j < length; j++) {
+                let dom = $(content[j]);
+                let name = dom.getNodeName();
+                if(name == 'P' || name == 'H1' || name == 'H2') {
+                    elems.push(dom);
+                }
+            }
+            return elems
+        }
+
         // console.log(range, dom, dom.getNodeType())
         while(dom.getNodeType() !== 1 || dom.getNodeName() !== 'DIV' || dom.getClass() !== 'w-e-text') {
             start = dom;
@@ -132,7 +145,6 @@ API.prototype = {
             dom1 = dom1.parent();
             // console.log('查询：', end, dom1)
         }
-
         // console.log('当前dom:', content, range, start, end);
         
         if(start[0] === end[0]) {

@@ -303,7 +303,11 @@ DomElement.prototype = {
                     resultArr.push(currentStyle)
                 }
                 // 结果
-                elem.setAttribute('style', resultArr.join('; '))
+                if(resultArr.length == 1 && resultArr[0] == '') {
+                    elem.removeAttribute('style')
+                } else {
+                    elem.setAttribute('style', resultArr.join('; '))
+                }
             } else {
                 // style 无值
                 elem.setAttribute('style', currentStyle)

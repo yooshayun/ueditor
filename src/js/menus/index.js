@@ -66,7 +66,7 @@ Menus.prototype = {
             }
             const $elem = menu.$elem
             const droplist = menu.droplist
-            const panel = menu.panel
+            // const panel = menu.panel
 
             // 点击类型，例如 bold
             if (type === 'click' && menu.onClick) {
@@ -75,28 +75,30 @@ Menus.prototype = {
                         return
                     }
                     menu.onClick(e)
-                    // this.changeActive();
+                    setTimeout(()=> {
+                        this.changeActive();
+                    }, 20)
                 })
                 
             }
 
-            // 下拉框，例如 head
-            if (type === 'droplist' && droplist) {
-                $elem.on('mouseenter', e => {
-                    if (editor.selection.getRange() == null) {
-                        return
-                    }
-                    // 显示
-                    droplist.showTimeoutId = setTimeout(() => {
-                        droplist.show()
-                    }, 200)
-                }).on('mouseleave', e => {
-                    // 隐藏
-                    droplist.hideTimeoutId = setTimeout(() => {
-                        droplist.hide()
-                    }, 0)
-                })
-            }
+            // // 下拉框，例如 head
+            // if (type === 'droplist' && droplist) {
+            //     $elem.on('mouseenter', e => {
+            //         if (editor.selection.getRange() == null) {
+            //             return
+            //         }
+            //         // 显示
+            //         droplist.showTimeoutId = setTimeout(() => {
+            //             droplist.show()
+            //         }, 200)
+            //     }).on('mouseleave', e => {
+            //         // 隐藏
+            //         droplist.hideTimeoutId = setTimeout(() => {
+            //             droplist.hide()
+            //         }, 0)
+            //     })
+            // }
 
             // 弹框类型，例如 link
             if (type === 'panel' && menu.onClick) {
