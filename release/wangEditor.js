@@ -433,6 +433,11 @@ DomElement.prototype = {
         return elem.nodeName;
     },
 
+    getNodeType: function getNodeType() {
+        var elem = this[0] || this.selector;
+        return elem.nodeType;
+    },
+
     // 从当前元素查找
     find: function find(selector) {
         var elem = this[0];
@@ -481,7 +486,7 @@ DomElement.prototype = {
 
     // parent
     parent: function parent() {
-        var elem = this[0];
+        var elem = this[0] || this.selector;
         return $(elem.parentElement);
     },
 
@@ -2031,6 +2036,7 @@ Justify.prototype = {
         var editor = this.editor;
         var $elem = this.$elem;
         var $selectionELem = editor.selection.getSelectionListElem();
+        console.log($selectionELem);
 
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
@@ -2116,7 +2122,7 @@ Justify$1.prototype = {
         var $elem = this.$elem;
         var $selectionELem = editor.selection.getSelectionListElem();
         // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
-
+        console.log($selectionELem);
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
             $elem.addClass('w-e-active');
@@ -2201,7 +2207,7 @@ Justify$2.prototype = {
         var $elem = this.$elem;
         var $selectionELem = editor.selection.getSelectionListElem();
         // const cmdValue = editor.cmd.queryCommandState('justifyCenter');
-
+        console.log($selectionELem);
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true;
             $elem.addClass('w-e-active');
@@ -3314,47 +3320,52 @@ API.prototype = {
     //获取选中区域的所有一级dom
     getSelectionListElem: function getSelectionListElem(range) {
         range = range || this._currentRange;
-        var elems = [],
-            start = null,
-            end = null,
-            content = null;
-        var $content = this.getSelectionContainerElem();
-        //判断当前选区是否是在编辑区的一级dom中
-        if ($content.parent().getNodeName() == 'DIV' && $content.parent().getClass().indexOf('w-e-text') >= 0) {
-            start = this.getSelectionStartElem()[0];
-            end = this.getSelectionEndElem()[0];
-            content = this.getSelectionContainerElem()[0];
-        } else {
-            var dom = $content;
-            while (dom.getNodeName() !== 'DIV' || dom.getClass().indexOf('w-e-text') == -1) {
-                dom = dom.parent();
-            }
-            content = $content.parent()[0];
-            start = content;
-            end = content;
+        var elems = [];
+        if (!range) {
+            return;
         }
-        // console.log(content, start, end);
-        if (start === end) {
+
+        var start = null,
+            end = null,
+            content = $('.w-e-text').children();
+
+        var dom = $(range.startContainer);
+        // console.log(range, dom, dom.getNodeType())
+        while (dom.getNodeType() !== 1 || dom.getNodeName() !== 'DIV' || dom.getClass() !== 'w-e-text') {
+            start = dom;
+            dom = dom.parent();
+            // console.log('查询：', start, dom)
+        }
+        var dom1 = $(range.endContainer);
+        while (dom1.getNodeType() !== 1 || dom1.getNodeName() !== 'DIV' || dom1.getClass() !== 'w-e-text') {
+            end = dom1;
+            dom1 = dom1.parent();
+            // console.log('查询：', end, dom1)
+        }
+
+        // console.log('当前dom:', content, range, start, end);
+
+        if (start[0] === end[0]) {
             //选择单个dom，返回光标所在dom
-            if (content.nodeType === 1) {
-                elems.push($(content));
-            }
+
+            elems.push(start);
         } else {
             //选择多个dom 包含起始位置的所有dom
-            var arr = content.children,
-                length = arr.length;
-            var startIndex = 0,
-                endIndex = length;
+
+            var length = content.length,
+                startIndex = 0,
+                endIndex = length - 1;
             for (var i = 0; i < length; i++) {
-                if (arr[i] == start) {
+                if (content[i] == start[0]) {
                     startIndex = i;
                 }
-                if (arr[i] == end) {
+                if (content[i] == end[0]) {
                     endIndex = i;
                 }
             }
+            // console.log(content, startIndex, endIndex);
             for (var j = startIndex; j <= endIndex; j++) {
-                var _dom = $(arr[j]);
+                var _dom = $(content[j]);
                 var name = _dom.getNodeName();
                 if (name == 'P' || name == 'H1' || name == 'H2') {
                     elems.push(_dom);

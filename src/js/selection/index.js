@@ -110,47 +110,52 @@ API.prototype = {
     //获取选中区域的所有一级dom
     getSelectionListElem: function(range) {
         range = range || this._currentRange
-        let elems = [],
-        start = null,
-        end = null,
-        content = null;
-        let $content = this.getSelectionContainerElem();
-        //判断当前选区是否是在编辑区的一级dom中
-        if($content.parent().getNodeName() == 'DIV' && $content.parent().getClass().indexOf('w-e-text') >= 0) {
-            start = this.getSelectionStartElem()[0];
-            end = this.getSelectionEndElem()[0];
-            content = this.getSelectionContainerElem()[0];
-        } else {
-            let dom = $content;
-            while(dom.getNodeName() !== 'DIV' || dom.getClass().indexOf('w-e-text') == -1) {
-                dom = dom.parent();
-            }
-            content = $content.parent()[0];
-            start = content;
-            end = content;
+        let elems = [];
+        if(!range) {
+            return
         }
-        // console.log(content, start, end);
-        if(start === end) {
+
+        let start = null,
+        end = null,
+        content = $('.w-e-text').children();
+
+        let dom = $(range.startContainer);
+        // console.log(range, dom, dom.getNodeType())
+        while(dom.getNodeType() !== 1 || dom.getNodeName() !== 'DIV' || dom.getClass() !== 'w-e-text') {
+            start = dom;
+            dom = dom.parent();
+            // console.log('查询：', start, dom)
+        }
+        let dom1 = $(range.endContainer);
+        while(dom1.getNodeType() !== 1 || dom1.getNodeName() !== 'DIV' || dom1.getClass() !== 'w-e-text') {
+            end = dom1;
+            dom1 = dom1.parent();
+            // console.log('查询：', end, dom1)
+        }
+
+        // console.log('当前dom:', content, range, start, end);
+        
+        if(start[0] === end[0]) {
             //选择单个dom，返回光标所在dom
-            if(content.nodeType === 1) {
-                elems.push($(content))
-            }
+
+            elems.push(start)
         } else {
             //选择多个dom 包含起始位置的所有dom
-            let arr = content.children, 
-            length = arr.length;
-            let startIndex = 0, 
-            endIndex = length;
+
+            let length = content.length,
+                startIndex = 0, 
+                endIndex = length - 1;
             for(let i = 0; i < length; i++) {
-                if(arr[i] == start) {
+                if(content[i] == start[0]) {
                     startIndex = i;
                 }
-                if(arr[i] == end) {
+                if(content[i] == end[0]) {
                     endIndex = i;
                 }
             }
+            // console.log(content, startIndex, endIndex);
             for(let j = startIndex; j <= endIndex; j++) {
-                let dom = $(arr[j]);
+                let dom = $(content[j]);
                 let name = dom.getNodeName();
                 if(name == 'P' || name == 'H1' || name == 'H2') {
                     elems.push(dom);

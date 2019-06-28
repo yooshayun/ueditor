@@ -381,6 +381,11 @@ DomElement.prototype = {
         return elem.nodeName
     },
 
+    getNodeType: function() {
+        const elem = this[0] || this.selector;
+        return elem.nodeType
+    },
+
     // 从当前元素查找
     find: function (selector) {
         const elem = this[0]
@@ -427,7 +432,7 @@ DomElement.prototype = {
 
     // parent
     parent: function () {
-        const elem = this[0]
+        const elem = this[0] || this.selector
         return $(elem.parentElement)
     },
 
