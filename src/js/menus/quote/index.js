@@ -25,8 +25,11 @@ Quote.prototype = {
     onClick: function (e) {
         const editor = this.editor
         const $selectionElem = editor.selection.getSelectionContainerElem()
-        const nodeName = $selectionElem.getNodeName()
-        console.log(nodeName, editor.selection.getRange());
+        const nodeName = $selectionElem.getNodeName();
+        const range = editor.selection.getRange();
+        const start = range.startOffset;
+        const end = range.endOffset;
+        // console.log(nodeName, start, end);
 
         // if (!UA.isIE()) {
         //     if (nodeName === 'BLOCKQUOTE') {
@@ -38,6 +41,7 @@ Quote.prototype = {
         //     }
         //     return
         // }
+        // return
         
         // IE 中不支持 formatBlock <BLOCKQUOTE> ，要用其他方式兼容
         let content, $targetELem
@@ -47,15 +51,23 @@ Quote.prototype = {
             $targetELem = $(`<blockquote>${content}</blockquote>`)
             $targetELem.insertAfter($selectionElem)
             $selectionElem.remove()
-            return
-        }
-        if (nodeName === 'BLOCKQUOTE') {
+        } else if (nodeName === 'BLOCKQUOTE') {
             // 撤销 quote
             content = $selectionElem.text()
             $targetELem = $(`<p>${content}</p>`)
             $targetELem.insertAfter($selectionElem)
             $selectionElem.remove()
         }
+        if(!$targetELem) {
+            return;
+        }
+        // console.log(content, content.length - 1, $targetELem, '修改后的选区');
+        editor.selection.setSelectionStart($targetELem[0].firstChild, start);
+        editor.selection.setSelectionEnd($targetELem[0].firstChild, end);
+        
+        editor.selection.restoreSelection();
+
+        // console.log(editor.selection.getRange(), '获取选区');
     },
 
     tryChangeActive: function (e) {

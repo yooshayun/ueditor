@@ -1332,7 +1332,10 @@ Quote.prototype = {
         var editor = this.editor;
         var $selectionElem = editor.selection.getSelectionContainerElem();
         var nodeName = $selectionElem.getNodeName();
-        console.log(nodeName, editor.selection.getRange());
+        var range = editor.selection.getRange();
+        var start = range.startOffset;
+        var end = range.endOffset;
+        // console.log(nodeName, start, end);
 
         // if (!UA.isIE()) {
         //     if (nodeName === 'BLOCKQUOTE') {
@@ -1344,6 +1347,7 @@ Quote.prototype = {
         //     }
         //     return
         // }
+        // return
 
         // IE 中不支持 formatBlock <BLOCKQUOTE> ，要用其他方式兼容
         var content = void 0,
@@ -1354,15 +1358,23 @@ Quote.prototype = {
             $targetELem = $('<blockquote>' + content + '</blockquote>');
             $targetELem.insertAfter($selectionElem);
             $selectionElem.remove();
-            return;
-        }
-        if (nodeName === 'BLOCKQUOTE') {
+        } else if (nodeName === 'BLOCKQUOTE') {
             // 撤销 quote
             content = $selectionElem.text();
             $targetELem = $('<p>' + content + '</p>');
             $targetELem.insertAfter($selectionElem);
             $selectionElem.remove();
         }
+        if (!$targetELem) {
+            return;
+        }
+        // console.log(content, content.length - 1, $targetELem, '修改后的选区');
+        editor.selection.setSelectionStart($targetELem[0].firstChild, start);
+        editor.selection.setSelectionEnd($targetELem[0].firstChild, end);
+
+        editor.selection.restoreSelection();
+
+        // console.log(editor.selection.getRange(), '获取选区');
     },
 
     tryChangeActive: function tryChangeActive(e) {
@@ -3371,6 +3383,26 @@ API.prototype = {
         }
 
         return elems;
+    },
+
+    //设置选区的起点
+    setSelectionStart: function setSelectionStart(node) {
+        var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+        var range = this._currentRange;
+        if (range && node) {
+            range.setStart(node, offset);
+        }
+    },
+
+    //设置选区的终点
+    setSelectionEnd: function setSelectionEnd(node) {
+        var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+        var range = this._currentRange;
+        if (range && node) {
+            range.setEnd(node, offset);
+        }
     },
 
     // 选区是否为空

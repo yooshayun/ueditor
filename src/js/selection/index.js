@@ -178,6 +178,22 @@ API.prototype = {
         return elems
     },
 
+    //设置选区的起点
+    setSelectionStart: function(node, offset = 0) {
+        const range = this._currentRange;
+        if(range && node) {
+            range.setStart(node, offset)
+        }
+    },
+
+    //设置选区的终点
+    setSelectionEnd: function(node, offset = 0) {
+        const range = this._currentRange;
+        if(range && node) {
+            range.setEnd(node, offset)
+        }
+    },
+
     // 选区是否为空
     isSelectionEmpty: function () {
         const range = this._currentRange
