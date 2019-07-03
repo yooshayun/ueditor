@@ -7,7 +7,7 @@ import DropList from '../droplist.js'
 // 构造函数
 function Justify(editor) {
     this.editor = editor
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-center"></i></div>');
+    this.$elem = $('<div class="w-e-menu" title="居中"><i class="w-e-icon-paragraph-center"></i></div>');
     this.type = 'click'
 
     // 当前是否 active 状态
@@ -29,7 +29,7 @@ Justify.prototype = {
             return name === 'H1' || name === 'P' || name === 'H2'
         })
         const lengthElem = $selectionElem.length;
-        
+
         if(lengthElem == 1) {
             //选中单行区域
 
@@ -84,7 +84,7 @@ Justify.prototype = {
         const editor = this.editor
         const $elem = this.$elem;
         const $selectionELem = editor.selection.getSelectionListElem()
-        
+
         if (this.isJustifyCenter($selectionELem)) {
             this._active = true
             $elem.addClass('w-e-active')

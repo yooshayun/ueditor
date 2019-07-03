@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc3814f1-8734-4b74-bb64-448abc4edc77" name="Default" comment="替换图片">
+    <list default="true" id="bc3814f1-8734-4b74-bb64-448abc4edc77" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/release/content.css" afterPath="$PROJECT_DIR$/release/content.css" />
-      <change beforePath="$PROJECT_DIR$/release/wangEditor.css" afterPath="$PROJECT_DIR$/release/wangEditor.css" />
       <change beforePath="$PROJECT_DIR$/release/wangEditor.js" afterPath="$PROJECT_DIR$/release/wangEditor.js" />
       <change beforePath="$PROJECT_DIR$/release/wangEditor.min.js" afterPath="$PROJECT_DIR$/release/wangEditor.min.js" />
       <change beforePath="$PROJECT_DIR$/release/wangEditor.min.js.map" afterPath="$PROJECT_DIR$/release/wangEditor.min.js.map" />
-      <change beforePath="$PROJECT_DIR$/src/js/editor/upload/upload-audio.js" afterPath="$PROJECT_DIR$/src/js/editor/upload/upload-audio.js" />
+      <change beforePath="$PROJECT_DIR$/src/js/menus/justify/justifyCenter.js" afterPath="$PROJECT_DIR$/src/js/menus/justify/justifyCenter.js" />
+      <change beforePath="$PROJECT_DIR$/src/js/menus/justify/justifyLeft.js" afterPath="$PROJECT_DIR$/src/js/menus/justify/justifyLeft.js" />
+      <change beforePath="$PROJECT_DIR$/src/js/menus/justify/justifyRight.js" afterPath="$PROJECT_DIR$/src/js/menus/justify/justifyRight.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -22,30 +22,97 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
+      <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="30" column="16" lean-forward="false" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="16" />
-              <folding />
+            <state relative-caret-position="-552">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="upload-audio.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/js/editor/upload/upload-audio.js">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="44" column="52" lean-forward="false" selection-start-line="44" selection-start-column="52" selection-end-line="44" selection-end-column="52" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1562147182216" expanded="true" signature="756:1835" ph="..." />
-                <marker date="1562147182216" expanded="true" signature="848:1544" ph="..." />
-                <marker date="1562147182216" expanded="true" signature="892:971" ph="..." />
-                <marker date="1562147182216" expanded="true" signature="1017:1132" ph="..." />
-                <marker date="1562147182216" expanded="true" signature="1192:1521" ph="..." />
-                <marker date="1562147182216" expanded="true" signature="1251:1342" ph="..." />
-                <marker date="1562147182216" expanded="true" signature="1403:1494" ph="..." />
-                <marker date="1562147182216" expanded="true" signature="1580:1698" ph="..." />
+                <element signature="e#0#42#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="menu-list.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/menus/menu-list.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1451">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="panel.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/menus/panel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-759">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/menus/justify/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="justifyLeft.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/menus/justify/justifyLeft.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="9" column="52" lean-forward="false" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="52" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="justifyCenter.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/js/menus/justify/justifyCenter.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="9" column="52" lean-forward="false" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="52" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="justifyRight.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/js/menus/justify/justifyRight.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="368">
+              <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,6 +138,9 @@
         <option value="$PROJECT_DIR$/src/js/editor/upload/upload-img.js" />
         <option value="$PROJECT_DIR$/src/less/text.less" />
         <option value="$PROJECT_DIR$/src/js/editor/upload/upload-audio.js" />
+        <option value="$PROJECT_DIR$/src/js/menus/justify/justifyCenter.js" />
+        <option value="$PROJECT_DIR$/src/js/menus/justify/justifyLeft.js" />
+        <option value="$PROJECT_DIR$/src/js/menus/justify/justifyRight.js" />
       </list>
     </option>
   </component>
@@ -91,10 +161,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="61" />
+    <option name="y" value="21" />
+    <option name="width" value="1750" />
+    <option name="height" value="914" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -111,6 +181,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -126,14 +198,33 @@
             <path>
               <item name="ueditor" type="b2602c69:ProjectViewProjectNode" />
               <item name="ueditor" type="462c0819:PsiDirectoryNode" />
-              <item name="release" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ueditor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ueditor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ueditor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ueditor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="menus" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ueditor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ueditor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="menus" type="462c0819:PsiDirectoryNode" />
+              <item name="justify" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -172,12 +263,21 @@
       <workItem from="1560416407096" duration="266000" />
       <workItem from="1560491920261" duration="2254000" />
       <workItem from="1562146650620" duration="34000" />
-      <workItem from="1562146967735" duration="429000" />
+      <workItem from="1562146967735" duration="522000" />
+      <workItem from="1562148265772" duration="504000" />
     </task>
+    <task id="LOCAL-00001" summary="音乐描述字符">
+      <created>1562147439617</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1562147439617</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5326000" />
+    <option name="totallyTimeSpent" value="5923000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -191,7 +291,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28060672" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14734562" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -212,13 +312,39 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="替换图片" />
-    <option name="LAST_COMMIT_MESSAGE" value="替换图片" />
+    <MESSAGE value="音乐描述字符" />
+    <option name="LAST_COMMIT_MESSAGE" value="音乐描述字符" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="30" column="16" lean-forward="false" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/editor/upload/upload-audio.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="874">
+          <caret line="38" column="83" lean-forward="false" selection-start-line="38" selection-start-column="83" selection-end-line="38" selection-end-column="83" />
+          <folding>
+            <marker date="1562147182216" expanded="true" signature="756:1835" ph="..." />
+            <marker date="1562147182216" expanded="true" signature="848:1544" ph="..." />
+            <marker date="1562147182216" expanded="true" signature="892:971" ph="..." />
+            <marker date="1562147182216" expanded="true" signature="1017:1132" ph="..." />
+            <marker date="1562147182216" expanded="true" signature="1192:1521" ph="..." />
+            <marker date="1562147182216" expanded="true" signature="1251:1342" ph="..." />
+            <marker date="1562147182216" expanded="true" signature="1403:1494" ph="..." />
+            <marker date="1562147182216" expanded="true" signature="1580:1698" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1150">
@@ -239,6 +365,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1288">
           <caret line="61" column="88" lean-forward="false" selection-start-line="61" selection-start-column="88" selection-end-line="61" selection-end-column="88" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#16#100#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -246,6 +376,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#47#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -363,6 +496,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#47#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -423,6 +559,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1288">
           <caret line="61" column="88" lean-forward="false" selection-start-line="61" selection-start-column="88" selection-end-line="61" selection-end-column="88" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#16#100#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -434,18 +574,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="30" column="16" lean-forward="false" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/js/editor/upload/upload-audio.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="44" column="52" lean-forward="false" selection-start-line="44" selection-start-column="52" selection-end-line="44" selection-end-column="52" />
+        <state relative-caret-position="299">
+          <caret line="43" column="35" lean-forward="false" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="35" />
           <folding>
             <marker date="1562147182216" expanded="true" signature="756:1835" ph="..." />
             <marker date="1562147182216" expanded="true" signature="848:1544" ph="..." />
@@ -455,6 +587,94 @@
             <marker date="1562147182216" expanded="true" signature="1251:1342" ph="..." />
             <marker date="1562147182216" expanded="true" signature="1403:1494" ph="..." />
             <marker date="1562147182216" expanded="true" signature="1580:1698" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="30" column="16" lean-forward="false" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-552">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/menus/menu-list.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1451">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/menus/panel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-759">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/menus/justify/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/menus/justify/justifyCenter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="9" column="52" lean-forward="false" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="52" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/menus/justify/justifyLeft.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="9" column="52" lean-forward="false" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="52" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/menus/justify/justifyRight.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>

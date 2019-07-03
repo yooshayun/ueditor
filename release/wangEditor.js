@@ -1943,7 +1943,7 @@ Audio.prototype = {
 // 构造函数
 function Justify(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-center"></i></div>');
+    this.$elem = $('<div class="w-e-menu" title="居中"><i class="w-e-icon-paragraph-center"></i></div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -2035,7 +2035,7 @@ Justify.prototype = {
 // 构造函数
 function Justify$1(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-left"></i></div>');
+    this.$elem = $('<div class="w-e-menu" title="居左"><i class="w-e-icon-paragraph-left"></i></div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -2126,7 +2126,7 @@ Justify$1.prototype = {
 // 构造函数
 function Justify$2(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-right"></i></div>');
+    this.$elem = $('<div class="w-e-menu" title="居右"><i class="w-e-icon-paragraph-right"></i></div>');
     this.type = 'click';
 
     // 当前是否 active 状态
