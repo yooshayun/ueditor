@@ -42,7 +42,7 @@ UploadAudio.prototype = {
                     </div>
                 </div>
                 <p class="input-p">
-                    <input type="text" value="" placeholder="点击添加音乐描述(最多50字符)"/>
+                    <input type="text" maxlength="90"  value="" placeholder="点击添加音乐描述(最多90字符)"/>
                 </p>
                 <i id="${closeId}" class="w-e-icon-close"><img src="https://qncdn.file.sinostage.com/close.svg"/></i>
             </div>
