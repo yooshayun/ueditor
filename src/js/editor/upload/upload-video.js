@@ -53,7 +53,7 @@ UploadVideo.prototype = {
                                 <p class="${ videoId + '-' + videoId }"></p>
                             </div>
                         </div>
-                        <span data-src="${link ? link : ''}" id="${randomChangeId}" class="before-img">更换封面</span>
+                        <span data-src="${link ? link : ''}" style="display:none;" id="${randomChangeId}" class="before-img">更换封面</span>
                         <i class="w-e-icon-close" id="${randomId}"><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
                     </div>
                     <p><br/></p>
@@ -73,12 +73,15 @@ UploadVideo.prototype = {
             } else if(process > 0 && process < 100){
                 document.querySelector('.' + videoId + '-' + videoId).innerHTML = process + '%';        
             }
+            return 
         } else {
             if(!link) {
                 return 
             }
             let upDateImg = document.querySelector('#' + videoId +  ' .before-img'),
                 beforeImg = upDateImg.getAttribute('data-src');
+                upDateImg.style.display = "";
+            
             //插入视频
             var template2 = `
                 <div class="video-content">
