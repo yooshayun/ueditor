@@ -756,20 +756,25 @@ var config = {
     },
 
     // 是否上传七牛云，默认为 false
-    qiniu: false
+    qiniu: false,
 
-    // 上传图片自定义提示方法
-    // customAlert: function (info) {
-    //     // 自定义上传提示
-    // },
+    uploadConfig: {
+        image: null,
+        privateFile: null,
+        video: null
 
-    // // 自定义上传图片
-    // customUploadImg: function (files, insert) {
-    //     // files 是 input 中选中的文件列表
-    //     // insert 是获取图片 url 后，插入到编辑器的方法
-    //     insert(imgUrl)
-    // }
-};
+        // 上传图片自定义提示方法
+        // customAlert: function (info) {
+        //     // 自定义上传提示
+        // },
+
+        // // 自定义上传图片
+        // customUploadImg: function (files, insert) {
+        //     // files 是 input 中选中的文件列表
+        //     // insert 是获取图片 url 后，插入到编辑器的方法
+        //     insert(imgUrl)
+        // }
+    } };
 
 /*
     工具
@@ -1450,6 +1455,55 @@ Video.prototype = {
             var dom = document.querySelector('#' + dialogId);
             dom.parentNode.removeChild(dom);
         });
+
+        if (config.qiniu) {
+            var videoObj = config.uploadConfig.video;
+            var plupload = new Qiniu.uploader({
+                runtimes: 'html5,flash,html4', // 上传模式,依次退化
+                browse_button: uploadId, // 上传按钮的ID
+                domain: videoObj.bucketDomain, // bucket 域名，下载资源时用到，**必需**
+                get_new_uptoken: false, // 设置上传文件的时候是否每次都重新获取新的token
+                uptoken: videoObj.token, // 若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+                flash_swf_url: 'js/plupload/Moxie.swf', // 引入flash,相对路径
+                max_retries: 3, // 上传失败最大重试次数
+                dragdrop: true, // 开启可拖曳上传
+                auto_start: true, // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                chunk_size: '4mb', // 分块大小
+                multi_selection: false, // 是否允许同时选择多文件
+                unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                //save_key: false,  // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK在前端将不对key进行任何处理
+                filters: { // 文件类型过滤，这里限制为视频类型
+                    max_file_size: '2048mb',
+                    prevent_duplicates: true,
+                    mime_types: [{
+                        title: "Video files",
+                        extensions: "mp4" // flv,mpg,mpeg,avi,wmv,mov,asf,rm,rmvb,mkv,m4v,mp4
+                    }]
+                },
+
+                init: {
+                    'FilesAdded': function FilesAdded(up, file) {
+                        console.log(up, file, 'FilesAdded');
+                    },
+                    'BeforeUpload': function BeforeUpload(up, file) {
+                        console.log(up, file, 'BeforeUpload');
+                    },
+                    'UploadProgress': function UploadProgress(up, file) {
+                        console.log(up, file, 'UploadProgress');
+                    },
+                    'FileUploaded': function FileUploaded(up, file, info) {
+                        console.log(up, file, info, 'FileUploaded');
+                    },
+                    'Error': function Error(up, err, errTip) {
+                        console.log(up, file, 'Error');
+                    },
+                    'UploadComplete': function UploadComplete() {
+                        console.log(up, file, 'UploadComplete');
+                    }
+                }
+            });
+            return;
+        }
 
         //点击选择视频
         document.querySelector('#' + uploadId).addEventListener('click', function (e) {
@@ -3923,6 +3977,8 @@ UploadVideo.prototype = {
         var editor = this.editor;
         var config = editor.config;
 
+        console.log(config);
+
         var videoId = void 0;
         if (id) {
             videoId = id;
@@ -3944,7 +4000,7 @@ UploadVideo.prototype = {
         if (loading) {
             if (process == 0) {
                 //插入视频
-                var template = '\n                    <div class="kolo-video" id="' + videoId + '" contenteditable="false">\n                        <div class="kolo-video-container">\n                            <div class="progress-content">\n                                <p class="subtitle-video">\u89C6\u9891\u6B63\u5728\u4E0A\u4F20,\u4E0D\u5F71\u54CD\u7F16\u8F91</p>\n                                <p class="' + (videoId + '-' + videoId) + '"></p>\n                            </div>\n                        </div>\n                        <span data-src="' + (link ? link : '') + '" id="' + randomChangeId + '" class="before-img">\u66F4\u6362\u5C01\u9762</span>\n                        <i class="w-e-icon-close" id="' + randomId + '"><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>\n                    </div>\n                    <p><br/></p>\n                ';
+                var template = '\n                    <div class="kolo-video" id="' + videoId + '" contenteditable="false">\n                        <div class="kolo-video-container">\n                            <div class="progress-content">\n                                <p class="subtitle-video">\u89C6\u9891\u6B63\u5728\u4E0A\u4F20,\u4E0D\u5F71\u54CD\u7F16\u8F91</p>\n                                <p class="' + (videoId + '-' + videoId) + '"></p>\n                            </div>\n                        </div>\n                        <span data-src="' + (link ? link : '') + '" style="display:none;" id="' + randomChangeId + '" class="before-img">\u66F4\u6362\u5C01\u9762</span>\n                        <i class="w-e-icon-close" id="' + randomId + '"><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>\n                    </div>\n                    <p><br/></p>\n                ';
 
                 //替换多语言        
                 template = replaceLang(editor, template);
@@ -3959,12 +4015,15 @@ UploadVideo.prototype = {
             } else if (process > 0 && process < 100) {
                 document.querySelector('.' + videoId + '-' + videoId).innerHTML = process + '%';
             }
+            return;
         } else {
             if (!link) {
                 return;
             }
             var upDateImg = document.querySelector('#' + videoId + ' .before-img'),
                 beforeImg = upDateImg.getAttribute('data-src');
+            upDateImg.style.display = "";
+
             //插入视频
             var template2 = '\n                <div class="video-content">\n                    <img class="video-bg" src="' + (beforeImg || link + '?vframe/jpg/offset/3/w/640/') + '" />\n                    <video class="video-dom" style="display: none;" controls="controls" src="' + link + '"></video>\n                    <img class="video-control-btn" src="https://qncdn.file.sinostage.com/paly1.svg" />\n                </div>\n            ';
             //替换多语言        

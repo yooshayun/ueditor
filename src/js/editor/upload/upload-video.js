@@ -24,6 +24,8 @@ UploadVideo.prototype = {
         var editor = this.editor;
         var config = editor.config;
 
+        console.log(config);
+
         let videoId;
         if(id) {
             videoId = id;

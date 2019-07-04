@@ -70,6 +70,55 @@ Video.prototype = {
             dom.parentNode.removeChild(dom);
         })
 
+        if(config.qiniu) {
+            let videoObj = config.uploadConfig.video;
+            let plupload = new Qiniu.uploader({
+                runtimes: 'html5,flash,html4', // 上传模式,依次退化
+                browse_button: uploadId,  // 上传按钮的ID
+                domain: videoObj.bucketDomain, // bucket 域名，下载资源时用到，**必需**
+                get_new_uptoken: false, // 设置上传文件的时候是否每次都重新获取新的token
+                uptoken: videoObj.token, // 若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+                flash_swf_url: 'js/plupload/Moxie.swf', // 引入flash,相对路径
+                max_retries: 3, // 上传失败最大重试次数
+                dragdrop: true, // 开启可拖曳上传
+                auto_start: true, // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                chunk_size: '4mb', // 分块大小
+                multi_selection: false, // 是否允许同时选择多文件
+                unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                 //save_key: false,  // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK在前端将不对key进行任何处理
+                filters: { // 文件类型过滤，这里限制为视频类型
+                    max_file_size : '2048mb',
+                    prevent_duplicates: true,
+                    mime_types: [{
+                        title: "Video files",
+                        extensions: "mp4" // flv,mpg,mpeg,avi,wmv,mov,asf,rm,rmvb,mkv,m4v,mp4
+                    }]
+                },
+
+                init: {
+                    'FilesAdded': function(up, file) {
+                        console.log(up, file, 'FilesAdded')
+                    },
+                    'BeforeUpload': function(up, file) {
+                        console.log(up, file, 'BeforeUpload')
+                    },
+                    'UploadProgress': function(up, file) {
+                        console.log(up, file, 'UploadProgress')
+                    },
+                    'FileUploaded': function(up, file, info) {
+                        console.log(up, file, info, 'FileUploaded')
+                    },
+                    'Error': function(up, err, errTip) {
+                        console.log(up, file, 'Error')
+                    },
+                    'UploadComplete': function() {
+                        console.log(up, file, 'UploadComplete')
+                    }
+                }
+            });
+            return;
+        }
+
         //点击选择视频
         document.querySelector('#' + uploadId).addEventListener('click', (e)=>{
             e.stopPropagation();

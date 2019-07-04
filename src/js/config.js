@@ -253,6 +253,12 @@ const config = {
     // 是否上传七牛云，默认为 false
     qiniu: false,
 
+    uploadConfig: {
+        image: null,
+        privateFile: null,
+        video: null
+    }
+
     // 上传图片自定义提示方法
     // customAlert: function (info) {
     //     // 自定义上传提示
