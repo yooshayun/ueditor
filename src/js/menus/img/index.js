@@ -105,15 +105,15 @@ Image.prototype = {
 
     // 试图改变 active 状态
     tryChangeActive: function (e) {
-        const editor = this.editor
-        const $elem = this.$elem
-        if (editor._selectedImg) {
-            this._active = true
-            $elem.addClass('w-e-active')
-        } else {
-            this._active = false
-            $elem.removeClass('w-e-active')
-        }
+        // const editor = this.editor
+        // const $elem = this.$elem
+        // if (editor._selectedImg) {
+        //     this._active = true
+        //     $elem.addClass('w-e-active')
+        // } else {
+        //     this._active = false
+        //     $elem.removeClass('w-e-active')
+        // }
     }
 }
 

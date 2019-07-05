@@ -36,6 +36,7 @@ Video.prototype = {
         // 创建 id
         const dialogId = getRandom('video-dialog');
         var localVideoId = getRandom('local-video');
+        var videoId = getRandom('video-dom');
         var uploadId = getRandom('upload-video');
         var btnId = getRandom('btn');
 
@@ -70,6 +71,8 @@ Video.prototype = {
             dom.parentNode.removeChild(dom);
         })
 
+        let that = this;
+
         if(config.qiniu) {
             let videoObj = config.uploadConfig.video;
             let plupload = new Qiniu.uploader({
@@ -97,48 +100,90 @@ Video.prototype = {
 
                 init: {
                     'FilesAdded': function(up, file) {
-                        console.log(up, file, 'FilesAdded')
+                        // console.log(up, file, 'FilesAdded', up.files[0]);
+                        that.getVideoInfo(up.files[0]).then(res => {
+                            //判断时长
+                            if(res.duration <= 5) {
+                                plupload.stop();
+                                return
+                            }
+                            //判断分辨率
+                            if(res.w /res.h == 16/9 && res.h >= 480) {
+                                
+                            } else {
+                                plupload.stop();
+                                return
+                            }    
+
+                            var dom = document.querySelector('#' + dialogId);
+                            dom.parentNode.removeChild(dom);
+                        });    
                     },
                     'BeforeUpload': function(up, file) {
-                        console.log(up, file, 'BeforeUpload')
+                        // console.log(up, file, 'BeforeUpload')
+                        uploadVideo.insertLinkVideo(null , true, videoId, 0);
                     },
                     'UploadProgress': function(up, file) {
-                        console.log(up, file, 'UploadProgress')
+                        // console.log(file, file.loaded/file.size, 'UploadProgress')
+                        let progress = ((file.loaded / file.size) * 100).toFixed(2);
+                        config.isUpload = true;
+                        if(progress > 0) { 
+                            uploadVideo.insertLinkVideo(null , true, videoId, progress);
+                        }
                     },
                     'FileUploaded': function(up, file, info) {
-                        console.log(up, file, info, 'FileUploaded')
+                        // console.log(up, file, info, 'FileUploaded')
+                        config.isUpload = false;
+                        if(info.status == 200) {
+                            let data = JSON.parse(info.response);
+                            uploadVideo.insertLinkVideo(videoObj.bucketDomain + '/' + data.key, false, videoId, 100, {
+                                w: data.w,
+                                h: data.h
+                            });
+                        }
                     },
                     'Error': function(up, err, errTip) {
-                        console.log(up, file, 'Error')
+                        // console.log(up, err, 'Error')
                     },
-                    'UploadComplete': function() {
-                        console.log(up, file, 'UploadComplete')
+                    'UploadComplete': function(up, file) {
+                        // console.log(up, file, 'UploadComplete')
                     }
                 }
             });
             return;
         }
 
-        //点击选择视频
-        document.querySelector('#' + uploadId).addEventListener('click', (e)=>{
-            e.stopPropagation();
-            document.querySelector('#' + localVideoId).click();
-        })
-
-        //监控选择文件的变化
-        document.querySelector('#' + localVideoId).addEventListener('change', (e)=>{
-            var fileElem = document.querySelector('#' + localVideoId);
-            //视频上传的按钮id,和关闭按钮  视频上传初始化
-            uploadVideo.uploadVideo(uploadId, dialogId, fileElem.files);
-        })
     },
 
-    // 插入视频
-    _insert: function (val) {
-        const editor = this.editor
-        var uploadVideo = editor.uploadVideo;
-        uploadVideo.insertLinkVideo(val);
+    //获取本地视频的时长宽高
+    getVideoInfo(file) {
+        return new Promise(res => {
+            var video = document.createElement('video');
+            video.src = URL.createObjectURL(file.getNative());
+            video.id = 'test-video';
+            video.style = "display: none";
+            video.controls = "controls";
+            document.querySelector('body').appendChild(video);
+            video.addEventListener('canplay', ()=>{
+                // console.log(video.videoWidth, video.videoHeight, video.duration, 'video');
+                let videoObj = {
+                    w: video.videoWidth,
+                    h: video.videoHeight,
+                    duration: video.duration
+                }
+                document.querySelector('body').removeChild(video);
+                res(videoObj)
+            })
+            video.addEventListener('onerror', ()=>{
+                res({
+                    w:0,
+                    h:0,
+                    duration: 0
+                })
+            })
+        })
     }
+
 }
 
 export default Video

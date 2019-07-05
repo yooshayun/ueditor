@@ -33,6 +33,7 @@ function Editor(toolbarSelector, textSelector) {
 
     // 自定义配置
     this.customConfig = {}
+
 }
 
 // 修改原型

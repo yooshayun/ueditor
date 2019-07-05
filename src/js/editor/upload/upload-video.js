@@ -18,13 +18,13 @@ UploadVideo.prototype = {
     constructor: UploadVideo,
 
     //根据链接插入视频
-    insertLinkVideo: function (link, loading=false, id, process) {
+    insertLinkVideo: function (link, loading=false, id, process, videoInfo) {
         var _this2 = this;
 
         var editor = this.editor;
         var config = editor.config;
 
-        console.log(config);
+        // console.log(config);
 
         let videoId;
         if(id) {
@@ -35,13 +35,19 @@ UploadVideo.prototype = {
 
         //创建新的视频操作按钮id
         const randomId = getRandom('kolo-video-close');
-        const randomChangeId = getRandom('kolo-change-img');
-        const canvasId = getRandom('kolo-video-canvas');
-
-        editor.coverVideo = randomChangeId;
 
         // 校验格式
         // console.log(link, loading);
+
+        let obj = {
+            w: 640,
+            h: 360
+        }
+        
+        if(videoInfo && typeof videoInfo == 'object') {
+            obj.w = videoInfo.w;
+            obj.h = videoInfo.h;
+        }
         
         //视频上传时图片的loading的id,如果存在就添加loading
         if(loading) {
@@ -55,7 +61,7 @@ UploadVideo.prototype = {
                                 <p class="${ videoId + '-' + videoId }"></p>
                             </div>
                         </div>
-                        <span data-src="${link ? link : ''}" style="display:none;" id="${randomChangeId}" class="before-img">更换封面</span>
+                        <span data-src="${link ? link : ''}" class="before-img">更换封面</span>
                         <i class="w-e-icon-close" id="${randomId}"><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
                     </div>
                     <p><br/></p>
@@ -66,11 +72,7 @@ UploadVideo.prototype = {
 
                 editor.cmd.do('insertHTML', template);
 
-                // document.querySelector('#'+randomId).addEventListener('click', (e)=>{
-                //     e.stopPropagation();
-                //     let target = e.target.parentNode;
-                //     target.parentNode.removeChild(target);
-                // })
+                document.querySelector('#' + videoId +  ' .before-img').style.display = "none";
                 
             } else if(process > 0 && process < 100){
                 document.querySelector('.' + videoId + '-' + videoId).innerHTML = process + '%';        
@@ -80,15 +82,16 @@ UploadVideo.prototype = {
             if(!link) {
                 return 
             }
-            let upDateImg = document.querySelector('#' + videoId +  ' .before-img'),
-                beforeImg = upDateImg.getAttribute('data-src');
+            let upDateImg = document.querySelector('#' + videoId +  ' .before-img');
                 upDateImg.style.display = "";
+
+            let beforeImg = link + '?vframe/jpg/offset/3/w/'+ obj.w +'/h/' + obj.h;
             
             //插入视频
             var template2 = `
                 <div class="video-content">
-                    <img class="video-bg" src="${ beforeImg || (link + '?vframe/jpg/offset/3/w/640/')}" />
-                    <video class="video-dom" style="display: none;" controls="controls" src="${link}"></video>
+                    <img class="video-bg" src="${ beforeImg }" />
+                    <video class="video-dom" data-w="${obj.w}" data-h="${obj.h}" style="display: none;" controls="controls" src="${link}"></video>
                     <img class="video-control-btn" src="https://qncdn.file.sinostage.com/paly1.svg" />
                 </div>
             `;
@@ -112,11 +115,7 @@ UploadVideo.prototype = {
                 videoDom.style.display = 'block';
                 videoDom.play();    
             })
-            // //视频暂停
-            // videoDom.addEventListener('click', ()=>{
-            //     console.log('paused');
-
-            // })
+            
         }
 
         //更换封面图片
@@ -219,63 +218,13 @@ UploadVideo.prototype = {
                 } else {
                     //视频上传完毕，则更改图片路径
                     let imgDom = document.querySelector('#' + videoId + ' .video-bg');
-                    imgDom.src = link;   
+                    imgDom.src = link + '?imageView/1//w/'+ obj.w +'/h/' + obj.h;;   
                 }
                 // console.log(dialogId, 'dialogId');
                 var dom = document.querySelector('#' + dialogId);
                 dom.parentNode.removeChild(dom);
             }
         })
-
-        //验证url是否有效
-        if(!link) {
-            return;
-        }
-        var video = document.createElement('video');
-        video.src = link;
-        video.onload = function(e) {
-            var callback = config.linkImgCallback;
-            if (callback && typeof callback === 'function') {
-                callback(link);
-            }
-            video = null;
-        }
-        video.onerror = function () {
-            video = null;
-            var string = '无效地址'
-            string = replaceLang(editor, string);
-            alert(string);
-            return;
-        }
-        video.onabort = function() {
-            video = null;
-        }
-    },
-
-    //上传视频
-    uploadVideo: function uploadVideo(btns, dialogId, files) {
-        var _this3 = this;
-
-        if(!btns) {
-            return;
-        }
-        if(!files) {
-            return;
-        }
-
-        //
-        var editor = this.editor;
-        var config = editor.config;
-
-        //自定义上传
-        var customUploadVideo = config.customUploadVideo;
-        if(!customUploadVideo) {
-            return;
-        }
-
-        if(customUploadVideo && typeof customUploadVideo == 'function') {
-            customUploadVideo(files, this.insertLinkVideo.bind(this), dialogId);
-        }
     }
 
 }
