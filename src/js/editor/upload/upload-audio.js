@@ -28,7 +28,7 @@ UploadAudio.prototype = {
             <div class="kolo-audio" contenteditable="false">
                 <div class="audio-content" data-id="${obj.id}" data-person="${obj.person}">
                     <div class="music-img">
-                        <img src="http://image.kolocdn.com/FoNKOtfP6WaZ71P3lkmbXd1z5YDS" />
+                        <img src="http://image.kolocdn.com/FkLcNneCxiAouJwhGrloaMMKBj7f" />
                     </div>
                     <div class="audio-title">
                         <h3>${names[0]}</h3>

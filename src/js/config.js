@@ -259,8 +259,6 @@ const config = {
         video: null
     },
 
-    //
-    isUpload: false,
 
     // 上传图片自定义提示方法
     // customAlert: function (info) {
