@@ -117,7 +117,7 @@ Audio.prototype = {
                 if(res.code == 200) {
                     this._renderMusicList(res.data.songs, _chooseMusic, audioId);
                 }
-            });
+            })
         })
 
 

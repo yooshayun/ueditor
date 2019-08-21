@@ -15,6 +15,7 @@ const config = {
         'image',
         'video',
         'audio',
+        'link',
         'justifyLeft',
         'justifyCenter',
         'justifyRight',

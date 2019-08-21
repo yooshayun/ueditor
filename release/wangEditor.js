@@ -585,7 +585,7 @@ $.offAll = function () {
 var config = {
 
     // 默认菜单配置
-    menus: ['bold', 'head', 'subhead', 'justify', 'quote', 'splitLine', 'image', 'video', 'audio', 'justifyLeft', 'justifyCenter', 'justifyRight', 'undo', 'redo'],
+    menus: ['bold', 'head', 'subhead', 'justify', 'quote', 'splitLine', 'image', 'video', 'audio', 'link', 'justifyLeft', 'justifyCenter', 'justifyRight', 'undo', 'redo'],
 
     fontNames: ['宋体', '微软雅黑', 'Arial', 'Tahoma', 'Verdana'],
 
@@ -1036,6 +1036,376 @@ SplitLine.prototype = {
 };
 
 /*
+    替换多语言
+ */
+
+var replaceLang = function (editor, str) {
+    var langArgs = editor.config.langArgs || [];
+    var result = str;
+
+    langArgs.forEach(function (item) {
+        var reg = item.reg;
+        var val = item.val;
+
+        if (reg.test(result)) {
+            result = result.replace(reg, function () {
+                return val;
+            });
+        }
+    });
+
+    return result;
+};
+
+/*
+    panel
+*/
+
+var emptyFn = function emptyFn() {};
+
+// 记录已经显示 panel 的菜单
+var _isCreatedPanelMenus = [];
+
+// 构造函数
+function Panel(menu, opt) {
+    this.menu = menu;
+    this.opt = opt;
+}
+
+// 原型
+Panel.prototype = {
+    constructor: Panel,
+
+    // 显示（插入DOM）
+    show: function show() {
+        var _this = this;
+
+        var menu = this.menu;
+        if (_isCreatedPanelMenus.indexOf(menu) >= 0) {
+            // 该菜单已经创建了 panel 不能再创建
+            return;
+        }
+
+        var editor = menu.editor;
+        var $body = $('body');
+        var $textContainerElem = editor.$textContainerElem;
+        var opt = this.opt;
+
+        // panel 的容器
+        var $container = $('<div class="w-e-panel-container"></div>');
+        var width = opt.width || 300; // 默认 300px
+        $container.css('width', width + 'px').css('margin-left', (0 - width) / 2 + 'px');
+
+        // 添加关闭按钮
+        var $closeBtn = $('<i class="w-e-icon-close w-e-panel-close"></i>');
+        $container.append($closeBtn);
+        $closeBtn.on('click', function () {
+            _this.hide();
+        });
+
+        // 准备 tabs 容器
+        var $tabTitleContainer = $('<ul class="w-e-panel-tab-title"></ul>');
+        var $tabContentContainer = $('<div class="w-e-panel-tab-content"></div>');
+        $container.append($tabTitleContainer).append($tabContentContainer);
+
+        // 设置高度
+        var height = opt.height;
+        if (height) {
+            $tabContentContainer.css('height', height + 'px').css('overflow-y', 'auto');
+        }
+
+        // tabs
+        var tabs = opt.tabs || [];
+        var tabTitleArr = [];
+        var tabContentArr = [];
+        tabs.forEach(function (tab, tabIndex) {
+            if (!tab) {
+                return;
+            }
+            var title = tab.title || '';
+            var tpl = tab.tpl || '';
+
+            // 替换多语言
+            title = replaceLang(editor, title);
+            tpl = replaceLang(editor, tpl);
+
+            // 添加到 DOM
+            var $title = $('<li class="w-e-item">' + title + '</li>');
+            $tabTitleContainer.append($title);
+            var $content = $(tpl);
+            $tabContentContainer.append($content);
+
+            // 记录到内存
+            $title._index = tabIndex;
+            tabTitleArr.push($title);
+            tabContentArr.push($content);
+
+            // 设置 active 项
+            if (tabIndex === 0) {
+                $title._active = true;
+                $title.addClass('w-e-active');
+            } else {
+                $content.hide();
+            }
+
+            // 绑定 tab 的事件
+            $title.on('click', function (e) {
+                if ($title._active) {
+                    return;
+                }
+                // 隐藏所有的 tab
+                tabTitleArr.forEach(function ($title) {
+                    $title._active = false;
+                    $title.removeClass('w-e-active');
+                });
+                tabContentArr.forEach(function ($content) {
+                    $content.hide();
+                });
+
+                // 显示当前的 tab
+                $title._active = true;
+                $title.addClass('w-e-active');
+                $content.show();
+            });
+        });
+
+        // 绑定关闭事件
+        $container.on('click', function (e) {
+            // 点击时阻止冒泡
+            e.stopPropagation();
+        });
+        $body.on('click', function (e) {
+            _this.hide();
+        });
+
+        // 添加到 DOM
+        $textContainerElem.append($container);
+
+        // 绑定 opt 的事件，只有添加到 DOM 之后才能绑定成功
+        tabs.forEach(function (tab, index) {
+            if (!tab) {
+                return;
+            }
+            var events = tab.events || [];
+            events.forEach(function (event) {
+                var selector = event.selector;
+                var type = event.type;
+                var fn = event.fn || emptyFn;
+                var $content = tabContentArr[index];
+                $content.find(selector).on(type, function (e) {
+                    e.stopPropagation();
+                    var needToHide = fn(e);
+                    // 执行完事件之后，是否要关闭 panel
+                    if (needToHide) {
+                        _this.hide();
+                    }
+                });
+            });
+        });
+
+        // focus 第一个 elem
+        var $inputs = $container.find('input[type=text],textarea');
+        if ($inputs.length) {
+            $inputs.get(0).focus();
+        }
+
+        // 添加到属性
+        this.$container = $container;
+
+        // 隐藏其他 panel
+        this._hideOtherPanels();
+        // 记录该 menu 已经创建了 panel
+        _isCreatedPanelMenus.push(menu);
+    },
+
+    // 隐藏（移除DOM）
+    hide: function hide() {
+        var menu = this.menu;
+        var $container = this.$container;
+        if ($container) {
+            $container.remove();
+        }
+
+        // 将该 menu 记录中移除
+        _isCreatedPanelMenus = _isCreatedPanelMenus.filter(function (item) {
+            if (item === menu) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+    },
+
+    // 一个 panel 展示时，隐藏其他 panel
+    _hideOtherPanels: function _hideOtherPanels() {
+        if (!_isCreatedPanelMenus.length) {
+            return;
+        }
+        _isCreatedPanelMenus.forEach(function (menu) {
+            var panel = menu.panel || {};
+            if (panel.hide) {
+                panel.hide();
+            }
+        });
+    }
+};
+
+/*
+    menu - link
+*/
+// 构造函数
+function Link(editor) {
+    this.editor = editor;
+    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-link"></i></div>');
+    this.type = 'panel';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+// 原型
+Link.prototype = {
+    constructor: Link,
+
+    // 点击事件
+    onClick: function onClick(e) {
+        var editor = this.editor;
+        var $linkelem = void 0;
+
+        if (this._active) {
+            // 当前选区在链接里面
+            $linkelem = editor.selection.getSelectionContainerElem();
+            if (!$linkelem) {
+                return;
+            }
+            // 将该元素都包含在选取之内，以便后面整体替换
+            editor.selection.createRangeByElem($linkelem);
+            editor.selection.restoreSelection();
+            // 显示 panel
+            this._createPanel($linkelem.text(), $linkelem.attr('href'));
+        } else {
+            // 当前选区不在链接里面
+            if (editor.selection.isSelectionEmpty()) {
+                // 选区是空的，未选中内容
+                this._createPanel('', '');
+            } else {
+                // 选中内容了
+                this._createPanel(editor.selection.getSelectionText(), '');
+            }
+        }
+    },
+
+    // 创建 panel
+    _createPanel: function _createPanel(text, link) {
+        var _this = this;
+
+        // panel 中需要用到的id
+        var inputLinkId = getRandom('input-link');
+        var inputTextId = getRandom('input-text');
+        var btnOkId = getRandom('btn-ok');
+        var btnDelId = getRandom('btn-del');
+
+        // 是否显示“删除链接”
+        var delBtnDisplay = this._active ? 'inline-block' : 'none';
+
+        // 初始化并显示 panel
+        var panel = new Panel(this, {
+            width: 300,
+            // panel 中可包含多个 tab
+            tabs: [{
+                // tab 的标题
+                title: '链接',
+                // 模板
+                tpl: '<div>\n                            <input id="' + inputTextId + '" type="text" class="block" value="' + text + '" placeholder="\u94FE\u63A5\u6587\u5B57"/></td>\n                            <input id="' + inputLinkId + '" type="text" class="block" value="' + link + '" placeholder="http://..."/></td>\n                            <div class="w-e-button-container">\n                                <button id="' + btnOkId + '" class="right">\u63D2\u5165</button>\n                                <button id="' + btnDelId + '" class="gray right" style="display:' + delBtnDisplay + '">\u5220\u9664\u94FE\u63A5</button>\n                            </div>\n                        </div>',
+                // 事件绑定
+                events: [
+                // 插入链接
+                {
+                    selector: '#' + btnOkId,
+                    type: 'click',
+                    fn: function fn() {
+                        // 执行插入链接
+                        var $link = $('#' + inputLinkId);
+                        var $text = $('#' + inputTextId);
+                        var link = $link.val();
+                        var text = $text.val();
+                        _this._insertLink(text, link);
+
+                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
+                        return true;
+                    }
+                },
+                // 删除链接
+                {
+                    selector: '#' + btnDelId,
+                    type: 'click',
+                    fn: function fn() {
+                        // 执行删除链接
+                        _this._delLink();
+
+                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
+                        return true;
+                    }
+                }] // tab end
+            }] // tabs end
+        });
+
+        // 显示 panel
+        panel.show();
+
+        // 记录属性
+        this.panel = panel;
+    },
+
+    // 删除当前链接
+    _delLink: function _delLink() {
+        if (!this._active) {
+            return;
+        }
+        var editor = this.editor;
+        var $selectionELem = editor.selection.getSelectionContainerElem();
+        if (!$selectionELem) {
+            return;
+        }
+        var selectionText = editor.selection.getSelectionText();
+        editor.cmd.do('insertHTML', '<span>' + selectionText + '</span>');
+    },
+
+    // 插入链接
+    _insertLink: function _insertLink(text, link) {
+        var editor = this.editor;
+        var config = editor.config;
+        var linkCheck = config.linkCheck;
+        var checkResult = true; // 默认为 true
+        if (linkCheck && typeof linkCheck === 'function') {
+            checkResult = linkCheck(text, link);
+        }
+        if (checkResult === true) {
+            editor.cmd.do('insertHTML', '<a href="' + link + '" target="_blank">' + text + '</a>');
+        } else {
+            alert(checkResult);
+        }
+    },
+
+    // 试图改变 active 状态
+    tryChangeActive: function tryChangeActive(e) {
+        var editor = this.editor;
+        var $elem = this.$elem;
+        var $selectionELem = editor.selection.getSelectionContainerElem();
+        if (!$selectionELem) {
+            return;
+        }
+        if ($selectionELem.getNodeName() === 'A') {
+            this._active = true;
+            $elem.addClass('w-e-active');
+        } else {
+            this._active = false;
+            $elem.removeClass('w-e-active');
+        }
+    }
+};
+
+/*
     redo-menu
 */
 // 构造函数
@@ -1089,28 +1459,6 @@ Undo.prototype = {
         // 执行 undo 命令
         editor.cmd.do('undo');
     }
-};
-
-/*
-    替换多语言
- */
-
-var replaceLang = function (editor, str) {
-    var langArgs = editor.config.langArgs || [];
-    var result = str;
-
-    langArgs.forEach(function (item) {
-        var reg = item.reg;
-        var val = item.val;
-
-        if (reg.test(result)) {
-            result = result.replace(reg, function () {
-                return val;
-            });
-        }
-    });
-
-    return result;
 };
 
 /*
@@ -1397,10 +1745,6 @@ Quote.prototype = {
         }
     }
 };
-
-/*
-    panel
-*/
 
 /*
     menu - video
@@ -2360,8 +2704,7 @@ MenuConstructors.splitLine = SplitLine;
 // import FontName from './fontName/index.js'
 // MenuConstructors.fontName = FontName
 
-// import Link from './link/index.js'
-// MenuConstructors.link = Link
+MenuConstructors.link = Link;
 
 // import Italic from './italic/index.js'
 // MenuConstructors.italic = Italic

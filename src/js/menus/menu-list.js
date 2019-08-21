@@ -26,8 +26,8 @@ MenuConstructors.splitLine = SplitLine
 // import FontName from './fontName/index.js'
 // MenuConstructors.fontName = FontName
 
-// import Link from './link/index.js'
-// MenuConstructors.link = Link
+import Link from './link/index.js'
+MenuConstructors.link = Link
 
 // import Italic from './italic/index.js'
 // MenuConstructors.italic = Italic
