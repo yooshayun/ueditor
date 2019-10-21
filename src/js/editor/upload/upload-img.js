@@ -61,7 +61,7 @@ UploadImg.prototype = {
         `<div class="kolo-img" contenteditable="false">
             <img preview="0" preview-text="描述文字" src="${link}" style="max-width:100%;"/>
             <i class="w-e-icon-close" id="${randomId}" ><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
-         </div><p><br></p>`)
+         </div><p>&#8203;<br></p>`)
 
         // this.imgEvent.push({
         //     selector: '#' + randomId,
@@ -97,7 +97,7 @@ UploadImg.prototype = {
         img.onerror = () => {
             img = null
             // 无法成功下载图片
-            this._alert('插入图片错误', `error: 插入图片出错，图片链接是 "${link}"，下载该链接失败`)
+            this._alert('插入图片错误', `error: 插入图片出错，图片链接是 "${link}"`)
             return
         }
         img.onabort = () => {

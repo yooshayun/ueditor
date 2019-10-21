@@ -3,7 +3,7 @@
 */
 import $ from '../../util/dom-core.js'
 import { getRandom } from '../../util/util.js'
-import Panel from '../panel.js'
+import replaceLang from '../../util/replace-lang.js'
 
 // 构造函数
 function Link(editor) {
@@ -50,103 +50,167 @@ Link.prototype = {
     // 创建 panel
     _createPanel: function (text, link) {
         // panel 中需要用到的id
+        var editor = this.editor;
+        var containerId = editor.toolbarSelector;
+
+        const dialogId = getRandom('link-dialog');
+        const linkId = getRandom('add-linkId');
         const inputLinkId = getRandom('input-link')
         const inputTextId = getRandom('input-text')
-        const btnOkId = getRandom('btn-ok')
-        const btnDelId = getRandom('btn-del')
+        const btnOkId = getRandom('btn-ok');
 
-        // 是否显示“删除链接”
-        const delBtnDisplay = this._active ? 'inline-block' : 'none'
+        const searchList = getRandom('search-list');
 
-        // 初始化并显示 panel
-        const panel = new Panel(this, {
-            width: 300,
-            // panel 中可包含多个 tab
-            tabs: [
-                {
-                    // tab 的标题
-                    title: '链接',
-                    // 模板
-                    tpl: `<div>
-                            <input id="${inputTextId}" type="text" class="block" value="${text}" placeholder="链接文字"/></td>
-                            <input id="${inputLinkId}" type="text" class="block" value="${link}" placeholder="http://..."/></td>
-                            <div class="w-e-button-container">
-                                <button id="${btnOkId}" class="right">插入</button>
-                                <button id="${btnDelId}" class="gray right" style="display:${delBtnDisplay}">删除链接</button>
+        const userBtnId = getRandom('user-btn');
+        const courseBtnId = getRandom('course-btn');
+
+        const searchUserlinkId = getRandom('search-link-key0');
+        const searchUserBtn = getRandom('search-btn0');
+        const searchRoomlinkId = getRandom('search-link-key1');
+        const searchRoomBtn = getRandom('search-btn1');
+
+        var type = 0; //0普通链接、1个人主页链接、2课程卡链接
+
+        var template = `
+            <div class="kolo-link">
+                <div class="link-container">
+                    <h3>插入链接</h3>
+                    <div class="link">
+                        <p>
+                            <span>T</span>
+                            <input type="text" placeholder="输入链接文本" id="${inputTextId}"/>
+                        </p>
+                        <p>
+                            <span><i class="w-e-icon-link"></i></span>
+                            <input type="text" placeholder="输入链接地址" id="${inputLinkId}"/>
+                        </p>
+                    </div>
+                    <div class="other-link">
+                        <p>
+                            <b>内部链接：</b>
+                            <span id="${ userBtnId }">个人主页</span>  |  
+                            <span id="${ courseBtnId }">课程卡</span>
+                        </p>
+                        <div id="${ searchList }" class="other-link-content">
+                            <div class="search-box ${ userBtnId }">
+                                <div class="status-box">
+                                    <img class="search" id="${searchUserBtn}" src="http://image.kolocdn.com/FoKx9in6OwMaaNwaN8OlcH7WzYw8" />
+                                </div>
+                                <input type="text" placeholder="搜索用户" id="${searchUserlinkId}"/>
                             </div>
-                        </div>`,
-                    // 事件绑定
-                    events: [
-                        // 插入链接
-                        {
-                            selector: '#' + btnOkId,
-                            type: 'click',
-                            fn: () => {
-                                // 执行插入链接
-                                const $link = $('#' + inputLinkId)
-                                const $text = $('#' + inputTextId)
-                                const link = $link.val()
-                                const text = $text.val()
-                                this._insertLink(text, link)
+                            <div class="search-box ${ courseBtnId }">
+                                <div class="status-box">
+                                    <img class="search" id="${searchRoomBtn}" src="http://image.kolocdn.com/FoKx9in6OwMaaNwaN8OlcH7WzYw8" />
+                                </div>
+                                <input type="text" placeholder="搜索工作室" id="${searchRoomlinkId}"/>
+                            </div>
+                            <div class="${ searchList }"></div>
+                        </div>
+                    </div>
+                    <div class="w-e-up-btn">
+                        <button id="${btnOkId}">确定</button>
+                    </div>
+                    <i id="${linkId}" class="w-e-icon-close">×</i>
+                </div>
+            </div>`
 
-                                // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                                return true
-                            }
-                        },
-                        // 删除链接
-                        {
-                            selector: '#' + btnDelId,
-                            type: 'click',
-                            fn: () => {
-                                // 执行删除链接
-                                this._delLink()
+        //替换多语言        
+        template = replaceLang(editor, template);
+        
+        //
+        var dialog = document.createElement('div');
+        dialog.className = 'kolo-e-dialog';
+        dialog.id = dialogId;
+        dialog.innerHTML = template; 
 
-                                // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
-                                return true
-                            }
-                        }
-                    ]
-                } // tab end
-            ] // tabs end
+        //添加弹窗
+        document.querySelector(containerId).appendChild(dialog); 
+
+        //初始化输入值
+        document.querySelector('#' + inputTextId).value = text;
+        document.querySelector('#' + inputLinkId).value = link;
+
+        //关闭弹窗     
+        document.querySelector('#' + linkId).addEventListener('click', (e)=>{
+            e.stopPropagation()
+            var dom = document.querySelector('#' + dialogId);
+            dom.parentNode.removeChild(dom);
+        })  
+        
+        //添加链接
+        document.querySelector('#' + btnOkId).addEventListener('click', (e)=> {
+            e.stopPropagation();
+            let _text = document.querySelector('#' + inputTextId).value;
+            let _link = document.querySelector('#' + inputLinkId).value;
+            if(type == 0) {
+                //添加文本链接
+                this._insertLink(_text, _link);
+            } else if(type == 1) {
+                //添加卡片链接
+
+            } else {
+
+            }
+            setTimeout(()=>{
+                var dom = document.querySelector('#' + dialogId);
+                dom.parentNode.removeChild(dom);
+            })
         })
 
-        // 显示 panel
-        panel.show()
+        //搜索个人主页
+        document.querySelector('#' + userBtnId).addEventListener('click', (e)=> {
+            e.stopPropagation();
 
-        // 记录属性
-        this.panel = panel
+        })
+        //搜索工作室
+        document.querySelector('#' + courseBtnId).addEventListener('click', (e)=> {
+            e.stopPropagation();
+
+        })
     },
 
-    // 删除当前链接
-    _delLink: function () {
-        if (!this._active) {
-            return
-        }
-        const editor = this.editor
-        const $selectionELem = editor.selection.getSelectionContainerElem()
-        if (!$selectionELem) {
-            return
-        }
-        const selectionText = editor.selection.getSelectionText()
-        editor.cmd.do('insertHTML', '<span>' + selectionText + '</span>')
-    },
+    //
 
-    // 插入链接
+    // 插入文本链接
     _insertLink: function (text, link) {
-        const editor = this.editor
-        const config = editor.config
-        const linkCheck = config.linkCheck
-        let checkResult = true // 默认为 true
-        if (linkCheck && typeof linkCheck === 'function') {
-            checkResult = linkCheck(text, link)
+        const editor = this.editor;
+        if(!text || !link) {
+            return
         }
-        if (checkResult === true) {
-            editor.cmd.do('insertHTML', `<a href="${link}" target="_blank">${text}</a>`)
-        } else {
-            alert(checkResult)
-        }
+
+        editor.cmd.do('insertHTML', `<a class="kolo-link" href="${link}" target="_blank">${text}</a>`)
     },
 
+    // 插入卡片链接
+    _insertCardLink: function (title, text, link, type, headImage) {
+        const editor = this.editor;
+        if(!title || !text || !link) {
+            return
+        }
+        
+        var imageUrl = '';
+        if(type == 1) {
+            imageUrl = headImage;
+        } else if(type == 2) {
+            imageUrl = '';
+        }
+        
+        editor.cmd.do('insertHTML', 
+            `<div class="kolo-link" contenteditable="false">
+                <a href="${link}" target="_blank">
+                    <div class="link-img">
+                        <img src="${ imageUrl }"/>
+                    </div>
+                    <div class="link-content">
+                        <h3>${title}</h3>
+                        <p>${text}</p>
+                    </div>
+                </a>
+            </div>
+            <p>&#8203;<br></p>`)
+        
+    },
+    
     // 试图改变 active 状态
     tryChangeActive: function (e) {
         const editor = this.editor

@@ -293,6 +293,156 @@
 .kolo-e-dialog-up .music .music-list li .status-box.status-play img:nth-child(2) {
   display: none;
 }
+.kolo-e-dialog .kolo-link .link-container {
+  width: 400px;
+  height: 320px;
+  box-sizing: border-box;
+  margin: auto;
+  margin-top: 30vh;
+  background: #fff;
+  border-radius: 4px;
+  padding: 40px;
+  position: relative;
+}
+.kolo-e-dialog .kolo-link .link-container h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 0;
+  font-weight: 500;
+}
+.kolo-e-dialog .kolo-link .link-container .link {
+  width: 100%;
+}
+.kolo-e-dialog .kolo-link .link-container .link p {
+  width: 100%;
+  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
+}
+.kolo-e-dialog .kolo-link .link-container .link p span {
+  color: #aaaaaa;
+  position: absolute;
+  width: 40px;
+  border-right: 1px solid #E2E2E2;
+  text-align: center;
+  box-sizing: border-box;
+  height: 42px;
+  line-height: 42px;
+}
+.kolo-e-dialog .kolo-link .link-container .link p input {
+  width: 100%;
+  height: 42px;
+  padding-left: 50px;
+  float: left;
+  outline: none;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1px solid #E2E2E2;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link {
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  color: #7F7F7F;
+  text-align: left;
+  line-height: 24px;
+  position: relative;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link > p b {
+  font-weight: 500;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link > p span {
+  cursor: pointer;
+  margin: 0 5px;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link .other-link-content {
+  display: none;
+  padding: 14px 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  z-index: 2;
+  background: #fff;
+  border-radius: 4px;
+  min-height: 217px;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link .search-box {
+  width: 100%;
+  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link .search-box .status-box {
+  color: #aaaaaa;
+  position: absolute;
+  width: 40px;
+  text-align: center;
+  box-sizing: border-box;
+  height: 42px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link .search-box .status-box img {
+  width: 18px;
+  height: 18px;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link .search-box input {
+  width: 100%;
+  height: 42px;
+  padding-left: 50px;
+  float: left;
+  outline: none;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1px solid #E2E2E2;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link .searchList {
+  position: absolute;
+}
+.kolo-e-dialog .kolo-link .link-container .w-e-up-btn {
+  text-align: center;
+}
+.kolo-e-dialog .kolo-link .link-container .w-e-up-btn button {
+  cursor: pointer;
+  width: 140px;
+  height: 42px;
+  line-height: 42px;
+  background: #EB2135;
+  border-radius: 4px;
+  font-family: Ubuntu-Regular;
+  font-size: 14px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  outline: none;
+}
+.kolo-e-dialog .kolo-link .link-container .w-e-up-btn button[disabled=true] {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+}
+.kolo-e-dialog .kolo-link .link-container .w-e-up-btn p {
+  font-family: Ubuntu-Regular;
+  margin: 0;
+  margin-bottom: 5px;
+  font-weight: 400;
+}
+.kolo-e-dialog .kolo-link .link-container .w-e-icon-close {
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  cursor: pointer;
+  color: #aaa;
+}
 .kolo-e-dialog-up .kolo-upload {
   width: 439px;
   height: 235px;

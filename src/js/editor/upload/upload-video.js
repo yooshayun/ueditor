@@ -64,7 +64,7 @@ UploadVideo.prototype = {
                         <span data-src="${link ? link : ''}" class="before-img">更换封面</span>
                         <i class="w-e-icon-close" id="${randomId}"><img src="https://qncdn.file.sinostage.com/close.svg"/></i><br/>
                     </div>
-                    <p><br/></p>
+                    <p>&#8203;<br/></p>
                 `;
 
                 //替换多语言        
