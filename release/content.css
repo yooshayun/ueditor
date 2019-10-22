@@ -402,6 +402,7 @@
 .w-e-text .kolo-inline-link {
   text-decoration: underline;
   color: rgba(65, 55, 56, 0.7);
+  cursor: pointer;
 }
 .w-e-text .kolo-link {
   width: 100%;
