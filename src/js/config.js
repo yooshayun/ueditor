@@ -260,18 +260,72 @@ const config = {
         video: null
     },
 
+    //第三方搜索会员方法
+    userSearch: function(params) {
+        return new Promise(res => {
+            setTimeout(()=>{
+                res([{
+                    id: 0,
+                    fullHeadImage: 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg',
+                    nickName: 'jj--kk',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }, {
+                    id: 1,
+                    fullHeadImage: 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg',
+                    nickName: 'pp',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }, {
+                    id: 2,
+                    fullHeadImage: 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg',
+                    nickName: 'ccc',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }, {
+                    id: 3,
+                    fullHeadImage: 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg',
+                    nickName: 'ddd',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }])
+            }, 10)
+        })
+    },
 
-    // 上传图片自定义提示方法
-    // customAlert: function (info) {
-    //     // 自定义上传提示
-    // },
+    //第三方搜索工作室方法
+    roomSearch: function(params) {
+        return new Promise(res => {
+            setTimeout(()=>{
+                res([{
+                    id: 0,
+                    fullHeadImage: 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg',
+                    nickName: 'jj--kk',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }, {
+                    id: 1,
+                    fullHeadImage: 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg',
+                    nickName: 'pp',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }, {
+                    id: 2,
+                    fullHeadImage: 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg',
+                    nickName: 'ccc',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }, {
+                    id: 3,
+                    fullHeadImage: '',
+                    nickName: 'ddd',
+                    singleIntroduction: '一句话介绍',
+                    shareUrl: "http://m.qa.ikolo.me/ssr/#/user/11858"
+                }])
+            }, 200)
+        })
+    }
     
-    // // 自定义上传图片
-    // customUploadImg: function (files, insert) {
-    //     // files 是 input 中选中的文件列表
-    //     // insert 是获取图片 url 后，插入到编辑器的方法
-    //     insert(imgUrl)
-    // }
 }
 
 export default config
