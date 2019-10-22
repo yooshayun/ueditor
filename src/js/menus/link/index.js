@@ -387,7 +387,7 @@ Link.prototype = {
             return
         }
 
-        editor.cmd.do('insertHTML', `<a target="_blank">${text}</a>`)
+        editor.cmd.do('insertHTML', `<a class="kolo-inline-link" target="_blank" href="${ link }">${text}</a>`)
     },
 
     // 插入卡片链接

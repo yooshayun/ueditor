@@ -1283,6 +1283,10 @@
 .w-e-text .kolo-video:hover .w-e-icon-close {
   display: block;
 }
+.w-e-text .kolo-inline-link {
+  text-decoration: underline;
+  color: rgba(235, 67, 87, 0.7);
+}
 .w-e-text .kolo-link {
   width: 100%;
   max-width: 300px;
