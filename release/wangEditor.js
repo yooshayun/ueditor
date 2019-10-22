@@ -1432,7 +1432,7 @@ Link.prototype = {
                     if (linkInfo.type == 1) {
                         linkInfo.link = 'kolo://user/' + item.getAttribute('data-id');
                         linkInfo.head = item.getAttribute('data-head');
-                    } else if (linkInfo.type == 1) {
+                    } else if (linkInfo.type == 2) {
                         linkInfo.link = 'kolo://cardList/' + item.getAttribute('data-id');
                     }
                     linkInfo.text = item.getAttribute('data-name');
@@ -1448,12 +1448,12 @@ Link.prototype = {
     // 插入文本链接
     _insertLink: function _insertLink(text, link) {
         var editor = this.editor;
-        console.log('生成链接', text, link);
+        // console.log('生成链接', text, link)
         if (!text || !link) {
             return;
         }
 
-        editor.cmd.do('insertHTML', '<a class="kolo-link" href="' + link + '" target="_blank">' + text + '</a>');
+        editor.cmd.do('insertHTML', '<a target="_blank">' + text + '</a>');
     },
 
     // 插入卡片链接
