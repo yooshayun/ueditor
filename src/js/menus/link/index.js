@@ -81,10 +81,13 @@ Link.prototype = {
                             <span>T</span>
                             <input type="text" placeholder="输入链接文本" id="${inputTextId}"/>
                         </p>
+                        <div class="error-word ${inputTextId}">请输入链接文本</div>
                         <p>
                             <span><i class="w-e-icon-link"></i></span>
                             <input type="text" placeholder="输入链接地址" id="${inputLinkId}"/>
                         </p>
+                        <div class="error-word ${inputLinkId} link-error">请输入链接地址</div>
+                        <div class="error-word ${inputLinkId} error-other">请输入正确的链接</div>
                     </div>
                     <div class="other-link">
                         <p>
@@ -145,10 +148,33 @@ Link.prototype = {
         //添加链接
         document.querySelector('#' + btnOkId).addEventListener('click', (e)=> {
             e.stopPropagation();
-            linkInfo.text = document.querySelector('#' + inputTextId).value;
-            linkInfo.link = document.querySelector('#' + inputLinkId).value;
+            linkInfo.text = document.querySelector('#' + inputTextId).value.trim();
+            linkInfo.link = document.querySelector('#' + inputLinkId).value.trim();
+            // console.log(linkInfo,document.querySelector('.' + inputTextId),document.querySelector('.' + inputLinkId + '.link-error'));
+            //校验
+            if(!linkInfo.text) {
+                document.querySelector('.' + inputTextId + '.error-word').style.display = 'block';
+            } else {
+                document.querySelector('.' + inputTextId + '.error-word').style.display = 'none';
+            }
+            if(!linkInfo.link) {
+                document.querySelector('.' + inputLinkId + '.link-error').style.display = 'block';
+            } else {
+                document.querySelector('.' + inputLinkId + '.link-error').style.display = 'none';
+            }
+            if(!linkInfo.text || !linkInfo.link) {
+                return
+            }
+            //链接格式校验
+            if(linkInfo.link.indexOf('https://') == -1 && linkInfo.link.indexOf('kolo://') == -1 && linkInfo.link.indexOf('http://') == -1) {
+                document.querySelector('.' + inputLinkId + '.error-other').style.display = 'block';
+                return
+            } else {
+                document.querySelector('.' + inputLinkId + '.error-other').style.display = 'none';
+            }
 
-            // console.log(linkInfo.type, 'type', JSON.stringify(linkInfo))
+            console.log(linkInfo.type, 'type', JSON.stringify(linkInfo), this)
+            
             if(linkInfo.type == 0) {
                 //添加文本链接
                 this._insertLink(linkInfo.text, linkInfo.link);
@@ -348,7 +374,7 @@ Link.prototype = {
     searchListDomCreated(list, dom, linkInfo, fn) {
         var htmlString = '';
         list.forEach(el => {
-            htmlString +=  `<div class="search-li" data-head="${el.fullHeadImage}" data-id="${ el.id }" data-name="${ el.nickName }" data-sub="${ el.singleIntroduction }">
+            htmlString +=  `<div class="search-li" data-head="${el.fullHeadImage}" data-id="${ el.id }" data-type="${ el.userType }" data-name="${ el.nickName }" data-sub="${ el.singleIntroduction }">
                 <div class="search-li-left"><img src="${el.fullHeadImage}"></div>
                 <div class="search-li-right">
                     <h3>${ el.nickName || '' }</h3>
@@ -365,13 +391,17 @@ Link.prototype = {
                 item.addEventListener('click', (e)=> {
                     e.stopPropagation();
                     if(linkInfo.type == 1) {
-                        linkInfo.link = 'kolo://user/' + item.getAttribute('data-id');
+                        if(item.getAttribute('data-type') == 1) {
+                            linkInfo.link = 'kolo://user/' + item.getAttribute('data-id');
+                        } else {
+                            linkInfo.link = 'kolo://studio/' + item.getAttribute('data-id');
+                        }
                         linkInfo.head = item.getAttribute('data-head');
                     } else if(linkInfo.type == 2) {
-                        linkInfo.link = 'kolo://cardList/' + item.getAttribute('data-id');
+                        linkInfo.link = 'kolo://toStudioCard/' + item.getAttribute('data-id');
                     }
-                    linkInfo.text = item.getAttribute('data-name');
-                    linkInfo.subText = item.getAttribute('data-sub');
+                    linkInfo.text = item.getAttribute('data-name') || '--';
+                    linkInfo.subText = item.getAttribute('data-sub') || '--';
                     // console.log(JSON.stringify(linkInfo));
                     fn();
                 })
@@ -393,15 +423,12 @@ Link.prototype = {
     // 插入卡片链接
     _insertCardLink: function (title, text, link, type, headImage) {
         const editor = this.editor;
-        if(!title || !text || !link) {
-            return
-        }
         
         var imageUrl = '';
         if(type == 1) {
             imageUrl = headImage;
         } else if(type == 2) {
-            imageUrl = '';
+            imageUrl = 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg';
         }
         
         editor.cmd.do('insertHTML', 

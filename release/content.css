@@ -45,6 +45,7 @@
   line-height: 1.4;
   font-size: 14px;
   color: #AAA;
+  min-height: 28px;
 }
 .w-e-text code {
   display: inline-block;

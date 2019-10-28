@@ -319,6 +319,9 @@
   overflow: hidden;
   position: relative;
 }
+.kolo-e-dialog .kolo-link .link-container .link p:nth-of-type(2) {
+  margin-top: 0;
+}
 .kolo-e-dialog .kolo-link .link-container .link p span {
   color: #aaaaaa;
   position: absolute;
@@ -344,6 +347,13 @@
 .kolo-e-dialog .kolo-link .link-container .link p input::-webkit-input-placeholder {
   color: #ddd;
 }
+.kolo-e-dialog .kolo-link .link-container .link .error-word {
+  color: #EB2135;
+  font-size: 10px;
+  margin-top: -18px;
+  margin-bottom: 2px;
+  display: none;
+}
 .kolo-e-dialog .kolo-link .link-container .other-link {
   font-weight: 400;
   font-style: normal;
@@ -352,6 +362,9 @@
   text-align: left;
   line-height: 24px;
   position: relative;
+}
+.kolo-e-dialog .kolo-link .link-container .other-link > p {
+  margin-top: 0;
 }
 .kolo-e-dialog .kolo-link .link-container .other-link > p b {
   font-weight: 500;
@@ -929,6 +942,7 @@
   line-height: 1.4;
   font-size: 14px;
   color: #AAA;
+  min-height: 28px;
 }
 .w-e-text code {
   display: inline-block;
