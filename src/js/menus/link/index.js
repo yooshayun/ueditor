@@ -173,7 +173,7 @@ Link.prototype = {
                 document.querySelector('.' + inputLinkId + '.error-other').style.display = 'none';
             }
 
-            console.log(linkInfo.type, 'type', JSON.stringify(linkInfo), this)
+            // console.log(linkInfo.type, 'type', JSON.stringify(linkInfo), this)
             
             if(linkInfo.type == 0) {
                 //添加文本链接
