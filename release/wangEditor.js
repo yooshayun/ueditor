@@ -1455,7 +1455,7 @@ Link.prototype = {
                     if (linkInfo.type == 1) {
                         var userType = item.getAttribute('data-type');
                         if (userType == 2) {
-                            linkInfo.link = 'kolo://user/' + item.getAttribute('data-id');
+                            linkInfo.link = 'kolo://artist/' + item.getAttribute('data-id');
                         }
                         if (userType == 3) {
                             linkInfo.link = 'kolo://studio/' + item.getAttribute('data-id');
