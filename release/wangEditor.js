@@ -1178,13 +1178,14 @@ Link.prototype = {
 
         var userBtnId = getRandom('user-btn');
         var courseBtnId = getRandom('course-btn');
+        var ofenBtnId = getRandom('card-btn');
 
         var searchUserlinkId = getRandom('search-link-key0');
         var searchUserBtn = getRandom('search-btn0');
         var searchRoomlinkId = getRandom('search-link-key1');
         var searchRoomBtn = getRandom('search-btn1');
 
-        var template = '\n            <div class="kolo-link">\n                <div class="link-container">\n                    <h3>\u63D2\u5165\u94FE\u63A5</h3>\n                    <div class="link">\n                        <p>\n                            <span>T</span>\n                            <input type="text" placeholder="\u8F93\u5165\u94FE\u63A5\u6587\u672C" id="' + inputTextId + '"/>\n                        </p>\n                        <div class="error-word ' + inputTextId + '">\u8BF7\u8F93\u5165\u94FE\u63A5\u6587\u672C</div>\n                        <p>\n                            <span><i class="w-e-icon-link"></i></span>\n                            <input type="text" placeholder="\u8F93\u5165\u94FE\u63A5\u5730\u5740" id="' + inputLinkId + '"/>\n                        </p>\n                        <div class="error-word ' + inputLinkId + ' link-error">\u8BF7\u8F93\u5165\u94FE\u63A5\u5730\u5740</div>\n                        <div class="error-word ' + inputLinkId + ' error-other">\u8BF7\u8F93\u5165\u6B63\u786E\u7684\u94FE\u63A5</div>\n                    </div>\n                    <div class="other-link">\n                        <p>\n                            <b>\u5185\u90E8\u94FE\u63A5\uFF1A</b>\n                            <span id="' + userBtnId + '">\u4E2A\u4EBA\u4E3B\u9875</span>  |  \n                            <span id="' + courseBtnId + '">\u8BFE\u7A0B\u5361</span>\n                        </p>\n                        <div id="' + searchList + '" class="other-link-content">\n                            <div class="search-box ' + userBtnId + '">\n                                <div class="status-box">\n                                    <img class="search" id="' + searchUserBtn + '" src="http://image.kolocdn.com/FoKx9in6OwMaaNwaN8OlcH7WzYw8" />\n                                </div>\n                                <input type="text" placeholder="\u641C\u7D22\u7528\u6237" id="' + searchUserlinkId + '"/>\n                            </div>\n                            <div class="search-box ' + courseBtnId + '">\n                                <div class="status-box">\n                                    <img class="search" id="' + searchRoomBtn + '" src="http://image.kolocdn.com/FoKx9in6OwMaaNwaN8OlcH7WzYw8" />\n                                </div>\n                                <input type="text" placeholder="\u641C\u7D22\u5DE5\u4F5C\u5BA4" id="' + searchRoomlinkId + '"/>\n                            </div>\n                            <div class="' + searchList + ' search-list"></div>\n                        </div>\n                    </div>\n                    <div class="w-e-up-btn">\n                        <button id="' + btnOkId + '">\u786E\u5B9A</button>\n                    </div>\n                    <i id="' + linkId + '" class="w-e-icon-close">\xD7</i>\n                </div>\n            </div>';
+        var template = '\n            <div class="kolo-link">\n                <div class="link-container">\n                    <h3>\u63D2\u5165\u94FE\u63A5</h3>\n                    <div class="link">\n                        <p>\n                            <span>T</span>\n                            <input type="text" placeholder="\u8F93\u5165\u94FE\u63A5\u6587\u672C" id="' + inputTextId + '"/>\n                        </p>\n                        <div class="error-word ' + inputTextId + '">\u8BF7\u8F93\u5165\u94FE\u63A5\u6587\u672C</div>\n                        <p>\n                            <span><i class="w-e-icon-link"></i></span>\n                            <input type="text" placeholder="\u8F93\u5165\u94FE\u63A5\u5730\u5740" id="' + inputLinkId + '"/>\n                        </p>\n                        <div class="error-word ' + inputLinkId + ' link-error">\u8BF7\u8F93\u5165\u94FE\u63A5\u5730\u5740</div>\n                        <div class="error-word ' + inputLinkId + ' error-other">\u8BF7\u8F93\u5165\u6B63\u786E\u7684\u94FE\u63A5</div>\n                    </div>\n                    <div class="other-link">\n                        <p>\n                            <b>\u5185\u90E8\u94FE\u63A5\uFF1A</b>\n                            <span id="' + userBtnId + '">\u4E2A\u4EBA\u4E3B\u9875</span>  |  \n                            <span id="' + courseBtnId + '">\u8BFE\u7A0B\u5361</span>  |  \n                            <span id="' + ofenBtnId + '">\u666E\u901A\u5361\u7247</span>\n                        </p>\n                        <div id="' + searchList + '" class="other-link-content">\n                            <div class="search-box ' + userBtnId + '">\n                                <div class="status-box">\n                                    <img class="search" id="' + searchUserBtn + '" src="http://image.kolocdn.com/FoKx9in6OwMaaNwaN8OlcH7WzYw8" />\n                                </div>\n                                <input type="text" placeholder="\u641C\u7D22\u7528\u6237" id="' + searchUserlinkId + '"/>\n                            </div>\n                            <div class="search-box ' + courseBtnId + '">\n                                <div class="status-box">\n                                    <img class="search" id="' + searchRoomBtn + '" src="http://image.kolocdn.com/FoKx9in6OwMaaNwaN8OlcH7WzYw8" />\n                                </div>\n                                <input type="text" placeholder="\u641C\u7D22\u5DE5\u4F5C\u5BA4" id="' + searchRoomlinkId + '"/>\n                            </div>\n                            <div class="' + searchList + ' search-list"></div>\n                        </div>\n                    </div>\n                    <div class="w-e-up-btn">\n                        <button id="' + btnOkId + '">\u786E\u5B9A</button>\n                    </div>\n                    <i id="' + linkId + '" class="w-e-icon-close">\xD7</i>\n                </div>\n            </div>';
 
         //替换多语言        
         template = replaceLang(editor, template);
@@ -1436,6 +1437,23 @@ Link.prototype = {
                 }
             });
         });
+
+        //添加普通卡片
+        document.querySelector('#' + ofenBtnId).addEventListener('click', function (e) {
+            e.stopPropagation();
+
+            dropListContent.innerHTML = '';
+            dropListDom.style.display = 'none';
+            var name = document.querySelector('#' + ofenBtnId).className;
+
+            if (name.indexOf('actived') > -1) {
+                document.querySelector('#' + ofenBtnId).className = '';
+                linkInfo.type = 0;
+                return;
+            }
+            linkInfo.type = 2;
+            document.querySelector('#' + ofenBtnId).className = 'actived';
+        });
     },
 
     //拼装列表
@@ -1491,12 +1509,12 @@ Link.prototype = {
 
         var imageUrl = '';
         if (type == 1) {
-            imageUrl = headImage;
+            imageUrl = headImage ? headImage : 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg';
         } else if (type == 2) {
             imageUrl = 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg';
         }
 
-        editor.cmd.do('insertHTML', '<div class="kolo-link" contenteditable="false">\n                <a href="' + link + '" target="_blank">\n                    <div class="link-img">\n                        <img src="' + imageUrl + '?imageView2/1/w/80/h/80"/>\n                    </div>\n                    <div class="link-content">\n                        <h3>' + title + '</h3>\n                        <p>' + text + '</p>\n                    </div>\n                </a>\n            </div>\n            <p>&#8203;<br></p>');
+        editor.cmd.do('insertHTML', '<div class="kolo-link" contenteditable="false">\n                <a href="' + link + '" target="_blank">\n                    <div class="link-img">\n                        <img src="' + imageUrl + '?imageView2/1/w/80/h/80"/>\n                    </div>\n                    <div class="link-content">\n                        <h3>' + title + '</h3>\n                        <p>' + (text || link || '--') + '</p>\n                    </div>\n                </a>\n            </div>\n            <p>&#8203;<br></p>');
     },
 
     // 试图改变 active 状态

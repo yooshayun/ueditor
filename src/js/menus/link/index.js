@@ -66,6 +66,7 @@ Link.prototype = {
 
         const userBtnId = getRandom('user-btn');
         const courseBtnId = getRandom('course-btn');
+        const ofenBtnId = getRandom('card-btn');
 
         const searchUserlinkId = getRandom('search-link-key0');
         const searchUserBtn = getRandom('search-btn0');
@@ -93,7 +94,8 @@ Link.prototype = {
                         <p>
                             <b>内部链接：</b>
                             <span id="${ userBtnId }">个人主页</span>  |  
-                            <span id="${ courseBtnId }">课程卡</span>
+                            <span id="${ courseBtnId }">课程卡</span>  |  
+                            <span id="${ ofenBtnId }">普通卡片</span>
                         </p>
                         <div id="${ searchList }" class="other-link-content">
                             <div class="search-box ${ userBtnId }">
@@ -295,6 +297,7 @@ Link.prototype = {
             })
         })
 
+
         //搜索工作室
         document.querySelector('#' + courseBtnId).addEventListener('click', (e)=> {
             e.stopPropagation();
@@ -368,6 +371,24 @@ Link.prototype = {
                 }    
             })  
         })
+
+        //添加普通卡片
+        document.querySelector('#' + ofenBtnId).addEventListener('click', (e)=> {
+            e.stopPropagation();
+
+            dropListContent.innerHTML = '';
+            dropListDom.style.display = 'none';
+            let name = document.querySelector('#' + ofenBtnId).className;
+
+            if(name.indexOf('actived') > -1) {
+                document.querySelector('#' + ofenBtnId).className = '';
+                linkInfo.type = 0;
+                return
+            }
+            linkInfo.type = 2;
+            document.querySelector('#' + ofenBtnId).className = 'actived';
+        })
+        
     },
 
     //拼装列表
@@ -428,7 +449,7 @@ Link.prototype = {
         
         var imageUrl = '';
         if(type == 1) {
-            imageUrl = headImage;
+            imageUrl = headImage ? headImage : 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg';
         } else if(type == 2) {
             imageUrl = 'http://image.kolocdn.com/o_1c3k1l4vp1ujq19pfmijgho1sg6e.jpg';
         }
@@ -441,7 +462,7 @@ Link.prototype = {
                     </div>
                     <div class="link-content">
                         <h3>${title}</h3>
-                        <p>${text}</p>
+                        <p>${text||link||'--'}</p>
                     </div>
                 </a>
             </div>
